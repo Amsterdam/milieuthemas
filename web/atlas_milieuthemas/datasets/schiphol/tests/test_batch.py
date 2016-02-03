@@ -5,15 +5,13 @@ from .. import batch, models
 
 from datasets.themas.tests.factories import ThemaFactory
 
-DIRECTORY = 'diva/milieuthemas'
-
 
 class ImportHoogtebeperkendeVlakkenTest(TaskTestCase):
     def setUp(self):
         ThemaFactory.create(pk=6)
 
     def task(self):
-        return batch.ImportHoogtebeperkendeVlakkenTask(DIRECTORY)
+        return batch.ImportHoogtebeperkendeVlakkenTask()
 
     def test_import(self):
         self.run_task()
@@ -33,7 +31,7 @@ class ImportGeluidzoneTest(TaskTestCase):
         ThemaFactory.create(pk=2)
 
     def task(self):
-        return batch.ImportGeluidzoneTask(DIRECTORY)
+        return batch.ImportGeluidzoneTask()
 
     @skip('skip because incomplete polygons')
     def test_import(self):
@@ -45,3 +43,21 @@ class ImportGeluidzoneTest(TaskTestCase):
         zone = models.Geluidzone.objects.get(geo_id=57)
         self.assertEqual(zone.type, '20 Ke contour')
         self.assertNotEqual(zone.geometrie, None)
+
+
+class ImportVogelvrijwaringsgebiedTest(TaskTestCase):
+    def setUp(self):
+        ThemaFactory.create(pk=7)
+
+    def task(self):
+        return batch.ImportVogelvrijwaringsgebiedTask()
+
+    def test_import(self):
+        self.run_task()
+
+        imported = models.Vogelvrijwaringsgebied.objects.all()
+        self.assertEqual(len(imported), 1)
+
+        gebied = models.Vogelvrijwaringsgebied.objects.get(geo_id=1)
+        self.assertEqual(gebied.type, 'Vogelvrijwaringsgebied')
+        self.assertNotEqual(gebied.geometrie, None)

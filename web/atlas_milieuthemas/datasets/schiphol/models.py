@@ -25,3 +25,12 @@ class Geluidzone(mixins.ImportStatusMixin):
     geometrie = geo.MultiPolygonField(null=True, srid=28992)
 
     objects = geo.GeoManager()
+
+
+class Vogelvrijwaringsgebied(mixins.ImportStatusMixin):
+    geo_id = models.IntegerField(null=False)
+    type = models.CharField(max_length=100, null=True)
+    thema = models.ForeignKey(Thema, null=True)
+    geometrie = geo.MultiPolygonField(null=True, srid=28992)
+
+    objects = geo.GeoManager()

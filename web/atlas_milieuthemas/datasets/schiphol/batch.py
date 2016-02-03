@@ -15,12 +15,20 @@ from . import models
 log = logging.getLogger(__name__)
 
 
-class ImportHoogtebeperkendeVlakkenTask(batch.BasicTask):
+class ImportTask(batch.BasicTask):
+    path = None
+
+    def __init__(self):
+        diva = settings.DIVA_DIR
+        if not os.path.exists(diva):
+            raise ValueError("DIVA_DIR not found: {}".format(diva))
+
+        self.path = os.path.join(diva, 'milieuthemas')
+
+
+class ImportHoogtebeperkendeVlakkenTask(ImportTask):
     name = "Import dro_schiphol_hoogtes"
     themas = set()
-
-    def __init__(self, path):
-        self.path = path
 
     def before(self):
         database.clear_models(models.HoogtebeperkendeVlakken)
@@ -78,12 +86,9 @@ class ImportHoogtebeperkendeVlakkenTask(batch.BasicTask):
         )
 
 
-class ImportGeluidzoneTask(batch.BasicTask):
+class ImportGeluidzoneTask(ImportTask):
     name = "Import dro_geluid_schiphol"
     themas = set()
-
-    def __init__(self, path):
-        self.path = path
 
     def before(self):
         database.clear_models(models.Geluidzone)
@@ -126,18 +131,57 @@ class ImportGeluidzoneTask(batch.BasicTask):
         )
 
 
+class ImportVogelvrijwaringsgebiedTask(ImportTask):
+    name = "Import dro_vogel"
+    themas = set()
+
+    def before(self):
+        database.clear_models(models.Vogelvrijwaringsgebied)
+        self.themas = frozenset(Thema.objects.values_list('id', flat=True))
+
+    def after(self):
+        self.themas = None
+
+    def process(self):
+        source = os.path.join(self.path, "dro_vogel.csv")
+        gebieden = [gebied for gebied in process_csv(source, self.process_row) if gebied]
+
+        models.Vogelvrijwaringsgebied.objects.bulk_create(gebieden, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        thema_id = int(row['tma_id'])
+
+        if thema_id not in self.themas:
+            log.warn("Vogelvrijwaringsgebied {} references non-existing thema {}; skipping".format(row['id'], thema_id))
+            return
+
+        geom = None
+        try:
+            geom = GEOSGeometry(row['geometrie'])
+        except GEOSException as msg:
+            log.warn("Vogelvrijwaringsgebied {} unable to encapsulate GEOS geometry {}; skipping".format(
+                    row['id'],
+                    msg
+            ))
+            pass
+
+        if isinstance(geom, Polygon):
+            geom = MultiPolygon(geom)
+
+        return models.Vogelvrijwaringsgebied(
+            geo_id=int(row['id']),
+            type=row['type'],
+            thema_id=thema_id,
+            geometrie=geom,
+        )
+
+
 class ImportSchipholJob(object):
     name = "Import schiphol"
 
-    def __init__(self):
-        diva = settings.DIVA_DIR
-        if not os.path.exists(diva):
-            raise ValueError("DIVA_DIR not found: {}".format(diva))
-
-        self.path = os.path.join(diva, 'milieuthemas')
-
     def tasks(self):
         return [
-            ImportHoogtebeperkendeVlakkenTask(self.path),
-            ImportGeluidzoneTask(self.path),
+            ImportHoogtebeperkendeVlakkenTask(),
+            ImportGeluidzoneTask(),
+            ImportVogelvrijwaringsgebiedTask()
         ]
