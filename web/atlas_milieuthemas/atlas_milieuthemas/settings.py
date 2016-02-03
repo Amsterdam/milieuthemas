@@ -35,8 +35,9 @@ INSTALLED_APPS = (
     'atlas',
     'geo_views',
     'atlas_api',
-    'datasets.nap',
-    'datasets.meetbouten',
+
+    'datasets.themas',
+    'datasets.schiphol',
 
     'datapunt_generic.batch',
     'datapunt_generic.generic',
@@ -88,24 +89,10 @@ DATABASES = {
         'USER': os.getenv('DB_NAME', 'postgres'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'insecure'),
         'HOST': os.getenv('DATABASE_PORT_5432_TCP_ADDR', get_docker_host()),
-        'PORT': os.getenv('DATABASE_PORT_5432_TCP_PORT', '5432'),
+        'PORT': os.getenv('DATABASE_PORT_5432_TCP_PORT', '5402'),
     }
 }
 
-
-ELASTIC_SEARCH_HOSTS = [get_docker_host()]
-
-print('ELASTIC_HOST %s' % ELASTIC_SEARCH_HOSTS)
-
-
-ELASTIC_INDICES = dict(
-    MEETBOUTEN='meetbouten', NAP='nap')
-
-TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
-
-if TESTING:
-    for k, v in ELASTIC_INDICES.items():
-        ELASTIC_INDICES[k] = ELASTIC_INDICES[k] + 'test'
 
 BATCH_SETTINGS = dict(
     batch_size=100000
@@ -185,10 +172,4 @@ SECURE_BROWSER_XSS_FILTER = True
 CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = 'DENY'
 
-HEALTH_MODEL = 'nap.Peilmerk'
-
-NAP_DECIMAL_PLACES = 4
-NAP_MAX_DIGITS = 7  # if this is not enough, we have bigger problems
-
-ZAKKING_DECIMAL_PLACES = 13
-ZAKKING_MAX_DIGITS = 20
+HEALTH_MODEL = 'schiphol.HoogtebeperkendeVlakken'

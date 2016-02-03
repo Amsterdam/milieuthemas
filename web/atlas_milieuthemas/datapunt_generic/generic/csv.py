@@ -1,34 +1,31 @@
-from decimal import Decimal, InvalidOperation
+import csv
+import logging
+import os
+from contextlib import contextmanager
+
+log = logging.getLogger(__name__)
 
 
-# cleanup row as returned from csv parser
-def cleanup_row(csv_row, replace=False):
-    row = list()
-    for i in range(0, len(csv_row)):
-        val = csv_row[i]
-
-        # replace(replace(replace(:BOUT_NR,'^10',chr(10)),'^13',chr(13)),'^36',chr(36))
-        if replace:
-            val = val.replace("^10", chr(10))
-            val = val.replace("chr13", chr(13)).replace("^13", chr(13))
-            val = val.replace("^36", chr(36))
-
-        # the double quotes setting with $ is not working like I would like it to
-        if val[-2:] == '$$':
-            val = val[0:len(val)-2]
-
-        if val == '$':
-            val = ''
-
-        row.append(val.strip())
-
-    return row
+def _wrap_row(r, headers):
+    return dict(zip(headers, r))
 
 
-def parse_decimal(d):
-    d = '0' if d == '' else d
+@contextmanager
+def _context_reader(source, skip=0, quotechar=None, quoting=csv.QUOTE_NONE):
+    if not os.path.exists(source):
+        raise ValueError("File not found: {}".format(source))
 
-    try:
-        return Decimal(d.replace(',', '.'))
-    except InvalidOperation:
-        return Decimal()
+    with open(source, encoding='cp1252') as f:
+        rows = csv.reader(f, delimiter='|', quotechar=quotechar, quoting=quoting)
+        for i in range(skip):
+            next(rows)
+
+        headers = [h.lower() for h in next(rows)]
+
+        yield (_wrap_row(r, headers) for r in rows)
+
+
+def process_csv(source, process_row_callback):
+    with _context_reader(source, quotechar='"', quoting=csv.QUOTE_MINIMAL) as rows:
+        return [result for result in (process_row_callback(r) for r in rows) if result]
+
