@@ -15,9 +15,6 @@ log = logging.getLogger(__name__)
 class ImportThemaTask(batch.BasicTask):
     name = "Import dro_thema"
 
-    def __init__(self, path):
-        self.path = path
-
     def before(self):
         database.clear_models(models.Thema)
 
@@ -45,14 +42,7 @@ class ImportThemaTask(batch.BasicTask):
 class ImportThemasJob(object):
     name = "Import themas"
 
-    def __init__(self):
-        diva = settings.DIVA_DIR
-        if not os.path.exists(diva):
-            raise ValueError("DIVA_DIR not found: {}".format(diva))
-
-        self.path = os.path.join(diva, 'milieuthemas')
-
     def tasks(self):
         return [
-            ImportThemaTask(self.path),
+            ImportThemaTask(),
         ]

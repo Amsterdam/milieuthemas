@@ -1,7 +1,9 @@
 from abc import ABCMeta, abstractmethod
 import logging
 import sys
+import os
 
+from django.conf import settings
 from django.utils import timezone
 import gc
 
@@ -79,6 +81,13 @@ class BasicTask(object):
 
     class Meta:
         __class__ = ABCMeta
+
+    def __init__(self):
+        diva = settings.DIVA_DIR
+        if not os.path.exists(diva):
+            raise ValueError("DIVA_DIR not found: {}".format(diva))
+
+        self.path = os.path.join(diva, 'milieuthemas')
 
     def execute(self):
         try:

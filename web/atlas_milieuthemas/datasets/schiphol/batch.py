@@ -1,7 +1,6 @@
 import logging
 import os
 
-from django.conf import settings
 from django.contrib.gis.geos import GEOSGeometry, Point, LineString, Polygon, MultiPolygon
 from django.contrib.gis.geos.error import GEOSException
 
@@ -15,18 +14,7 @@ from . import models
 log = logging.getLogger(__name__)
 
 
-class ImportTask(batch.BasicTask):
-    path = None
-
-    def __init__(self):
-        diva = settings.DIVA_DIR
-        if not os.path.exists(diva):
-            raise ValueError("DIVA_DIR not found: {}".format(diva))
-
-        self.path = os.path.join(diva, 'milieuthemas')
-
-
-class ImportHoogtebeperkendeVlakkenTask(ImportTask):
+class ImportHoogtebeperkendeVlakkenTask(batch.BasicTask):
     name = "Import dro_schiphol_hoogtes"
     themas = set()
 
@@ -86,7 +74,7 @@ class ImportHoogtebeperkendeVlakkenTask(ImportTask):
         )
 
 
-class ImportGeluidzoneTask(ImportTask):
+class ImportGeluidzoneTask(batch.BasicTask):
     name = "Import dro_geluid_schiphol"
     themas = set()
 
@@ -131,7 +119,7 @@ class ImportGeluidzoneTask(ImportTask):
         )
 
 
-class ImportVogelvrijwaringsgebiedTask(ImportTask):
+class ImportVogelvrijwaringsgebiedTask(batch.BasicTask):
     name = "Import dro_vogel"
     themas = set()
 

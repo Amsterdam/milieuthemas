@@ -1,12 +1,10 @@
 from datapunt_generic.batch.test import TaskTestCase
 from .. import batch, models
 
-DIRECTORY = 'diva/milieuthemas'
-
 
 class ImportThemaTest(TaskTestCase):
     def task(self):
-        return batch.ImportThemaTask(DIRECTORY)
+        return batch.ImportThemaTask()
 
     def test_import(self):
         self.run_task()
