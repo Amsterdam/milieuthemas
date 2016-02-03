@@ -24,14 +24,13 @@ class ImportHoogtebeperkendeVlakkenTask(batch.BasicTask):
     def before(self):
         database.clear_models(models.HoogtebeperkendeVlakken)
         self.themas = frozenset(Thema.objects.values_list('id', flat=True))
-        print(self.themas)
 
     def after(self):
         self.themas = None
 
     def process(self):
         source = os.path.join(self.path, "dro_schiphol_hoogtes.csv")
-        vlakken = process_csv(source, self.process_row)
+        vlakken = [vlak for vlak in process_csv(source, self.process_row) if vlak]
 
         models.HoogtebeperkendeVlakken.objects.bulk_create(vlakken, batch_size=database.BATCH_SIZE)
 
@@ -39,14 +38,13 @@ class ImportHoogtebeperkendeVlakkenTask(batch.BasicTask):
         thema_id = int(row['tma_id'])
 
         if thema_id not in self.themas:
-            log.warn("Hoogtebeperkend vlak {} references non-existing thema {}; skipping".format(row['type'], thema_id))
+            log.warn("Hoogtebeperkend vlak {} references non-existing thema {}; skipping".format(row['id'], thema_id))
             return
 
         point, line, poly = None, None, None
 
         try:
             geom = GEOSGeometry(row['geometrie'])
-            # print(type(geom), row['geometrie'])
 
             if isinstance(geom, Point):
                 point = geom
@@ -61,7 +59,10 @@ class ImportHoogtebeperkendeVlakkenTask(batch.BasicTask):
                 poly = geom
 
         except GEOSException:
-            print('unable to convert', row['geometrie'])
+            log.warn("Hoogtebeperkend vlak {} unable to encapsulate GEOS geometry {}; skipping".format(
+                    row['geo_id'],
+                    row['geometrie']
+            ))
             pass
 
         return models.HoogtebeperkendeVlakken(
