@@ -16,3 +16,12 @@ class HoogtebeperkendeVlakken(mixins.ImportStatusMixin):
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
     objects = geo.GeoManager()
+
+
+class Geluidzone(mixins.ImportStatusMixin):
+    geo_id = models.IntegerField(null=False)
+    type = models.CharField(max_length=100, null=True)
+    thema = models.ForeignKey(Thema, null=True)
+    geometrie = geo.MultiPolygonField(null=True, srid=28992)
+
+    objects = geo.GeoManager()
