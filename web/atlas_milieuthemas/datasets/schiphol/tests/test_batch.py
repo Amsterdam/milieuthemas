@@ -5,7 +5,7 @@ from .. import batch, models
 
 from datasets.themas.tests.factories import ThemaFactory
 
-NAP = 'diva/milieuthemas'
+DIRECTORY = 'diva/milieuthemas'
 
 
 class ImportHoogtebeperkendeVlakkenTest(TaskTestCase):
@@ -13,7 +13,7 @@ class ImportHoogtebeperkendeVlakkenTest(TaskTestCase):
         ThemaFactory.create(pk=6)
 
     def task(self):
-        return batch.ImportHoogtebeperkendeVlakkenTask(NAP)
+        return batch.ImportHoogtebeperkendeVlakkenTask(DIRECTORY)
 
     def test_import(self):
         self.run_task()
@@ -33,7 +33,7 @@ class ImportGeluidzoneTest(TaskTestCase):
         ThemaFactory.create(pk=2)
 
     def task(self):
-        return batch.ImportGeluidzoneTask(NAP)
+        return batch.ImportGeluidzoneTask(DIRECTORY)
 
     @skip('skip because incomplete polygons')
     def test_import(self):

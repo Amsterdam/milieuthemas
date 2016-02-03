@@ -1,8 +1,7 @@
 import logging
 import os
 
-from django.contrib.gis.geos import GEOSGeometry, Point, LineString, Polygon, MultiPolygon
-from django.contrib.gis.geos.error import GEOSException
+from django.conf import settings
 
 from datapunt_generic.batch import batch
 from datapunt_generic.generic import database
@@ -41,3 +40,19 @@ class ImportThemaTask(batch.BasicTask):
             disclaimer=row['disclaimer'],
             informatie=row['informatie'],
         )
+
+
+class ImportThemasJob(object):
+    name = "Import themas"
+
+    def __init__(self):
+        diva = settings.DIVA_DIR
+        if not os.path.exists(diva):
+            raise ValueError("DIVA_DIR not found: {}".format(diva))
+
+        self.path = os.path.join(diva, 'milieuthemas')
+
+    def tasks(self):
+        return [
+            ImportThemaTask(self.path),
+        ]

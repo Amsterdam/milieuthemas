@@ -1,21 +1,24 @@
 from django.core.management import BaseCommand
 
-import datasets.nap.batch
-import datasets.meetbouten.batch
-
 from datapunt_generic.batch import batch
+
+import datasets.themas.batch
+import datasets.schiphol.batch
 
 
 class Command(BaseCommand):
-    ordered = ['milieuthemas']
+    ordered = [
+        'themas',
+        'schiphol'
+    ]
 
     imports = dict(
-        milieuthemas=[],
-    )
-
-    indexes = dict(
-        nap=[],
-        meetbouten=[],
+        themas=[
+            datasets.themas.batch.ImportThemasJob,
+        ],
+        schiphol=[
+            datasets.schiphol.batch.ImportSchipholJob,
+        ],
     )
 
     def add_arguments(self, parser):
@@ -29,12 +32,6 @@ class Command(BaseCommand):
                             dest='run-import',
                             default=True,
                             help='Skip database importing')
-
-        parser.add_argument('--no-index',
-                            action='store_false',
-                            dest='run-index',
-                            default=True,
-                            help='Skip elastic search indexing')
 
     def handle(self, *args, **options):
         dataset = options['dataset']
@@ -51,8 +48,4 @@ class Command(BaseCommand):
         for ds in sets:
             if options['run-import']:
                 for job_class in self.imports[ds]:
-                    batch.execute(job_class())
-
-            if options['run-index']:
-                for job_class in self.indexes[ds]:
                     batch.execute(job_class())

@@ -1,6 +1,7 @@
 import logging
 import os
 
+from django.conf import settings
 from django.contrib.gis.geos import GEOSGeometry, Point, LineString, Polygon, MultiPolygon
 from django.contrib.gis.geos.error import GEOSException
 
@@ -58,10 +59,10 @@ class ImportHoogtebeperkendeVlakkenTask(batch.BasicTask):
             if isinstance(geom, MultiPolygon):
                 poly = geom
 
-        except GEOSException:
-            log.warn("Hoogtebeperkend vlak {} unable to encapsulate GEOS geometry {}; skipping".format(
-                    row['geo_id'],
-                    row['geometrie']
+        except GEOSException as msg:
+            log.warn("Geluidzone {} unable to encapsulate GEOS geometry {}; skipping".format(
+                    row['id'],
+                    msg
             ))
             pass
 
@@ -75,3 +76,68 @@ class ImportHoogtebeperkendeVlakkenTask(batch.BasicTask):
             geometrie_line=line,
             geometrie_polygon=poly,
         )
+
+
+class ImportGeluidzoneTask(batch.BasicTask):
+    name = "Import dro_geluid_schiphol"
+    themas = set()
+
+    def __init__(self, path):
+        self.path = path
+
+    def before(self):
+        database.clear_models(models.Geluidzone)
+        self.themas = frozenset(Thema.objects.values_list('id', flat=True))
+
+    def after(self):
+        self.themas = None
+
+    def process(self):
+        source = os.path.join(self.path, "dro_geluid_schiphol.csv")
+        zones = [zone for zone in process_csv(source, self.process_row) if zone]
+
+        models.Geluidzone.objects.bulk_create(zones, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        thema_id = int(row['tma_id'])
+
+        if thema_id not in self.themas:
+            log.warn("Geluidzone {} references non-existing thema {}; skipping".format(row['id'], thema_id))
+            return
+
+        geom = None
+        try:
+            geom = GEOSGeometry(row['geometrie'])
+        except GEOSException as msg:
+            log.warn("Geluidzone {} unable to encapsulate GEOS geometry {}; skipping".format(
+                    row['id'],
+                    msg
+            ))
+            pass
+
+        if isinstance(geom, Polygon):
+            geom = MultiPolygon(geom)
+
+        return models.Geluidzone(
+            geo_id=int(row['id']),
+            type=row['type'],
+            thema_id=thema_id,
+            geometrie=geom,
+        )
+
+
+class ImportSchipholJob(object):
+    name = "Import schiphol"
+
+    def __init__(self):
+        diva = settings.DIVA_DIR
+        if not os.path.exists(diva):
+            raise ValueError("DIVA_DIR not found: {}".format(diva))
+
+        self.path = os.path.join(diva, 'milieuthemas')
+
+    def tasks(self):
+        return [
+            ImportHoogtebeperkendeVlakkenTask(self.path),
+            ImportGeluidzoneTask(self.path),
+        ]
