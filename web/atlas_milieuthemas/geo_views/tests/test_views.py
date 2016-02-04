@@ -37,3 +37,9 @@ class ViewsTest(TestCase):
         row = self.get_row('geo_schiphol_geluidzone')
         self.assertEqual(row['id'], l.id)
         self.assertNotEqual(row['geometrie'], None)
+
+    def test_schiphol_vogel(self):
+        l = schiphol_factories.VogelvrijwaringsgebiedFactory.create()
+        row = self.get_row('geo_schiphol_vogelvrijwaringsgebied')
+        self.assertEqual(row['id'], l.id)
+        self.assertNotEqual(row['geometrie'], None)

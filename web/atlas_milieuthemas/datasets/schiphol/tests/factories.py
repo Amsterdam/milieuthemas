@@ -49,7 +49,7 @@ class GeluidzoneFactory(factory.DjangoModelFactory):
 
 class VogelvrijwaringsgebiedFactory(factory.DjangoModelFactory):
     class Meta:
-        model = models.Geluidzone
+        model = models.Vogelvrijwaringsgebied
 
     id = fuzzy.FuzzyInteger(0, 10)
     geo_id = fuzzy.FuzzyInteger(0, 10)
