@@ -5,6 +5,11 @@ from django.contrib.gis.geos import Point, LineString, MultiPolygon, Polygon
 
 from .. import models
 
+multipoly = MultiPolygon(
+    Polygon(((0, 0), (0, 1), (1, 1), (0, 0))),
+    Polygon(((1, 1), (1, 2), (2, 2), (1, 1)))
+)
+
 
 class HoogtebeperkendeVlakkenPointFactory(factory.DjangoModelFactory):
     class Meta:
@@ -30,10 +35,7 @@ class HoogtebeperkendeVlakkenPolyFactory(factory.DjangoModelFactory):
 
     id = fuzzy.FuzzyInteger(0, 10)
     geo_id = fuzzy.FuzzyInteger(0, 10)
-    geometrie_polygon = MultiPolygon(
-        Polygon(((0, 0), (0, 1), (1, 1), (0, 0))),
-        Polygon(((1, 1), (1, 2), (2, 2), (1, 1)))
-    )
+    geometrie_polygon = multipoly
 
 
 class GeluidzoneFactory(factory.DjangoModelFactory):
@@ -42,6 +44,7 @@ class GeluidzoneFactory(factory.DjangoModelFactory):
 
     id = fuzzy.FuzzyInteger(0, 10)
     geo_id = fuzzy.FuzzyInteger(0, 10)
+    geometrie = multipoly
 
 
 class VogelvrijwaringsgebiedFactory(factory.DjangoModelFactory):
@@ -50,3 +53,4 @@ class VogelvrijwaringsgebiedFactory(factory.DjangoModelFactory):
 
     id = fuzzy.FuzzyInteger(0, 10)
     geo_id = fuzzy.FuzzyInteger(0, 10)
+    geometrie = multipoly

@@ -31,3 +31,9 @@ class ViewsTest(TestCase):
         row = self.get_row('geo_schiphol_hoogte_polygon_layer')
         self.assertEqual(row['id'], l.id)
         self.assertNotEqual(row['geometrie'], None)
+
+    def test_schiphol_geluid(self):
+        l = schiphol_factories.GeluidzoneFactory.create()
+        row = self.get_row('geo_schiphol_geluidzone')
+        self.assertEqual(row['id'], l.id)
+        self.assertNotEqual(row['geometrie'], None)
