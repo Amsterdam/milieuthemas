@@ -14,34 +14,51 @@ from . import models
 log = logging.getLogger(__name__)
 
 
-class AbstractImportGeluidzoneTask(batch.BasicTask):
+class ImportGeluidzoneTask(batch.BasicTask):
     name = "Import dro_geluid"
     themas = set()
-    model = None
+    models = {
+        models.Spoorwegen: list(),
+        models.Metro: list(),
+        models.Industrie: list(),
+    }
 
     class Meta:
         abstract = True
 
     def before(self):
-        if not self.model:
-            raise ValueError('model must be defined')
+        for model in self.models.keys():
+            database.clear_models(model)
 
-        database.clear_models(self.model)
         self.themas = frozenset(Thema.objects.values_list('id', flat=True))
 
     def after(self):
         self.themas = None
 
     def process(self):
-        if not self.model:
-            raise ValueError('model must be defined')
-
         source = os.path.join(self.path, "dro_geluid.csv")
-        zones = [zone for zone in process_csv(source, self.process_row) if zone]
+        process_csv(source, self.process_row)
 
-        self.model.objects.bulk_create(zones, batch_size=database.BATCH_SIZE)
+        for model, import_models in self.models.items():
+            model.objects.bulk_create(import_models, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
+        model, geluid_zone_type = None, row['type'].lower()
+
+        if 'spoorwegen' in geluid_zone_type:
+            model = models.Spoorwegen
+
+        if 'metro' in geluid_zone_type:
+            model = models.Metro
+
+        if 'industrie' in geluid_zone_type:
+            model = models.Industrie
+
+        if not model:
+            log.warn("Geluidzone {} unable to determine model for type {}; skipping"
+                     .format(row['id'], geluid_zone_type))
+            return
+
         thema_id = int(row['tma_id'])
 
         if thema_id not in self.themas:
@@ -49,6 +66,7 @@ class AbstractImportGeluidzoneTask(batch.BasicTask):
             return
 
         geom = None
+
         try:
             geom = GEOSGeometry(row['geometrie'])
         except GEOSException as msg:
@@ -61,39 +79,17 @@ class AbstractImportGeluidzoneTask(batch.BasicTask):
         if isinstance(geom, Polygon):
             geom = MultiPolygon(geom)
 
-        return self.model(
+        result = model(
             geo_id=int(row['id']),
             type=row['type'],
             thema_id=thema_id,
             geometrie=geom,
         )
 
-
-class ImportSpoorwegenTask(AbstractImportGeluidzoneTask):
-    model = models.Spoorwegen
-
-    def process_row(self, row):
-        if 'spoorwegen' in row['type'].lower():
-            return super(ImportSpoorwegenTask, self).process_row(row)
-
-
-class ImportMetroTask(AbstractImportGeluidzoneTask):
-    model = models.Metro
-
-    def process_row(self, row):
-        if 'metro' in row['type'].lower():
-            return super(ImportMetroTask, self).process_row(row)
-
-
-class ImportIndustrieTask(AbstractImportGeluidzoneTask):
-    model = models.Industrie
-
-    def process_row(self, row):
         if 'industrie' in row['type'].lower():
-            model = super(ImportIndustrieTask, self).process_row(row)
-            model.naam = row['naam_industrieterrein']
+            result.naam = row['naam_industrieterrein']
 
-            return model
+        self.models[model].append(result)
 
 
 class ImportGeluidzoneJob(object):
@@ -101,7 +97,5 @@ class ImportGeluidzoneJob(object):
 
     def tasks(self):
         return [
-            ImportSpoorwegenTask(),
-            ImportMetroTask(),
-            ImportIndustrieTask(),
+            ImportGeluidzoneTask(),
         ]
