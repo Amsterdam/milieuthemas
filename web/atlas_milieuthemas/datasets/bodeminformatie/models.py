@@ -96,3 +96,22 @@ class Grondwatermonster(mixins.ImportStatusMixin):
     geometrie = geo.PointField(null=True, srid=28992)
 
     objects = geo.GeoManager()
+
+
+class Asbest(mixins.ImportStatusMixin):
+    geo_id = models.IntegerField(null=False)
+    locatie = models.CharField(max_length=100, null=True)
+    type_onderzoek = models.CharField(max_length=40, null=True)
+    xcoordinaat = models.IntegerField(null=True)
+    ycoordinaat = models.IntegerField(null=True)
+    naam_boring = models.CharField(max_length=40, null=True)
+    naam_monster = models.CharField(max_length=40, null=True)
+    materiaal = models.CharField(max_length=40, null=True)
+    bovenkant = models.IntegerField(null=True)
+    onderkant = models.IntegerField(null=True)
+    monster_mengmonster = models.CharField(max_length=20)
+    concentratie = models.IntegerField(null=True)
+    stof = models.CharField(max_length=40)
+    geometrie = geo.PointField(null=True, srid=28992)
+
+    objects = geo.GeoManager()

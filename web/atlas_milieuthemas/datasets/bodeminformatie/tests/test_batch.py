@@ -38,3 +38,21 @@ class ImportGrondwatermonsterTest(TaskTestCase):
         self.assertNotEqual(monster.geometrie, None)
 
 
+class ImportAsbestTest(TaskTestCase):
+    def setUp(self):
+        pass
+
+    def task(self):
+        return batch.ImportAsbest()
+
+    def test_import(self):
+        self.run_task()
+
+        imported = models.Asbest.objects.all()
+        self.assertEqual(len(imported), 9)
+
+        monster = models.Asbest.objects.get(geo_id=54)
+        self.assertEqual(monster.locatie, 'WCW-terrein 2')
+        self.assertNotEqual(monster.geometrie, None)
+
+

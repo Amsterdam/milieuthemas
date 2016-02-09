@@ -140,6 +140,37 @@ class ImportGrondwatermonster(batch.BasicTask):
         )
 
 
+class ImportAsbest(batch.BasicTask):
+    name = "Import dmb_asbest"
+
+    def before(self):
+        database.clear_models(models.Asbest)
+
+    def process(self):
+        source = os.path.join(self.path, "dmb_asbest.csv")
+        asbest = [asbest for asbest in process_csv(source, self.process_row) if asbest]
+
+        models.Asbest.objects.bulk_create(asbest, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        return models.Asbest(
+            geo_id=parse_nummer(row['id']),
+            locatie=row['locatienaam'],
+            type_onderzoek=row['type_onderzoek'],
+            xcoordinaat=parse_nummer(row['xcoordinaat']),
+            ycoordinaat=parse_nummer(row['ycoordinaat']),
+            naam_boring=row['naam_boring'],
+            naam_monster=row['naam_monster'],
+            materiaal=row['materiaal'],
+            bovenkant=parse_nummer(row['bovenkant']),
+            onderkant=parse_nummer(row['onderkant']),
+            monster_mengmonster=row['monster_mengmonster'],
+            concentratie=parse_nummer(row['concentratie']),
+            stof=row['stof'],
+            geometrie=GEOSGeometry(row['geometrie']),
+        )
+
+
 class ImportBodeminformatieJob(object):
     name = "Import bodeminformatie"
 
@@ -147,4 +178,5 @@ class ImportBodeminformatieJob(object):
         return [
             ImportGrondmonster(),
             ImportGrondwatermonster(),
+            ImportAsbest(),
         ]
