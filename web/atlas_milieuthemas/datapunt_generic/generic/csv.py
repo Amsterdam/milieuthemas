@@ -4,8 +4,11 @@ import datetime
 from decimal import Decimal, InvalidOperation
 import logging
 import os
+import sys
 
 log = logging.getLogger(__name__)
+
+csv.field_size_limit(sys.maxsize)
 
 
 def _wrap_row(r, headers):

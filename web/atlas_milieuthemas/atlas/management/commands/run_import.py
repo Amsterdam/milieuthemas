@@ -5,6 +5,7 @@ from datapunt_generic.batch import batch
 import datasets.themas.batch
 import datasets.schiphol.batch
 import datasets.bodeminformatie.batch
+import datasets.geluidzone.batch
 
 
 class Command(BaseCommand):
@@ -12,6 +13,7 @@ class Command(BaseCommand):
         'themas',
         'schiphol',
         'bodeminformatie',
+        'geluidzone',
     ]
 
     imports = dict(
@@ -23,6 +25,9 @@ class Command(BaseCommand):
         ],
         bodeminformatie=[
             datasets.bodeminformatie.batch.ImportBodeminformatieJob,
+        ],
+        geluidzone=[
+            datasets.geluidzone.batch.ImportGeluidzoneJob,
         ],
     )
 
