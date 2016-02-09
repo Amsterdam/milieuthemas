@@ -4,12 +4,14 @@ from datapunt_generic.batch import batch
 
 import datasets.themas.batch
 import datasets.schiphol.batch
+import datasets.bodeminformatie.batch
 
 
 class Command(BaseCommand):
     ordered = [
         'themas',
-        'schiphol'
+        'schiphol',
+        'bodeminformatie',
     ]
 
     imports = dict(
@@ -18,6 +20,9 @@ class Command(BaseCommand):
         ],
         schiphol=[
             datasets.schiphol.batch.ImportSchipholJob,
+        ],
+        bodeminformatie=[
+            datasets.bodeminformatie.batch.ImportBodeminformatieJob,
         ],
     )
 

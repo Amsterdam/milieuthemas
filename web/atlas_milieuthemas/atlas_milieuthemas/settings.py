@@ -38,6 +38,7 @@ INSTALLED_APPS = (
 
     'datasets.themas',
     'datasets.schiphol',
+    'datasets.bodeminformatie',
 
     'datapunt_generic.batch',
     'datapunt_generic.generic',

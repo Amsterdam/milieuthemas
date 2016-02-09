@@ -1,7 +1,9 @@
+from contextlib import contextmanager
 import csv
+import datetime
+from decimal import Decimal, InvalidOperation
 import logging
 import os
-from contextlib import contextmanager
 
 log = logging.getLogger(__name__)
 
@@ -28,4 +30,28 @@ def _context_reader(source, skip=0, quotechar=None, quoting=csv.QUOTE_NONE):
 def process_csv(source, process_row_callback):
     with _context_reader(source, quotechar='"', quoting=csv.QUOTE_MINIMAL) as rows:
         return [result for result in (process_row_callback(r) for r in rows) if result]
+
+
+def parse_decimal(d):
+    d = '0' if d == '' else d
+
+    try:
+        return Decimal(d.replace(',', '.'))
+    except InvalidOperation:
+        return Decimal()
+
+
+def parse_datum(s):
+    if not s or s == '0':
+        return None
+
+    return datetime.datetime.strptime(s, "%Y%m%d").date()
+
+
+def parse_nummer(s):
+    if not s:
+        return None
+
+    return int(s, 10)
+
 
