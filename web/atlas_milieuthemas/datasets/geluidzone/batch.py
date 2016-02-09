@@ -23,9 +23,6 @@ class ImportGeluidzoneTask(batch.BasicTask):
         models.Industrie: list(),
     }
 
-    class Meta:
-        abstract = True
-
     def before(self):
         for model in self.models.keys():
             database.clear_models(model)
