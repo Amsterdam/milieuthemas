@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'datasets.schiphol',
     'datasets.bodeminformatie',
     'datasets.geluidzone',
+    'datasets.veiligheidsafstanden',
 
     'datapunt_generic.batch',
     'datapunt_generic.generic',

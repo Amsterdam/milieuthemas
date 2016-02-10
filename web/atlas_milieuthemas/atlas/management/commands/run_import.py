@@ -6,6 +6,7 @@ import datasets.themas.batch
 import datasets.schiphol.batch
 import datasets.bodeminformatie.batch
 import datasets.geluidzone.batch
+import datasets.veiligheidsafstanden.batch
 
 
 class Command(BaseCommand):
@@ -14,6 +15,7 @@ class Command(BaseCommand):
         'schiphol',
         'bodeminformatie',
         'geluidzone',
+        'veiligheidsafstanden',
     ]
 
     imports = dict(
@@ -28,6 +30,9 @@ class Command(BaseCommand):
         ],
         geluidzone=[
             datasets.geluidzone.batch.ImportGeluidzoneJob,
+        ],
+        veiligheidsafstanden=[
+            datasets.veiligheidsafstanden.batch.ImportVeiligheidsafstandenJob,
         ],
     )
 
