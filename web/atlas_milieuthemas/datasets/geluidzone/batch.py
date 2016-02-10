@@ -17,15 +17,25 @@ log = logging.getLogger(__name__)
 class ImportGeluidzoneTask(batch.BasicTask):
     name = "Import dro_geluid"
     themas = set()
-    models = {
-        models.Spoorwegen: list(),
-        models.Metro: list(),
-        models.Industrie: list(),
-    }
+    models = dict()
 
     def before(self):
-        for model in self.models.keys():
-            database.clear_models(model)
+        self.models = {
+            'spoorwegen': {
+                'model': models.Spoorwegen,
+                'models': list(),
+            },
+            'metro': {
+                'model': models.Metro,
+                'models': list(),
+            },
+            'industrie': {
+                'model': models.Industrie,
+                'models': list(),
+            }
+        }
+
+        [database.clear_models(self.models[key]['model']) for key in self.models.keys()]
 
         self.themas = frozenset(Thema.objects.values_list('id', flat=True))
 
@@ -36,22 +46,18 @@ class ImportGeluidzoneTask(batch.BasicTask):
         source = os.path.join(self.path, "dro_geluid.csv")
         process_csv(source, self.process_row)
 
-        for model, import_models in self.models.items():
-            model.objects.bulk_create(import_models, batch_size=database.BATCH_SIZE)
+        # noinspection PyUnresolvedReferences
+        [
+            self.models[key]['model'].objects.bulk_create(self.models[key]['models'], batch_size=database.BATCH_SIZE)
+            for key in self.models.keys()
+        ]
 
     def process_row(self, row):
         model, geluid_zone_type = None, row['type'].lower()
 
-        if 'spoorwegen' in geluid_zone_type:
-            model = models.Spoorwegen
-
-        if 'metro' in geluid_zone_type:
-            model = models.Metro
-
-        if 'industrie' in geluid_zone_type:
-            model = models.Industrie
-
-        if not model:
+        try:
+            model_key = [k for k in self.models.keys() if k in geluid_zone_type][0]
+        except IndexError:
             log.warn("Geluidzone {} unable to determine model for type {}; skipping"
                      .format(row['id'], geluid_zone_type))
             return
@@ -76,17 +82,19 @@ class ImportGeluidzoneTask(batch.BasicTask):
         if isinstance(geom, Polygon):
             geom = MultiPolygon(geom)
 
-        result = model(
-            geo_id=int(row['id']),
-            type=row['type'],
-            thema_id=thema_id,
-            geometrie=geom,
+        # noinspection PyCallingNonCallable
+        row_model = self.models[model_key]['model'](
+                geo_id=int(row['id']),
+                type=row['type'],
+                thema_id=thema_id,
+                geometrie=geom,
         )
 
-        if 'industrie' in row['type'].lower():
-            result.naam = row['naam_industrieterrein']
+        if model_key == 'industrie':
+            row_model.naam = row['naam_industrieterrein']
 
-        self.models[model].append(result)
+        # noinspection PyUnresolvedReferences
+        self.models[model_key]['models'].append(row_model)
 
 
 class ImportGeluidzoneJob(object):
