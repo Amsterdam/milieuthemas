@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'datasets.bodeminformatie',
     'datasets.geluidzone',
     'datasets.veiligheidsafstanden',
+    'datasets.risicozones_bedrijven',
 
     'datapunt_generic.batch',
     'datapunt_generic.generic',

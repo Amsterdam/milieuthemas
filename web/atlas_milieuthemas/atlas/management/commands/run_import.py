@@ -7,6 +7,7 @@ import datasets.schiphol.batch
 import datasets.bodeminformatie.batch
 import datasets.geluidzone.batch
 import datasets.veiligheidsafstanden.batch
+import datasets.risicozones_bedrijven.batch
 
 
 class Command(BaseCommand):
@@ -15,7 +16,7 @@ class Command(BaseCommand):
         'schiphol',
         'bodeminformatie',
         'geluidzone',
-        'veiligheidsafstanden',
+        'risicozones_bedrijven',
     ]
 
     imports = dict(
@@ -33,6 +34,9 @@ class Command(BaseCommand):
         ],
         veiligheidsafstanden=[
             datasets.veiligheidsafstanden.batch.ImportVeiligheidsafstandenJob,
+        ],
+        risicozones_bedrijven=[
+            datasets.risicozones_bedrijven.batch.ImportRisicozonesBedrijvenJob,
         ],
     )
 
