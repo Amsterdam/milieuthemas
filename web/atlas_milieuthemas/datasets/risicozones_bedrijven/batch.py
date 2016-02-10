@@ -13,6 +13,58 @@ from . import models
 log = logging.getLogger(__name__)
 
 
+class ImportLPGStationTask(batch.BasicTask):
+    name = "Import dmb_lpg_station"
+    points = dict()
+
+    def before(self):
+        source = os.path.join(self.path, "dmb_lpg_station_punten.csv")
+        process_csv(source, self.process_point_row)
+
+        database.clear_models(models.LPGStation)
+
+    def process_point_row(self, row):
+        self.points[row['stationnummer']] = row['geometrie']
+
+    def after(self):
+        self.points.clear()
+
+    def process(self):
+        source = os.path.join(self.path, "dmb_lpg_station.csv")
+        stations = [station for station in process_csv(source, self.process_row) if station]
+
+        models.LPGStation.objects.bulk_create(stations, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        if not row['dossiernummer']:
+            return
+
+        geom = GEOSGeometry(row['geometrie'])
+
+        if isinstance(geom, Polygon):
+            geom = MultiPolygon(geom)
+
+        return models.LPGStation(
+            id=int(row['stationnummer']),
+            dossiernummer=row['dossiernummer'],
+            bedrijfsnaam=row['bedrijfsnaam'],
+            adres=row['adres'],
+            postcode=row['postcode'],
+            plaats=row['plaats'],
+            oliemaatschappij=row['oliemaatschappij'],
+            omzet=row['omzet'],
+            ligging=row['ligging'],
+            tank_aanwezig=row['tank_aanwezig'],
+            tank_positie=row['tank_positie'],
+            tank_inhoud=row['tank_inhoud'],
+            vulpunt_aanwezig=row['vulpunt_aanwezig'],
+            vulmoment=row['vulmoment'],
+            opmerkingen=row['opmerkingen'],
+            geometrie_polygon=geom,
+            geometrie_point=GEOSGeometry(self.points[row['stationnummer']]),
+        )
+
+
 class ImportLPGVulpuntTask(batch.BasicTask):
     name = "Import dmb_lpg_vulpunt"
 

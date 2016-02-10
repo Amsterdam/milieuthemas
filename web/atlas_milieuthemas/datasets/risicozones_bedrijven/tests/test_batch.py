@@ -2,6 +2,22 @@ from datapunt_generic.batch.test import TaskTestCase
 from .. import batch, models
 
 
+class ImportLPGStationTest(TaskTestCase):
+    def task(self):
+        return batch.ImportLPGStationTask()
+
+    def test_import(self):
+        self.run_task()
+
+        imported = models.LPGStation.objects.all()
+        self.assertEqual(len(imported), 17)
+
+        station = models.LPGStation.objects.get(id=11)
+        self.assertEqual(station.bedrijfsnaam, 'BIKHARI RETAIL ENTERPRISE BV')
+        self.assertNotEqual(station.geometrie_polygon, None)
+        self.assertNotEqual(station.geometrie_point, None)
+
+
 class ImportLPGVulpuntTest(TaskTestCase):
     def task(self):
         return batch.ImportLPGVulpuntTask()
