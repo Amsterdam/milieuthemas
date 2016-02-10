@@ -1,13 +1,8 @@
 from datapunt_generic.batch.test import TaskTestCase
 from .. import batch, models
 
-from datasets.themas.tests.factories import ThemaFactory
-
 
 class ImportLPGVulpuntTest(TaskTestCase):
-    def setUp(self):
-        ThemaFactory.create(pk=6)
-
     def task(self):
         return batch.ImportLPGVulpuntTask()
 
@@ -26,3 +21,23 @@ class ImportLPGVulpuntTest(TaskTestCase):
         self.assertEqual(vulpunt.type, 'Plaatsgebonden risico 10-5')
         self.assertEqual(vulpunt.geometrie_point, None)
         self.assertNotEqual(vulpunt.geometrie_polygon, None)
+
+
+class ImportLPGAfleverzuilTest(TaskTestCase):
+    def task(self):
+        return batch.ImportLPGAfleverzuilTask()
+
+    def test_import(self):
+        self.run_task()
+
+        imported = models.LPGAfleverzuil.objects.all()
+        self.assertEqual(len(imported), 3)
+
+        zuilen = models.LPGAfleverzuil.objects.filter(stationnummer=27)
+        self.assertEqual(len(zuilen), 2)
+        self.assertNotEqual(zuilen[0].geometrie_polygon, None)
+        self.assertNotEqual(zuilen[1].geometrie_point, None)
+
+        zuil = models.LPGAfleverzuil.objects.get(stationnummer=26)
+        self.assertNotEqual(zuil.geometrie_polygon, None)
+        self.assertEqual(zuil.geometrie_point, None)

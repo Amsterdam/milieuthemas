@@ -64,6 +64,50 @@ class ImportLPGVulpuntTask(batch.BasicTask):
         )
 
 
+class ImportLPGAfleverzuilTask(batch.BasicTask):
+    name = "Import dmb_lpg_afleverzuil"
+
+    def before(self):
+        database.clear_models(models.LPGAfleverzuil)
+
+    def after(self):
+        pass
+
+    def process(self):
+        source = os.path.join(self.path, "dmb_lpg_afleverzuil.csv")
+        zuilen = [zuil for zuil in process_csv(source, self.process_row) if zuil]
+
+        models.LPGAfleverzuil.objects.bulk_create(zuilen, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        point, poly = None, None
+
+        try:
+            geom = GEOSGeometry(row['geometrie'])
+
+            if isinstance(geom, Point):
+                point = geom
+
+            if isinstance(geom, Polygon):
+                poly = MultiPolygon(geom)
+
+            if isinstance(geom, MultiPolygon):
+                poly = geom
+
+        except GEOSException as msg:
+            log.warn("LPGAfleverzuil {} unable to encapsulate GEOS geometry {}; skipping".format(
+                    row['id'],
+                    msg
+            ))
+            pass
+
+        return models.LPGAfleverzuil(
+            stationnummer=parse_nummer(row['stationnummer']),
+            geometrie_point=point,
+            geometrie_polygon=poly,
+        )
+
+
 class ImportRisicozonesBedrijvenJob(object):
     name = "Import risicozones bedrijven"
 
