@@ -108,10 +108,46 @@ class ImportLPGAfleverzuilTask(batch.BasicTask):
         )
 
 
+class ImportLPGTankTask(batch.BasicTask):
+    name = "Import dmb_lpg_tank"
+
+    def before(self):
+        database.clear_models(models.LPGTank)
+
+    def after(self):
+        pass
+
+    def process(self):
+        source = os.path.join(self.path, "dmb_lpg_tank.csv")
+        tanks = [tank for tank in process_csv(source, self.process_row) if tank]
+
+        models.LPGTank.objects.bulk_create(tanks, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        if not row['type_contour']:
+            return
+
+        geom = GEOSGeometry(row['geometrie'])
+
+        if isinstance(geom, Polygon):
+            geom = MultiPolygon(geom)
+
+        return models.LPGTank(
+            stationnummer=parse_nummer(row['stationnummer']),
+            kleur=parse_nummer(row['stationnummer'] or 0),
+            type=row['type_contour'],
+            voldoet=row['voldoet'],
+            afstandseis=row['afstandseis'],
+            geometrie=geom,
+        )
+
+
 class ImportRisicozonesBedrijvenJob(object):
     name = "Import risicozones bedrijven"
 
     def tasks(self):
         return [
             ImportLPGVulpuntTask(),
+            ImportLPGAfleverzuilTask(),
+            ImportLPGTankTask(),
         ]

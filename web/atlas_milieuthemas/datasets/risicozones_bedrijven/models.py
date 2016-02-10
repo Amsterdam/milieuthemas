@@ -22,3 +22,16 @@ class LPGAfleverzuil(mixins.ImportStatusMixin):
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
     objects = geo.GeoManager()
+
+
+class LPGTank(mixins.ImportStatusMixin):
+    stationnummer = models.IntegerField(null=True)
+    kleur = models.IntegerField(null=True)
+    type = models.CharField(max_length=40, null=True)
+    voldoet = models.CharField(max_length=3, null=True)
+    afstandseis = models.CharField(max_length=10, null=True)
+    geometrie = geo.MultiPolygonField(null=True, srid=28992)
+
+    objects = geo.GeoManager()
+
+
