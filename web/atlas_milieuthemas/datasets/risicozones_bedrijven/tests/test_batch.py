@@ -1,6 +1,8 @@
 from datapunt_generic.batch.test import TaskTestCase
 from .. import batch, models
 
+from . import factories
+
 
 class ImportLPGStationTest(TaskTestCase):
     def task(self):
@@ -19,6 +21,10 @@ class ImportLPGStationTest(TaskTestCase):
 
 
 class ImportLPGVulpuntTest(TaskTestCase):
+    def setUp(self):
+        factories.LPGStationFactory.create(pk=1)
+        factories.LPGStationFactory.create(pk=14)
+
     def task(self):
         return batch.ImportLPGVulpuntTask()
 

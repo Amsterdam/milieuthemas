@@ -67,9 +67,11 @@ class ImportLPGStationTask(batch.BasicTask):
 
 class ImportLPGVulpuntTask(batch.BasicTask):
     name = "Import dmb_lpg_vulpunt"
+    stations = set()
 
     def before(self):
         database.clear_models(models.LPGVulpunt)
+        self.stations = frozenset(models.LPGStation.objects.all().values_list('pk', flat=True))
 
     def after(self):
         pass
@@ -82,6 +84,15 @@ class ImportLPGVulpuntTask(batch.BasicTask):
 
     def process_row(self, row):
         if not row['id']:
+            return
+
+        station_id = int(row['stationnummer'])
+
+        if station_id not in self.stations:
+            log.warn("LPGVulpunt {} references an unknown station {}; skipping".format(
+                    row['id'],
+                    station_id,
+            ))
             return
 
         point, poly = None, None
@@ -107,7 +118,7 @@ class ImportLPGVulpuntTask(batch.BasicTask):
 
         return models.LPGVulpunt(
             geo_id=int(row['id']),
-            stationnummer=parse_nummer(row['stationnummer']),
+            station_id=station_id,
             type=row['type_contour'],
             afstandseis=row['afstandseis'],
             voldoet=row['voldoet'],

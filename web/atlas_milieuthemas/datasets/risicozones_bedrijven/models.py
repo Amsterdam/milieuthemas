@@ -29,7 +29,7 @@ class LPGStation(mixins.ImportStatusMixin):
 
 class LPGVulpunt(mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
-    stationnummer = models.IntegerField(null=True)
+    station = models.ForeignKey(LPGStation, null=True)
     type = models.CharField(max_length=40, null=True)
     afstandseis = models.CharField(max_length=10, null=True)
     voldoet = models.CharField(max_length=3, null=True)
