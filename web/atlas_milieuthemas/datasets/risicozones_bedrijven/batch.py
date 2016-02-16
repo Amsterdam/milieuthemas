@@ -251,7 +251,7 @@ class ImportBedrijf(batch.BasicTask):
         source = os.path.join(self.path, "dmb_veilig_bedrijven.csv")
         bedrijven = [bedrijf for bedrijf in process_csv(source, self.process_row) if bedrijf]
 
-        models.Bron.objects.bulk_create(bedrijven, batch_size=database.BATCH_SIZE)
+        models.Bedrijf.objects.bulk_create(bedrijven, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
         # Making company name a requirement
@@ -263,7 +263,7 @@ class ImportBedrijf(batch.BasicTask):
         if isinstance(geom, Polygon):
             geom = MultiPolygon(geom)
 
-        return models.Bron(
+        return models.Bedrijf(
             bedrijfsnaam=row['bedrijfsnaam'],
             adres=row['adres'],
             stadsdeel=row['stadsdeel'],
