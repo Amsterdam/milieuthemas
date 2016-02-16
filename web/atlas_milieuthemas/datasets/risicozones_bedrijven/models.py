@@ -57,4 +57,9 @@ class LPGTank(mixins.ImportStatusMixin):
 
     objects = geo.GeoManager()
 
-
+class Bron(mixins.ImportStatusMixin):
+    bron_id = models.IntegerField(null=True)
+    bedrijfsnaam = models.CharField(max_length=64, null=True)
+    hoeveelheid_stof = models.CharField(max_length=16, null=True)
+    type_stof = models.CharField(max_length=64, null=True)
+    
