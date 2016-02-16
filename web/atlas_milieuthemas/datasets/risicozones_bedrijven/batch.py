@@ -90,8 +90,8 @@ class ImportLPGVulpuntTask(batch.BasicTask):
 
         if station_id not in self.stations:
             log.warn("LPGVulpunt {} references an unknown station {}; skipping".format(
-                    row['id'],
-                    station_id,
+                row['id'],
+                station_id,
             ))
             return
 
@@ -111,10 +111,10 @@ class ImportLPGVulpuntTask(batch.BasicTask):
 
         except GEOSException as msg:
             log.warn("LPGVulpunt {} unable to encapsulate GEOS geometry {}; skipping".format(
-                    row['id'],
-                    msg,
+                row['id'],
+                msg,
             ))
-            pass
+            return
 
         return models.LPGVulpunt(
             geo_id=int(row['id']),
@@ -159,10 +159,10 @@ class ImportLPGAfleverzuilTask(batch.BasicTask):
 
         except GEOSException as msg:
             log.warn("LPGAfleverzuil {} unable to encapsulate GEOS geometry {}; skipping".format(
-                    row['id'],
-                    msg,
+                row['id'],
+                msg,
             ))
-            pass
+            return
 
         return models.LPGAfleverzuil(
             stationnummer=parse_nummer(row['stationnummer']),
@@ -205,7 +205,7 @@ class ImportLPGTankTask(batch.BasicTask):
         )
 
 
-class ImportBron(object):
+class ImportBron(batch.BasicTask):
     name = "Import dmb_veilig_bronnen"
 
     def before(self):
