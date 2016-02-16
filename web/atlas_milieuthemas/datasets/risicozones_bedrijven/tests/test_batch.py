@@ -78,3 +78,18 @@ class ImportLPGTankTest(TaskTestCase):
         tank = models.LPGTank.objects.get(stationnummer=19)
         self.assertEqual(tank.type, 'Invloedsgebied groepsrisico opslagtank')
         self.assertNotEqual(tank.geometrie, None)
+
+class ImportBronTest(TaskTestCase):
+    def task(self):
+        return batch.ImportBron()
+
+    def test_import(self):
+        self.run_task()
+
+        imported = models.Bron.objects.count()
+        self.assertEqual(imported, 15)
+
+        bron = models.Bron.objects.get(bron_id=19)
+        self.assertEqual(bron.bedrijfsnaam, 'EUROTANK AMSTERDAM BV')
+        self.assertEqual(bron.hoeveelheid_stof, '25.000 ton')
+        self.assertEqual(bron.type_stof, 'BRANDBARE VLOEISTOFFEN')
