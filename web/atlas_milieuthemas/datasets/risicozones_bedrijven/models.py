@@ -62,4 +62,6 @@ class Bron(mixins.ImportStatusMixin):
     bedrijfsnaam = models.CharField(max_length=64, null=True)
     hoeveelheid_stof = models.CharField(max_length=16, null=True)
     type_stof = models.CharField(max_length=64, null=True)
-    
+
+    def __repr__(self):
+        return '<Bron %d: %s>' % (self.id, self.bedrijfsnaam)
