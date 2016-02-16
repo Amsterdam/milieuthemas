@@ -112,7 +112,7 @@ class ImportLPGVulpuntTask(batch.BasicTask):
         except GEOSException as msg:
             log.warn("LPGVulpunt {} unable to encapsulate GEOS geometry {}; skipping".format(
                     row['id'],
-                    msg
+                    msg,
             ))
             pass
 
@@ -160,7 +160,7 @@ class ImportLPGAfleverzuilTask(batch.BasicTask):
         except GEOSException as msg:
             log.warn("LPGAfleverzuil {} unable to encapsulate GEOS geometry {}; skipping".format(
                     row['id'],
-                    msg
+                    msg,
             ))
             pass
 
@@ -205,6 +205,30 @@ class ImportLPGTankTask(batch.BasicTask):
         )
 
 
+class ImportBron(object):
+    name = "Import dmb_veilig_bronnen"
+
+    def before(self):
+        database.clear_models(models.Bron)
+
+    def after(self):
+        pass
+
+    def process(self):
+        source = os.path.join(self.path, "dmb_veilig_bronnen.csv")
+        bronnen = [bron for bron in process_csv(source, self.process_row) if bron]
+
+        models.Bron.objects.bulk_create(bronnen, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        return models.Bron(
+            bron_id=row['bron_id'],
+            bedrijfsnaam=row['bedrijfsnaam'],
+            hoeveelheid_stof=row['hoeveelheid_stof'],
+            type_stof=row['type_stof'],
+        )
+
+
 class ImportRisicozonesBedrijvenJob(object):
     name = "Import risicozones bedrijven"
 
@@ -213,4 +237,5 @@ class ImportRisicozonesBedrijvenJob(object):
             ImportLPGVulpuntTask(),
             ImportLPGAfleverzuilTask(),
             ImportLPGTankTask(),
+            ImportBron(),
         ]
