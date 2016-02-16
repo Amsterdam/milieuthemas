@@ -221,11 +221,21 @@ class ImportBron(batch.BasicTask):
         models.Bron.objects.bulk_create(bronnen, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
+        # Making bron id a requirement
+        if not row['bron_id']:
+            return
+
+        geom = GEOSGeometry(row['geometrie'])
+
+        if isinstance(geom, Polygon):
+            geom = MultiPolygon(geom)
+
         return models.Bron(
             bron_id=row['bron_id'],
             bedrijfsnaam=row['bedrijfsnaam'],
             hoeveelheid_stof=row['hoeveelheid_stof'],
             type_stof=row['type_stof'],
+            geometrie_polygon=geom,
         )
 
 

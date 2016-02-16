@@ -87,9 +87,9 @@ class ImportBronTest(TaskTestCase):
         self.run_task()
 
         imported = models.Bron.objects.count()
-        self.assertEqual(imported, 15)
+        self.assertEqual(imported, 13)
 
-        bron = models.Bron.objects.get(bron_id=19)
-        self.assertEqual(bron.bedrijfsnaam, 'EUROTANK AMSTERDAM BV')
-        self.assertEqual(bron.hoeveelheid_stof, '25.000 ton')
-        self.assertEqual(bron.type_stof, 'BRANDBARE VLOEISTOFFEN')
+        bron = models.Bron.objects.get(bron_id=24)
+        self.assertEqual(bron.bedrijfsnaam, 'NUSTAR TERMINAL BV')
+        self.assertEqual(bron.hoeveelheid_stof, '615.000 m3')
+        self.assertEqual(bron.type_stof, 'BENZINE EN ANDERE AARDOLIEFRACTIES')

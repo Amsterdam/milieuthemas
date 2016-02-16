@@ -60,8 +60,12 @@ class LPGTank(mixins.ImportStatusMixin):
 class Bron(mixins.ImportStatusMixin):
     bron_id = models.IntegerField(null=True)
     bedrijfsnaam = models.CharField(max_length=64, null=True)
-    hoeveelheid_stof = models.CharField(max_length=16, null=True)
+    hoeveelheid_stof = models.CharField(max_length=32, null=True)
     type_stof = models.CharField(max_length=64, null=True)
+    geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
+
+    objects = geo.GeoManager()
+    
 
     def __repr__(self):
         return '<Bron %d: %s>' % (self.id, self.bedrijfsnaam)
