@@ -238,6 +238,43 @@ class ImportBron(batch.BasicTask):
             geometrie_polygon=geom,
         )
 
+class ImportBedrijf(batch.BasicTask):
+    name = "Import dmb_veilig_bedrijven"
+
+    def before(self):
+        database.clear_models(models.Bedrijf)
+
+    def after(self):
+        pass
+
+    def process(self):
+        source = os.path.join(self.path, "dmb_veilig_bedrijven.csv")
+        bedrijven = [bedrijf for bedrijf in process_csv(source, self.process_row) if bedrijf]
+
+        models.Bron.objects.bulk_create(bedrijven, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        # Making company name a requirement
+        if not row['bedrijfsnaam']:
+            return
+
+        geom = GEOSGeometry(row['geometrie'])
+
+        if isinstance(geom, Polygon):
+            geom = MultiPolygon(geom)
+
+        return models.Bron(
+            bedrijfsnaam=row['bedrijfsnaam'],
+            adres=row['adres'],
+            stadsdeel=row['stadsdeel'],
+            aantal_bronnen=row['aantal_bronnen'],
+            bevoegd_gezag=row['bevoegd_gezag'],
+            categorie_bevi=row['categorie_bevi'],
+            type_bedrijf=row['type_bedrijf'],
+            opmerkingen=row['opmerkingen'],
+            geometrie_polygon=geom,
+        )
+
 
 class ImportRisicozonesBedrijvenJob(object):
     name = "Import risicozones bedrijven"
@@ -248,4 +285,5 @@ class ImportRisicozonesBedrijvenJob(object):
             ImportLPGAfleverzuilTask(),
             ImportLPGTankTask(),
             ImportBron(),
+            ImportBedrijf(),
         ]
