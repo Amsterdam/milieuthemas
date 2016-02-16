@@ -73,10 +73,10 @@ class Bedrijf(mixins.ImportStatusMixin):
     bedrijfsnaam = models.CharField(max_length=64, null=True)
     adres = models.CharField(max_length=100, null=True)
     stadsdeel = models.CharField(max_length=16, null=True)
-    aantal_bronnen = models.PositiveIntegerField(null=True)
+    aantal_bronnen = models.PositiveSmallIntegerField(null=True)
     bevoegd_gezag = models.CharField(max_length=32, null=True)
-    categorie_bevi = models.CharField(max_length=32, null=True)
-    type_bedrijf = models.CharField(max_length=64, null=True)
+    categorie_bevi = models.CharField(max_length=100, null=True)
+    type_bedrijf = models.CharField(max_length=100, null=True)
     opmerkingen = models.TextField(null=True)
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
