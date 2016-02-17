@@ -6,7 +6,7 @@ Batch importing task for the Risicozones infrastructuur
 import logging
 import os
 # Packages
-from django.contrib.gis.geos import GeometryCollection, GEOSGeometry, LineString, MultiLineString, Polygon
+from django.contrib.gis.geos import GeometryCollection, GEOSGeometry, LineString, MultiLineString, MultiPolygon, Polygon
 from django.contrib.gis.geos.error import GEOSException
 # Project
 from . import models
@@ -66,13 +66,49 @@ class ImportAardgasbuisleidingTask(batch.BasicTask):
                         raise GEOSException('GeometryCollection with unmanagable components')
                 geom = MultiLineString(lines)
         except GEOSException as msg:
-            print (msg)
             log.warn('Aardgasbuisleiding %d unable to encapsulate GEOS geometry %s; skipping', row['id'], msg)
             return None
-        except Exception as e:
-            print (e)
-            return None
         return models.Aardgasbuisleiding(geometrie=geom)
+
+
+class ImportSpoorwegTask(batch.BasicTask):
+    """
+    Spoorweg import task
+    """
+    name = 'Import dro_risico_spoorweg'
+
+    def before(self):
+        database.clear_models(models.Spoorweg)
+
+    def after(self):
+        pass
+
+    def process(self):
+        source = os.path.join(self.path, 'dro_risico_spoorweg.csv')
+        # Processing csv
+        spoorwegen = [spoorweg for spoorweg in process_csv(source, self.process_row) if spoorweg]
+        # Bulk creating valid entries
+        models.Spoorweg.objects.bulk_create(spoorwegen, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        """
+        Handle CSV row
+        """
+        # geometrie is the only actual data. If not present there is no point
+        # in importing
+        if not row['geometrie']:
+            return None
+        try:
+            geom = GEOSGeometry(row['geometrie'])
+            # Converting single poly to multi
+            if isinstance(geom, Polygon):
+                geom = MultiPolygon(geom)
+            elif not isinstance(geom, MultiPolygon):
+                raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
+        except GEOSException as msg:
+            log.warn('Aardgasbuisleiding %d unable to encapsulate GEOS geometry %s; skipping', row['id'], msg)
+            return None
+        return models.Spoorweg(geometrie=geom)
 
 
 class ImportRisicozonesInfrastructuurJob(object):
@@ -87,4 +123,5 @@ class ImportRisicozonesInfrastructuurJob(object):
         """
         return [
             ImportAardgasbuisleidingTask(),
+            ImportSpoorwegTask(),
         ]
