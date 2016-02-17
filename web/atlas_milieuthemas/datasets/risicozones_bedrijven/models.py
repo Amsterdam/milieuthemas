@@ -1,6 +1,7 @@
+# Project
 from django.db import models
 from django.contrib.gis.db import models as geo
-
+# Product
 from datapunt_generic.generic import mixins
 
 
