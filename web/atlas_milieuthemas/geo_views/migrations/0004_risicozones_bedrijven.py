@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('geo_views', '0003_schiphol_vogel'),
+        ('risicozones_bedrijven', '0007_bedrijf'),
     ]
 
     operations = [
