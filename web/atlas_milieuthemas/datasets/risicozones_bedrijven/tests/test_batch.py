@@ -82,7 +82,7 @@ class ImportLPGTankTest(TaskTestCase):
 
 class ImportBronTest(TaskTestCase):
     def task(self):
-        return batch.ImportBron()
+        return batch.ImportBronTask()
 
     def test_import(self):
         self.run_task()
@@ -98,7 +98,7 @@ class ImportBronTest(TaskTestCase):
 
 class ImportBedrijfTest(TaskTestCase):
     def task(self):
-        return batch.ImportBedrijf()
+        return batch.ImportBedrijfTask()
 
     def test_import(self):
         self.run_task()
