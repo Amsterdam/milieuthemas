@@ -2,14 +2,13 @@ Atlas Milieuthema's
 ====================
 
 
-Requirements
-------------
+##Requirements
 
 * Docker-Compose (required)
 
 
-Developing
-----------
+##Developing
+
 
 Use `docker-compose` to start a local database.
 
@@ -29,3 +28,8 @@ To run an import, execute:
 To see the various options for partial imports, execute:
 
 	./atlas_milieuthemas/manage.py run_import --help
+
+Accessing the docker database container for view testing:
+
+	psql -h 192.168.99.100 -p 5402 -U postgres
+
