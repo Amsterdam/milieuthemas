@@ -205,7 +205,7 @@ class ImportLPGTankTask(batch.BasicTask):
         )
 
 
-class ImportBron(batch.BasicTask):
+class ImportBronTask(batch.BasicTask):
     name = "Import dmb_veilig_bronnen"
 
     def before(self):
@@ -238,7 +238,7 @@ class ImportBron(batch.BasicTask):
             geometrie_polygon=geom,
         )
 
-class ImportBedrijf(batch.BasicTask):
+class ImportBedrijfTask(batch.BasicTask):
     name = "Import dmb_veilig_bedrijven"
 
     def before(self):
@@ -284,6 +284,6 @@ class ImportRisicozonesBedrijvenJob(object):
             ImportLPGVulpuntTask(),
             ImportLPGAfleverzuilTask(),
             ImportLPGTankTask(),
-            ImportBron(),
-            ImportBedrijf(),
+            ImportBronTask(),
+            ImportBedrijfTask(),
         ]
