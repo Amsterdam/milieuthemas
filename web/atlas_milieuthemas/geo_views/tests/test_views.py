@@ -4,6 +4,7 @@ from django.test import TestCase
 
 from datasets.schiphol.tests import factories as schiphol_factories
 from datasets.bodeminformatie.tests import factories as bodeminformatie_factories
+from datasets.veiligheidsafstanden.tests import factories as veiligheidsafstanden_factories
 
 
 class ViewsTest(TestCase):
@@ -66,3 +67,18 @@ class ViewsTest(TestCase):
         self.assertNotEqual(row['concentratie'], None)
         self.assertNotEqual(row['geometrie'], None)
 
+    def test_veiligheidsafstanden_point(self):
+        l = veiligheidsafstanden_factories.VeiligheidsafstandPointFactory.create()
+        row = self.get_row('geo_veiligheidsafstanden_point_layer')
+        self.assertEqual(row['id'], l.id)
+        self.assertNotEqual(row['type'], None)
+        self.assertNotEqual(row['locatie'], None)
+        self.assertNotEqual(row['geometrie'], None)
+
+    def test_veiligheidsafstanden_polygon(self):
+        l = veiligheidsafstanden_factories.VeiligheidsafstandPolygonFactory.create()
+        row = self.get_row('geo_veiligheidsafstanden_polygon_layer')
+        self.assertEqual(row['id'], l.id)
+        self.assertNotEqual(row['type'], None)
+        self.assertNotEqual(row['locatie'], None)
+        self.assertNotEqual(row['geometrie'], None)
