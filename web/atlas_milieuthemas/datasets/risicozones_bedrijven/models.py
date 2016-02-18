@@ -49,7 +49,7 @@ class LPGAfleverzuil(mixins.ImportStatusMixin):
 
 
 class LPGTank(mixins.ImportStatusMixin):
-    stationnummer = models.IntegerField(null=True)
+    station = models.ForeignKey(LPGStation, null=True)
     kleur = models.IntegerField(null=True)
     type = models.CharField(max_length=40, null=True)
     voldoet = models.CharField(max_length=3, null=True)
@@ -57,6 +57,7 @@ class LPGTank(mixins.ImportStatusMixin):
     geometrie = geo.MultiPolygonField(null=True, srid=28992)
 
     objects = geo.GeoManager()
+
 
 class Bron(mixins.ImportStatusMixin):
     bron_id = models.IntegerField(null=True)
@@ -69,6 +70,7 @@ class Bron(mixins.ImportStatusMixin):
     
     def __repr__(self):
         return '<Bron %d: %s>' % (self.id, self.bedrijfsnaam)
+
 
 class Bedrijf(mixins.ImportStatusMixin):
     bedrijfsnaam = models.CharField(max_length=64, null=True)

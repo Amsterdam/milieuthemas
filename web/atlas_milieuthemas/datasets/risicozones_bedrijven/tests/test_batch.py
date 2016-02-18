@@ -70,6 +70,10 @@ class ImportLPGAfleverzuilTest(TaskTestCase):
 
 
 class ImportLPGTankTest(TaskTestCase):
+    def setUp(self):
+        factories.LPGStationFactory.create(pk=19)
+        factories.LPGStationFactory.create(pk=20)
+
     def task(self):
         return batch.ImportLPGTankTask()
 
@@ -79,7 +83,7 @@ class ImportLPGTankTest(TaskTestCase):
         imported = models.LPGTank.objects.all()
         self.assertEqual(len(imported), 2)
 
-        tank = models.LPGTank.objects.get(stationnummer=19)
+        tank = models.LPGTank.objects.get(station_id=19)
         self.assertEqual(tank.type, 'Invloedsgebied groepsrisico opslagtank')
         self.assertNotEqual(tank.geometrie, None)
 

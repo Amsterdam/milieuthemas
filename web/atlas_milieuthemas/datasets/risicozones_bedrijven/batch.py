@@ -148,7 +148,7 @@ class ImportLPGAfleverzuilTask(batch.BasicTask):
         station_id = int(row['stationnummer'])
 
         if station_id not in self.stations:
-            log.warn("LPGVulpuntreferences an unknown station {}; skipping".format(
+            log.warn("LPGAfleverzuil references an unknown station {}; skipping".format(
                     station_id,
             ))
             return
@@ -183,12 +183,14 @@ class ImportLPGAfleverzuilTask(batch.BasicTask):
 
 class ImportLPGTankTask(batch.BasicTask):
     name = "Import dmb_lpg_tank"
+    stations = set()
 
     def before(self):
         database.clear_models(models.LPGTank)
+        self.stations = frozenset(models.LPGStation.objects.all().values_list('pk', flat=True))
 
     def after(self):
-        pass
+        self.stations = None
 
     def process(self):
         source = os.path.join(self.path, "dmb_lpg_tank.csv")
@@ -200,13 +202,21 @@ class ImportLPGTankTask(batch.BasicTask):
         if not row['type_contour']:
             return
 
+        station_id = int(row['stationnummer'])
+
+        if station_id not in self.stations:
+            log.warn("LPGTank references an unknown station {}; skipping".format(
+                    station_id,
+            ))
+            return
+
         geom = GEOSGeometry(row['geometrie'])
 
         if isinstance(geom, Polygon):
             geom = MultiPolygon(geom)
 
         return models.LPGTank(
-            stationnummer=parse_nummer(row['stationnummer']),
+            station_id=station_id,
             kleur=parse_nummer(row['stationnummer'] or 0),
             type=row['type_contour'],
             voldoet=row['voldoet'],
@@ -247,6 +257,7 @@ class ImportBronTask(batch.BasicTask):
             type_stof=row['type_stof'],
             geometrie_polygon=geom,
         )
+
 
 class ImportBedrijfTask(batch.BasicTask):
     name = "Import dmb_veilig_bedrijven"
