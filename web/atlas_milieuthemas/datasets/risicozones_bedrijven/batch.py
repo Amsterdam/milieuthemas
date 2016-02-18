@@ -74,7 +74,7 @@ class ImportLPGVulpuntTask(batch.BasicTask):
         self.stations = frozenset(models.LPGStation.objects.all().values_list('pk', flat=True))
 
     def after(self):
-        pass
+        self.stations = None
 
     def process(self):
         source = os.path.join(self.path, "dmb_lpg_vulpunt.csv")
@@ -129,12 +129,14 @@ class ImportLPGVulpuntTask(batch.BasicTask):
 
 class ImportLPGAfleverzuilTask(batch.BasicTask):
     name = "Import dmb_lpg_afleverzuil"
+    stations = set()
 
     def before(self):
         database.clear_models(models.LPGAfleverzuil)
+        self.stations = frozenset(models.LPGStation.objects.all().values_list('pk', flat=True))
 
     def after(self):
-        pass
+        self.stations = None
 
     def process(self):
         source = os.path.join(self.path, "dmb_lpg_afleverzuil.csv")
@@ -143,6 +145,14 @@ class ImportLPGAfleverzuilTask(batch.BasicTask):
         models.LPGAfleverzuil.objects.bulk_create(zuilen, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
+        station_id = int(row['stationnummer'])
+
+        if station_id not in self.stations:
+            log.warn("LPGVulpuntreferences an unknown station {}; skipping".format(
+                    station_id,
+            ))
+            return
+
         point, poly = None, None
 
         try:
@@ -165,7 +175,7 @@ class ImportLPGAfleverzuilTask(batch.BasicTask):
             return
 
         return models.LPGAfleverzuil(
-            stationnummer=parse_nummer(row['stationnummer']),
+            station_id=station_id,
             geometrie_point=point,
             geometrie_polygon=poly,
         )

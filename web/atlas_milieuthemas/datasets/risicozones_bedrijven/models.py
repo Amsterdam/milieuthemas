@@ -41,7 +41,7 @@ class LPGVulpunt(mixins.ImportStatusMixin):
 
 
 class LPGAfleverzuil(mixins.ImportStatusMixin):
-    stationnummer = models.IntegerField(null=True)
+    station = models.ForeignKey(LPGStation, null=True)
     geometrie_point = geo.PointField(null=True, srid=28992)
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 

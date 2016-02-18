@@ -46,6 +46,10 @@ class ImportLPGVulpuntTest(TaskTestCase):
 
 
 class ImportLPGAfleverzuilTest(TaskTestCase):
+    def setUp(self):
+        factories.LPGStationFactory.create(pk=26)
+        factories.LPGStationFactory.create(pk=27)
+
     def task(self):
         return batch.ImportLPGAfleverzuilTask()
 
@@ -55,12 +59,12 @@ class ImportLPGAfleverzuilTest(TaskTestCase):
         imported = models.LPGAfleverzuil.objects.all()
         self.assertEqual(len(imported), 3)
 
-        zuilen = models.LPGAfleverzuil.objects.filter(stationnummer=27)
+        zuilen = models.LPGAfleverzuil.objects.filter(station_id=27)
         self.assertEqual(len(zuilen), 2)
         self.assertNotEqual(zuilen[0].geometrie_polygon, None)
         self.assertNotEqual(zuilen[1].geometrie_point, None)
 
-        zuil = models.LPGAfleverzuil.objects.get(stationnummer=26)
+        zuil = models.LPGAfleverzuil.objects.get(station_id=26)
         self.assertNotEqual(zuil.geometrie_polygon, None)
         self.assertEqual(zuil.geometrie_point, None)
 
