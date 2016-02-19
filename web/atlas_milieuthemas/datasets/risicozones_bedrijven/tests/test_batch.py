@@ -22,8 +22,8 @@ class ImportLPGStationTest(TaskTestCase):
 
 class ImportLPGVulpuntTest(TaskTestCase):
     def setUp(self):
-        factories.LPGStationFactory.create(pk=1)
-        factories.LPGStationFactory.create(pk=14)
+        factories.LPGStationPointFactory.create(pk=1)
+        factories.LPGStationPointFactory.create(pk=14)
 
     def task(self):
         return batch.ImportLPGVulpuntTask()
@@ -47,8 +47,8 @@ class ImportLPGVulpuntTest(TaskTestCase):
 
 class ImportLPGAfleverzuilTest(TaskTestCase):
     def setUp(self):
-        factories.LPGStationFactory.create(pk=26)
-        factories.LPGStationFactory.create(pk=27)
+        factories.LPGStationPointFactory.create(pk=26)
+        factories.LPGStationPointFactory.create(pk=27)
 
     def task(self):
         return batch.ImportLPGAfleverzuilTask()
@@ -71,8 +71,8 @@ class ImportLPGAfleverzuilTest(TaskTestCase):
 
 class ImportLPGTankTest(TaskTestCase):
     def setUp(self):
-        factories.LPGStationFactory.create(pk=19)
-        factories.LPGStationFactory.create(pk=20)
+        factories.LPGStationPointFactory.create(pk=19)
+        factories.LPGStationPointFactory.create(pk=20)
 
     def task(self):
         return batch.ImportLPGTankTask()
