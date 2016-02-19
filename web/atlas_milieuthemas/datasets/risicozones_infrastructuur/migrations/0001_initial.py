@@ -8,8 +8,6 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    replaces = [('risicozones_infrastructuur', '0001_initial'), ('risicozones_infrastructuur', '0002_spoorweg'), ('risicozones_infrastructuur', '0003_auto_20160219_1427')]
-
     initial = True
 
     dependencies = [
