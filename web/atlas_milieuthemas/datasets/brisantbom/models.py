@@ -11,5 +11,13 @@ class Brisantbom(mixins.ImportStatusMixin):
     datum_inslag = models.DateField(null=True)
     exact = models.NullBooleanField()
     geruimd = models.NullBooleanField()
-    kaliber = models.CharField(max_length=32, null=True)  # TODO this can probably be a choice field. need to talk to Jeroen
+    kaliber = models.CharField(max_length=32, null=True)
     omschrijving = models.TextField(null=True)
+
+
+class BrisantbomOnderzoek(mixins.ImportStatusMixin):
+    datum = models.DateField(null=True)
+    detectie = models.NullBooleanField()
+    Onderzoekbureau = models.CharField(max_length=32, null=True)
+    opdrachtgever = models.CharField(max_length=64, null=True)
+    
