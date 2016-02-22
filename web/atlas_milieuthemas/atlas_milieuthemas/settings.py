@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'datasets.veiligheidsafstanden',
     'datasets.risicozones_bedrijven',
     'datasets.risicozones_infrastructuur',
+    'datasets.brisantbom',
 
     'datapunt_generic.batch',
     'datapunt_generic.generic',
