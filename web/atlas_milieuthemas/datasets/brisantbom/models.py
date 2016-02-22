@@ -6,6 +6,7 @@ from datapunt_generic.generic import mixins
 
 
 class Brisantbom(mixins.ImportStatusMixin):
+    id = models.IntegerField(primary_key=True)
     bron = models.CharField(max_length=100, null=True)
     datum_inslag = models.DateField(null=True)
     exact = models.NullBooleanField()
