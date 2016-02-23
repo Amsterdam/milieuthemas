@@ -53,7 +53,8 @@ class ImportGeluidzoneTask(batch.BasicTask):
         ]
 
     def process_row(self, row):
-        model, geluid_zone_type = None, row['type'].lower()
+        model = None
+        geluid_zone_type = row['type'].lower()
 
         try:
             model_key = [k for k in self.models.keys() if k in geluid_zone_type][0]

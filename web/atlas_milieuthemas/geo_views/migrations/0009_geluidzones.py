@@ -15,21 +15,21 @@ class Migration(migrations.Migration):
 
     operations = [
         migrate.ManageView(
-            view_name="geo_geluidzones_spoorwegen",
+            view_name="geo_geluidzone_spoorwegen",
             sql="""SELECT id, geo_id, geometrie
                     FROM geluidzone_spoorwegen
-                    WHERE geometrie IS NOT NULL and type = 'Geluidszone spoorwegen'"""
+                    WHERE geometrie IS NOT NULL"""
         ),
         migrate.ManageView(
-            view_name="geo_geluidzones_metro",
+            view_name="geo_geluidzone_metro",
             sql="""SELECT id, geo_id, geometrie
                     FROM geluidzone_metro
-                    WHERE geometrie IS NOT NULL and type = 'Geluidszone metro'"""
+                    WHERE geometrie IS NOT NULL"""
         ),
         migrate.ManageView(
-            view_name="geo_geluidzones_industrie",
-            sql="""SELECT id, geo_id, geometrie, naam AS display
+            view_name="geo_geluidzone_industrie",
+            sql="""SELECT id, geo_id, geometrie, naam AS display, type
                     FROM geluidzone_industrie
-                    WHERE geometrie IS NOT NULL and type = 'Gezoneerd industrieterrein'"""
+                    WHERE geometrie IS NOT NULL"""
         ),
     ]
