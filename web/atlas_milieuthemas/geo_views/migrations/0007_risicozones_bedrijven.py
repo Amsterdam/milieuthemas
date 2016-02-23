@@ -18,14 +18,14 @@ class Migration(migrations.Migration):
     operations = [
         migrate.ManageView(
             view_name="geo_risicozones_bedrijven_lpgstation_point_layer",
-            sql="""SELECT id, bedrijfsnaam, dossiernummer,
+            sql="""SELECT id, bedrijfsnaam as display, dossiernummer,
                     geometrie_point AS geometrie
                     FROM risicozones_bedrijven_lpgstation
                     WHERE geometrie_point IS NOT NULL"""
         ),
         migrate.ManageView(
             view_name="geo_risicozones_bedrijven_lpgstation_polygon_layer",
-            sql="""SELECT id, bedrijfsnaam, dossiernummer,
+            sql="""SELECT id, bedrijfsnaam as display, dossiernummer,
                     geometrie_polygon AS geometrie
                     FROM risicozones_bedrijven_lpgstation
                     WHERE geometrie_polygon IS NOT NULL"""

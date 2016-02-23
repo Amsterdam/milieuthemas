@@ -77,7 +77,7 @@ class ViewsTest(TestCase):
         row = self.get_row('geo_veiligheidsafstanden_point_layer')
         self.assertEqual(row['id'], l.id)
         self.assertNotEqual(row['type'], None)
-        self.assertNotEqual(row['locatie'], None)
+        self.assertNotEqual(row['display'], None)
         self.assertNotEqual(row['geometrie'], None)
 
     def test_veiligheidsafstanden_polygon(self):
@@ -85,7 +85,7 @@ class ViewsTest(TestCase):
         row = self.get_row('geo_veiligheidsafstanden_polygon_layer')
         self.assertEqual(row['id'], l.id)
         self.assertNotEqual(row['type'], None)
-        self.assertNotEqual(row['locatie'], None)
+        self.assertNotEqual(row['display'], None)
         self.assertNotEqual(row['geometrie'], None)
 
     # risicozones_bedrijven
@@ -93,7 +93,7 @@ class ViewsTest(TestCase):
         l = risicozones_bedrijven_factories.LPGStationPointFactory.create()
         row = self.get_row('geo_risicozones_bedrijven_lpgstation_point_layer')
         self.assertEqual(row['id'], l.id)
-        self.assertNotEqual(row['bedrijfsnaam'], None)
+        self.assertNotEqual(row['display'], None)
         self.assertNotEqual(row['dossiernummer'], None)
         self.assertNotEqual(row['geometrie'], None)
 
@@ -101,7 +101,7 @@ class ViewsTest(TestCase):
         l = risicozones_bedrijven_factories.LPGStationPolygonFactory.create()
         row = self.get_row('geo_risicozones_bedrijven_lpgstation_polygon_layer')
         self.assertEqual(row['id'], l.id)
-        self.assertNotEqual(row['bedrijfsnaam'], None)
+        self.assertNotEqual(row['display'], None)
         self.assertNotEqual(row['dossiernummer'], None)
         self.assertNotEqual(row['geometrie'], None)
 

@@ -18,13 +18,13 @@ class Migration(migrations.Migration):
     operations = [
         migrate.ManageView(
             view_name="geo_veiligheidsafstanden_point_layer",
-            sql="""SELECT id, type, locatie, geometrie_point as geometrie
+            sql="""SELECT id, type, locatie as display, geometrie_point as geometrie
                     FROM veiligheidsafstanden_veiligheidsafstand
                     WHERE geometrie_point IS NOT NULL"""
         ),
         migrate.ManageView(
             view_name="geo_veiligheidsafstanden_polygon_layer",
-            sql="""SELECT id, type, locatie, geometrie_multipolygon as geometrie
+            sql="""SELECT id, type, locatie as display, geometrie_multipolygon as geometrie
                     FROM veiligheidsafstanden_veiligheidsafstand
                     WHERE geometrie_multipolygon IS NOT NULL"""
         ),
