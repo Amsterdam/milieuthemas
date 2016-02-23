@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
         ),
         migrate.ManageView(
             view_name="geo_risicozones_bedrijven_lpgtank",
-            sql="""SELECT id, type, afstandseis, voldoet, geometrie
+            sql="""SELECT id, type, afstandseis, voldoet, kleur, geometrie
                     FROM risicozones_bedrijven_lpgtank
                     WHERE geometrie IS NOT NULL"""
         ),
