@@ -20,7 +20,7 @@ class Command(BaseCommand):
         'geluidzone',
         'risicozones_bedrijven',
         'risicozones_infrastructuur',
-        'brisantbom',
+        # 'brisantbom',
     ]
 
     imports = dict(
@@ -45,9 +45,9 @@ class Command(BaseCommand):
         risicozones_infrastructuur=[
             datasets.risicozones_infrastructuur.batch.ImportRisicozonesInfrastructuurJob,
         ],
-        brisantbom=[
-            datasets.brisantbom.batch.ImportBrisantbomJob,
-        ],
+        # brisantbom=[
+        #     datasets.brisantbom.batch.ImportBrisantbomJob,
+        # ],
     )
 
     def add_arguments(self, parser):
