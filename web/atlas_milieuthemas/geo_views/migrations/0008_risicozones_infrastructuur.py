@@ -9,33 +9,57 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('geo_views', '0007_risicozones_bedrijven'),
-        ('risicozones_infrastructuur', '0001_initial'),
+        ('risicozones_infrastructuur', '0003_auto_20160225_0735'),
     ]
 
     operations = [
-        migrate.ManageView(
-            view_name="geo_risicozones_infrastructuur_aardgasleidingen",
-            sql="""SELECT id, geometrie_line AS geometrie
-                    FROM risicozones_infrastructuur_infrastructuur
-                    WHERE geometrie_line IS NOT NULL AND type = 'ag'"""
-        ),
-        migrate.ManageView(
-            view_name="geo_risicozones_infrastructuur_spoorwegen",
-            sql="""SELECT id, geometrie
-                    FROM risicozones_infrastructuur_infrastructuur
-                    WHERE geometrie_polygon IS NOT NULL AND type = 'sw'"""
-        ),
-        migrate.ManageView(
-            view_name="geo_risicozones_infrastructuur_vaarwegen",
-            sql="""SELECT id, geometrie
-                    FROM risicozones_infrastructuur_infrastructuur
-                    WHERE geometrie_polygon IS NOT NULL AND type = 'vw'"""
-        ),
-        migrate.ManageView(
-            view_name="geo_risicozones_infrastructuur_wegen",
-            sql="""SELECT id, geometrie
-                    FROM risicozones_infrastructuur_infrastructuur
-                    WHERE geometrie_polygon IS NOT NULL AND type = 'wg'"""
-        ),
-        
+       operations = [
+           migrate.ManageView(
+               view_name="geo_risicozones_infrastructuur_aardgasgebied_100let",
+               sql="""SELECT id, geometrie
+                       FROM risicozones_infrastructuur_aardgasgebied
+                       WHERE geometrie IS NOT NULL AND type='la'"""
+           ),
+           migrate.ManageView(
+               view_name="geo_risicozones_infrastructuur_aardgasgebied_1let",
+               sql="""SELECT id, geometrie
+                       FROM risicozones_infrastructuur_aardgasgebied
+                       WHERE geometrie IS NOT NULL AND type='l1'"""
+           ),
+           migrate.ManageView(
+               view_name="geo_risicozones_infrastructuur_aardgasgebied_zakelijk",
+               sql="""SELECT id, geometrie
+                       FROM risicozones_infrastructuur_aardgasgebied
+                       WHERE geometrie IS NOT NULL AND type='zk'"""
+           ),
+           migrate.ManageView(
+               view_name="geo_risicozones_infrastructuur_aardgasgebied_plaatsgebonden_risico",
+               sql="""SELECT id, geometrie
+                       FROM risicozones_infrastructuur_aardgasgebied
+                       WHERE geometrie IS NOT NULL AND type='pr'"""
+           ),
+           migrate.ManageView(
+               view_name="geo_risicozones_infrastructuur_aardgasleidingen",
+               sql="""SELECT id, geometrie
+                       FROM risicozones_infrastructuur_aardgasleiding
+                       WHERE geometrie IS NOT NULL"""
+           ),
+           migrate.ManageView(
+               view_name="geo_risicozones_infrastructuur_spoorwegen",
+               sql="""SELECT id, geometrie
+                       FROM risicozones_infrastructuur_infrastructuur
+                       WHERE geometrie IS NOT NULL AND type = 'sw'"""
+           ),
+           migrate.ManageView(
+               view_name="geo_risicozones_infrastructuur_vaarwegen",
+               sql="""SELECT id, geometrie
+                       FROM risicozones_infrastructuur_infrastructuur
+                       WHERE geometrie IS NOT NULL AND type = 'vw'"""
+           ),
+           migrate.ManageView(
+               view_name="geo_risicozones_infrastructuur_wegen",
+               sql="""SELECT id, geometrie
+                       FROM risicozones_infrastructuur_infrastructuur
+                       WHERE geometrie IS NOT NULL AND type = 'wg'"""
+           ),
     ]
