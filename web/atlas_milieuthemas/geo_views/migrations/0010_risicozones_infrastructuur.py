@@ -42,4 +42,22 @@ class Migration(migrations.Migration):
                     FROM risicozones_infrastructuur_aardgasleiding
                     WHERE geometrie IS NOT NULL"""
         ),
+        migrate.ManageView(
+            view_name="geo_risicozones_infrastructuur_spoorwegen",
+            sql="""SELECT id, geometrie
+                    FROM risicozones_infrastructuur_infrastructuur
+                    WHERE geometrie IS NOT NULL AND type = 'sw'"""
+        ),
+        migrate.ManageView(
+            view_name="geo_risicozones_infrastructuur_vaarwegen",
+            sql="""SELECT id, geometrie
+                    FROM risicozones_infrastructuur_infrastructuur
+                    WHERE geometrie IS NOT NULL AND type = 'vw'"""
+        ),
+        migrate.ManageView(
+            view_name="geo_risicozones_infrastructuur_wegen",
+            sql="""SELECT id, geometrie
+                    FROM risicozones_infrastructuur_infrastructuur
+                    WHERE geometrie IS NOT NULL AND type = 'wg'"""
+        ),
     ]
