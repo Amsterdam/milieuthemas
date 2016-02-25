@@ -9,13 +9,106 @@ import os
 from django.contrib.gis.geos import GeometryCollection, GEOSGeometry, LineString, MultiLineString, MultiPolygon, Polygon
 from django.contrib.gis.geos.error import GEOSException
 # Project
-from .models import Infrastructuur
+from .models import Aardgasleiding, AardgasGebied, Infrastructuur
 from datapunt_generic.batch import batch
 from datapunt_generic.generic import database
 from datapunt_generic.generic.csv import process_csv
 
 
 log = logging.getLogger(__name__)  # pylint: disable=C0103
+
+
+
+class ImportAardgasleidingTask(batch.BasicTask):
+    """Importing the aardgas pipe lines"""
+    name = "Import dmb_aardgas_leiding"
+
+    def before(self):
+        """Cleaing data before import"""
+        database.clear_models(Aardgasleiding)
+
+    def after(self):
+        pass
+
+    def process(self):
+        """Process the csv"""
+        source = os.path.join(self.path, 'dmb_aardgas_leiding.csv')
+        entries = [entry for entry in process_csv(source, self.process_row) if entry]
+        Aardgasleiding.objects.bulk_create(entries, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        if not row['geometrie']:
+            return None
+        try:
+            geom = GEOSGeometry(row['geometrie'])
+            if isinstance(geom, LineString):
+                geom = MultiLineString([geom])
+            elif not isinstance(geom, MultiLineString) and isinstance(geom, GeometryCollection):
+                # Converting to MultiLineString
+                lines = []
+                for item in geom:
+                    if isinstance(item, LineString):
+                        lines.append(item)
+                    elif isinstance(item, Polygon):
+                        for poly_item in item:
+                            # Line ring are managable
+                            if poly_item.geom_type == 'LinearRing':
+                                lines.append(LineString(poly_item.coords))
+                            else:
+                                raise GEOSException('Polygon in GeometryCollection with unmanagable components')
+                    else:
+                        raise GEOSException('GeometryCollection with unmanagable components')
+                geom = MultiLineString(lines)
+        except GEOSException as msg:
+            log.warn('Aardgasleiding unable to encapsulate GEOS geometry %s; skipping', msg)
+            return None
+        return Aardgasleiding(geometrie=geom)
+
+
+class ImportAardgasGebiedTask(batch.BasicTask):
+    """
+    Import the aardgas gebieden
+    There are actually several files to be processed each containing a different
+    kind of area
+    """
+    name = "Import aardgas areas"
+    zone_type = 'bb'
+
+    def before(self):
+        database.clear_models(AardgasGebied)
+
+    def after(self):
+        pass
+
+    def process(self):
+        sources = [(AardgasGebied.LET_100, 'dmb_aardgas_100let.csv'),
+                   (AardgasGebied.LET_1, 'dmb_aardgas_1let.csv'),
+                   (AardgasGebied.PLAATSGEBONDEN_RISICO, 'dmb_aardgas_pr10_6.csv'),
+                   (AardgasGebied.ZAKELIJK, 'dmb_aardgas_zakelijk.csv')]
+        for source in sources:
+            self.zone_type = source[0]
+            source_file = os.path.join(self.path, source[1])
+            entries = [entry for entry in process_csv(source_file, self.process_row) if entry]
+            AardgasGebied.objects.bulk_create(entries, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        """
+        Handle CSV row
+        """
+        # geometrie is the only actual data. If not present there is no point
+        # in importing
+        if not row['geometrie']:
+            return None
+        try:
+            geom = GEOSGeometry(row['geometrie'])
+            if isinstance(geom, Polygon):
+                geom = MultiPolygon(geom)
+            elif not isinstance(geom, MultiPolygon):
+                raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
+        except GEOSException as msg:
+            log.warn('%s unable to encapsulate GEOS geometry %s; skipping', self.zone_type, msg)
+            return None
+        return AardgasGebied(type=self.zone_type, geometrie=geom)
 
 
 class ImportInfrastructuurBase(batch.BasicTask):
@@ -65,38 +158,7 @@ class ImportInfrastructuurBase(batch.BasicTask):
         except GEOSException as msg:
             log.warn('%s id %d unable to encapsulate GEOS geometry %s; skipping', self.model, row['id'], msg)
             return None
-        return Infrastructuur(type=self.type, geometrie_line=geom['line'], geometrie_polygon=geom['poly'])
-
-
-class ImportAardgasbuisleidingTask(ImportInfrastructuurBase):
-    """
-    Aardgas buis leiding import task
-    """
-    name = 'Import dmb_aardgas_leiding'
-    type = 'ag'
-    source_file = 'dmb_aardgas_leiding.csv'
-
-    def prepare_geos(self, geom):
-        # Converting to a MultiLineString
-        if isinstance(geom, LineString):
-            geom = MultiLineString([geom])
-        elif not isinstance(geom, MultiLineString) and isinstance(geom, GeometryCollection):
-            # Converting to MultiLineString
-            lines = []
-            for item in geom:
-                if isinstance(item, LineString):
-                    lines.append(item)
-                elif isinstance(item, Polygon):
-                    for poly_item in item:
-                        # Line ring are managable
-                        if poly_item.geom_type == 'LinearRing':
-                            lines.append(LineString(poly_item.coords))
-                        else:
-                            raise GEOSException('Polygon in GeometryCollection with unmanagable components')
-                else:
-                    raise GEOSException('GeometryCollection with unmanagable components')
-            geom = MultiLineString(lines)
-        return {'line': geom, 'poly': None}
+        return Infrastructuur(type=self.type, geometrie=geom)
 
 
 class ImportSpoorwegTask(ImportInfrastructuurBase):
@@ -112,7 +174,7 @@ class ImportSpoorwegTask(ImportInfrastructuurBase):
             geom = MultiPolygon(geom)
         elif not isinstance(geom, MultiPolygon):
             raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
-        return {'line': None, 'poly': geom}
+        return geom
 
 
 class ImportVaarwegTask(ImportInfrastructuurBase):
@@ -128,7 +190,7 @@ class ImportVaarwegTask(ImportInfrastructuurBase):
             geom = MultiPolygon(geom)
         elif not isinstance(geom, MultiPolygon):
             raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
-        return {'line': None, 'poly': geom}
+        return geom
 
 
 class ImportWegTask(ImportInfrastructuurBase):
@@ -144,7 +206,7 @@ class ImportWegTask(ImportInfrastructuurBase):
             geom = MultiPolygon(geom)
         elif not isinstance(geom, MultiPolygon):
             raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
-        return {'line': None, 'poly': geom}
+        return geom
 
 
 class ImportRisicozonesInfrastructuurJob(object):
@@ -158,7 +220,8 @@ class ImportRisicozonesInfrastructuurJob(object):
         Return the list of tasks to run
         """
         return [
-            ImportAardgasbuisleidingTask(),
+            ImportAardgasleidingTask(),
+            ImportAardgasGebiedTask(),
             ImportSpoorwegTask(),
             ImportVaarwegTask(),
             ImportWegTask(),

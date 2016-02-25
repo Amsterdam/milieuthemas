@@ -21,19 +21,19 @@ class Migration(migrations.Migration):
         ),
         migrate.ManageView(
             view_name="geo_risicozones_infrastructuur_spoorwegen",
-            sql="""SELECT id, geometrie_polygon AS geometrie
+            sql="""SELECT id, geometrie
                     FROM risicozones_infrastructuur_infrastructuur
                     WHERE geometrie_polygon IS NOT NULL AND type = 'sw'"""
         ),
         migrate.ManageView(
             view_name="geo_risicozones_infrastructuur_vaarwegen",
-            sql="""SELECT id, geometrie_polygon AS geometrie
+            sql="""SELECT id, geometrie
                     FROM risicozones_infrastructuur_infrastructuur
                     WHERE geometrie_polygon IS NOT NULL AND type = 'vw'"""
         ),
         migrate.ManageView(
             view_name="geo_risicozones_infrastructuur_wegen",
-            sql="""SELECT id, geometrie_polygon AS geometrie
+            sql="""SELECT id, geometrie
                     FROM risicozones_infrastructuur_infrastructuur
                     WHERE geometrie_polygon IS NOT NULL AND type = 'wg'"""
         ),
