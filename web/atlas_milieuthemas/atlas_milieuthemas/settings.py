@@ -179,3 +179,5 @@ CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = 'DENY'
 
 HEALTH_MODEL = 'schiphol.HoogtebeperkendeVlakken'
+
+GEO_VIEW_PREFIX = 'geo_'

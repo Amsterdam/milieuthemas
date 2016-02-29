@@ -1,5 +1,6 @@
-from django.core.management import BaseCommand
+from django.conf import settings
 from django.contrib.contenttypes import models
+from django.core.management import BaseCommand
 from django.db import connection
 
 from datapunt_generic.generic.mixins import ModelViewFieldsMixin
@@ -36,14 +37,16 @@ class Command(BaseCommand):
             model_table = '{}_{}'.format(app_model.app_label, app_model.model)
 
             for geo_field in model.model_geo_fields:
+                view_name = '{}{}_{}'.format(settings.GEO_VIEW_PREFIX, app_model.app_label, app_model.model)
+
                 if 'line' in geo_field:
-                    view_name = 'geo_{}_{}_line'.format(app_model.app_label, app_model.model)
+                    view_name += '_line'
                 elif 'polygon' in geo_field:
-                    view_name = 'geo_{}_{}_polygon'.format(app_model.app_label, app_model.model)
+                    view_name += '_polygon'
                 elif 'point' in geo_field:
-                    view_name = 'geo_{}_{}_point'.format(app_model.app_label, app_model.model)
-                else:
-                    view_name = 'geo_{}_{}'.format(app_model.app_label, app_model.model)
+                    view_name += '_point'
+                elif 'raster' in geo_field:
+                    view_name += '_raster'
 
                 self.views.append({
                     'view_name': view_name,
