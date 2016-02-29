@@ -5,7 +5,7 @@ from django.contrib.gis.db import models as geo
 from datapunt_generic.generic import mixins
 
 
-class LPGStation(mixins.ImportStatusMixin):
+class LPGStation(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     id = models.IntegerField(primary_key=True)
     dossiernummer = models.CharField(max_length=40, null=True)
     bedrijfsnaam = models.CharField(max_length=40, null=True)
@@ -28,7 +28,7 @@ class LPGStation(mixins.ImportStatusMixin):
     objects = geo.GeoManager()
 
 
-class LPGVulpunt(mixins.ImportStatusMixin):
+class LPGVulpunt(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     station = models.ForeignKey(LPGStation, null=True)
     type = models.CharField(max_length=40, null=True)
@@ -39,16 +39,24 @@ class LPGVulpunt(mixins.ImportStatusMixin):
 
     objects = geo.GeoManager()
 
+    def get_view_fields(self):
+        exclude = ['date_modified', 'station'] + self.model_geo_fields
+        return ['station_id'] + [fld for fld in self.get_model_fields() if fld not in exclude]
 
-class LPGAfleverzuil(mixins.ImportStatusMixin):
+
+class LPGAfleverzuil(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     station = models.ForeignKey(LPGStation, null=True)
     geometrie_point = geo.PointField(null=True, srid=28992)
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
     objects = geo.GeoManager()
 
+    def get_view_fields(self):
+        exclude = ['date_modified', 'station'] + self.model_geo_fields
+        return ['station_id'] + [fld for fld in self.get_model_fields() if fld not in exclude]
 
-class LPGTank(mixins.ImportStatusMixin):
+
+class LPGTank(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     station = models.ForeignKey(LPGStation, null=True)
     kleur = models.IntegerField(null=True)
     type = models.CharField(max_length=40, null=True)
@@ -58,8 +66,12 @@ class LPGTank(mixins.ImportStatusMixin):
 
     objects = geo.GeoManager()
 
+    def get_view_fields(self):
+        exclude = ['date_modified', 'station'] + self.model_geo_fields
+        return ['station_id'] + [fld for fld in self.get_model_fields() if fld not in exclude]
 
-class Bron(mixins.ImportStatusMixin):
+
+class Bron(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     bron_id = models.IntegerField(null=True)
     bedrijfsnaam = models.CharField(max_length=64, null=True)
     hoeveelheid_stof = models.CharField(max_length=32, null=True)
@@ -72,7 +84,7 @@ class Bron(mixins.ImportStatusMixin):
         return '<Bron %d: %s>' % (self.id, self.bedrijfsnaam)
 
 
-class Bedrijf(mixins.ImportStatusMixin):
+class Bedrijf(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     bedrijfsnaam = models.CharField(max_length=64, null=True)
     adres = models.CharField(max_length=100, null=True)
     stadsdeel = models.CharField(max_length=16, null=True)
