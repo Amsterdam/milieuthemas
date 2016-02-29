@@ -1,3 +1,4 @@
+from django.contrib.gis.db import models as geo
 from django.db import models
 
 
@@ -40,4 +41,30 @@ class CodeOmschrijvingMixin(models.Model):
 
     def __str__(self):
         return "{}: {}".format(self.code, self.omschrijving)
+
+
+class ModelViewFieldsMixin(object):
+    _geo_views = None
+
+    geo_fields = [geo.GeometryCollectionField, geo.GeometryField, geo.LineStringField, geo.MultiLineStringField,
+                  geo.MultiPointField, geo.MultiPolygonField, geo.PointField, geo.PolygonField, geo.RasterField]
+
+    def get_model_fields(self):
+        return [f.name for f in self._meta.fields]
+
+    def get_geo_classnames(self):
+        return [f.__name__ for f in self.geo_fields]
+
+    @property
+    def model_geo_fields(self):
+        if not self._geo_views:
+            geo_classes = self.get_geo_classnames()
+
+            self._geo_views = [f.name for f in self._meta.fields if f.__class__.__name__ in geo_classes]
+
+        return self._geo_views
+
+    def get_view_fields(self):
+        exclude = ['date_modified'] + self.model_geo_fields
+        return [fld for fld in self.get_model_fields() if fld not in exclude]
 
