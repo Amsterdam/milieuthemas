@@ -44,6 +44,16 @@ class CodeOmschrijvingMixin(models.Model):
 
 
 class ModelViewFieldsMixin(object):
+    """
+    Mixin to be used for creating geo_views.
+
+    Things that still have to be added:
+
+    - handle foreign keys more easy
+    - easily add exclude fields on model
+    - handle URI field in view
+    - handle models.CharField(choices=())
+    """
     _geo_views = None
 
     geo_fields = [geo.GeometryCollectionField, geo.GeometryField, geo.LineStringField, geo.MultiLineStringField,
