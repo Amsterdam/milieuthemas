@@ -51,8 +51,11 @@ class ModelViewFieldsMixin(object):
 
     - handle foreign keys more easy
     - easily add exclude fields on model
-    - handle URI field in view
     - handle models.CharField(choices=())
+
+    searchable:
+    - handle URI field in view
+    - require a `display` field to be present
     """
     _geo_views = None
 
