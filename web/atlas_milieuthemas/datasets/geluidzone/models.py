@@ -5,7 +5,7 @@ from datapunt_generic.generic import mixins
 from datasets.themas.models import Thema
 
 
-class GeluidzoneAbstract(mixins.ImportStatusMixin):
+class GeluidzoneAbstract(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     type = models.CharField(max_length=100, null=True)
     thema = models.ForeignKey(Thema, null=True)
@@ -15,6 +15,9 @@ class GeluidzoneAbstract(mixins.ImportStatusMixin):
 
     class Meta:
         abstract = True
+
+    geo_view_exclude = ['date_modified', 'thema']
+    geo_view_include = ['thema_id']
 
 
 class Spoorwegen(GeluidzoneAbstract):
