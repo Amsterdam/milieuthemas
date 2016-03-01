@@ -54,7 +54,7 @@ class ModelViewFieldsMixin(object):
     - handle models.CharField(choices=())
 
     searchable:
-    - handle URI field in view
+    - add URI field in view
     - require a `display` field to be present
     """
     _geo_views = None
