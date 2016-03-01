@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.contenttypes import models
 from django.core.management import BaseCommand
 from django.db import connection
@@ -22,7 +21,7 @@ class Command(BaseCommand):
             cursor.execute("DROP VIEW IF EXISTS {}".format(view['view_name']))
             cursor.execute("CREATE VIEW {} AS {}".format(view['view_name'], view['sql']))
 
-        print('synced {} views'.format(len(self.views)))
+        self.stdout.write('synced {} views'.format(len(self.views)))
 
     def fill_views(self):
         app_models = models.ContentType.objects.all()

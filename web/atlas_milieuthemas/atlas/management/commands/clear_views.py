@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.management import BaseCommand
 from django.db import connection
 
@@ -17,4 +16,4 @@ class Command(BaseCommand):
                 cursor.execute("DROP VIEW {}".format(table_info.name))
                 removed += 1
 
-        print('removed {} views'.format(removed))
+        self.stdout.write('removed {} views'.format(removed))
