@@ -11,6 +11,8 @@ class Command(BaseCommand):
     views = []
 
     def handle(self, *args, **options):
+        self.views = []
+
         self.fill_views()
         self.sync_views()
 
