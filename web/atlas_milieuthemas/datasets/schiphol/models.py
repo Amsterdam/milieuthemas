@@ -17,9 +17,8 @@ class HoogtebeperkendeVlakken(mixins.ModelViewFieldsMixin, mixins.ImportStatusMi
 
     objects = geo.GeoManager()
 
-    def get_view_fields(self):
-        exclude = ['date_modified', 'thema'] + self.model_geo_fields
-        return ['thema_id'] + [fld for fld in self.get_model_fields() if fld not in exclude]
+    geo_view_exclude = ['date_modified', 'thema']
+    geo_view_include = ['thema_id']
 
 
 class Geluidzone(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -30,9 +29,8 @@ class Geluidzone(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
 
     objects = geo.GeoManager()
 
-    def get_view_fields(self):
-        exclude = ['date_modified', 'thema'] + self.model_geo_fields
-        return ['thema_id'] + [fld for fld in self.get_model_fields() if fld not in exclude]
+    geo_view_exclude = ['date_modified', 'thema']
+    geo_view_include = ['thema_id']
 
 
 class Vogelvrijwaringsgebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -43,7 +41,5 @@ class Vogelvrijwaringsgebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMix
 
     objects = geo.GeoManager()
 
-    def get_view_fields(self):
-        exclude = ['date_modified', 'thema'] + self.model_geo_fields
-        return ['thema_id'] + [fld for fld in self.get_model_fields() if fld not in exclude]
-
+    geo_view_exclude = ['date_modified', 'thema']
+    geo_view_include = ['thema_id']

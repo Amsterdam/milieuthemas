@@ -78,6 +78,7 @@ class ModelViewFieldsMixin(object):
         return self._geo_views
 
     def get_view_fields(self):
-        exclude = ['date_modified'] + self.model_geo_fields
-        return [fld for fld in self.get_model_fields() if fld not in exclude]
+        exclude = list(set(getattr(self, 'geo_view_exclude', ['date_modified']) + self.model_geo_fields))
+        include = getattr(self, 'geo_view_include', [])
 
+        return list(set(include + [fld for fld in self.get_model_fields() if fld not in exclude]))

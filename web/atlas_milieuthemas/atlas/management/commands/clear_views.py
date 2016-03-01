@@ -2,6 +2,8 @@ from django.conf import settings
 from django.core.management import BaseCommand
 from django.db import connection
 
+from .sync_views import GEO_VIEW_PREFIX
+
 
 class Command(BaseCommand):
 
@@ -11,8 +13,8 @@ class Command(BaseCommand):
         removed = 0
 
         for table_info in tables:
-            if table_info.type == 'v' and table_info.name[0:4] == settings.GEO_VIEW_PREFIX:
-                cursor.execute("DROP VIEW IF EXISTS {}".format(table_info.name))
+            if table_info.type == 'v' and table_info.name[0:4] == GEO_VIEW_PREFIX:
+                cursor.execute("DROP VIEW {}".format(table_info.name))
                 removed += 1
 
         print('removed {} views'.format(removed))

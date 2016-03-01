@@ -39,9 +39,8 @@ class LPGVulpunt(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
 
     objects = geo.GeoManager()
 
-    def get_view_fields(self):
-        exclude = ['date_modified', 'station'] + self.model_geo_fields
-        return ['station_id'] + [fld for fld in self.get_model_fields() if fld not in exclude]
+    geo_view_exclude = ['date_modified', 'station']
+    geo_view_include = ['station_id']
 
 
 class LPGAfleverzuil(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -51,9 +50,8 @@ class LPGAfleverzuil(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
 
     objects = geo.GeoManager()
 
-    def get_view_fields(self):
-        exclude = ['date_modified', 'station'] + self.model_geo_fields
-        return ['station_id'] + [fld for fld in self.get_model_fields() if fld not in exclude]
+    geo_view_exclude = ['date_modified', 'station']
+    geo_view_include = ['station_id']
 
 
 class LPGTank(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -66,9 +64,8 @@ class LPGTank(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
 
     objects = geo.GeoManager()
 
-    def get_view_fields(self):
-        exclude = ['date_modified', 'station'] + self.model_geo_fields
-        return ['station_id'] + [fld for fld in self.get_model_fields() if fld not in exclude]
+    geo_view_exclude = ['date_modified', 'station']
+    geo_view_include = ['station_id']
 
 
 class Bron(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):

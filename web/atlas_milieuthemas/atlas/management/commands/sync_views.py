@@ -5,6 +5,8 @@ from django.db import connection
 
 from datapunt_generic.generic.mixins import ModelViewFieldsMixin
 
+GEO_VIEW_PREFIX = 'geo_'
+
 
 class Command(BaseCommand):
     views = []
@@ -37,7 +39,7 @@ class Command(BaseCommand):
             model_table = '{}_{}'.format(app_model.app_label, app_model.model)
 
             for geo_field in model.model_geo_fields:
-                view_name = '{}{}_{}'.format(settings.GEO_VIEW_PREFIX, app_model.app_label, app_model.model)
+                view_name = '{}{}_{}'.format(GEO_VIEW_PREFIX, app_model.app_label, app_model.model)
 
                 if 'line' in geo_field:
                     view_name += '_line'
