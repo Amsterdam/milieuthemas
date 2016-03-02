@@ -302,6 +302,7 @@ class ImportRisicozonesBedrijvenJob(object):
 
     def tasks(self):
         return [
+            ImportLPGStationTask(),
             ImportLPGVulpuntTask(),
             ImportLPGAfleverzuilTask(),
             ImportLPGTankTask(),
