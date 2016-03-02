@@ -261,12 +261,19 @@ class ImportBronTask(batch.BasicTask):
 
 class ImportBedrijfTask(batch.BasicTask):
     name = "Import dmb_veilig_bedrijven"
+    points = dict()
 
     def before(self):
+        source = os.path.join(self.path, "dmb_veilig_bedr_punten.csv")
+        process_csv(source, self.process_point_row)
+
         database.clear_models(models.Bedrijf)
 
+    def process_point_row(self, row):
+        self.points[row['id']] = row['geometrie']
+
     def after(self):
-        pass
+        self.points.clear()
 
     def process(self):
         source = os.path.join(self.path, "dmb_veilig_bedrijven.csv")
@@ -284,6 +291,12 @@ class ImportBedrijfTask(batch.BasicTask):
         if isinstance(geom, Polygon):
             geom = MultiPolygon(geom)
 
+        point = None
+        try:
+            point = GEOSGeometry(self.points[row['id']])
+        except (GEOSException, KeyError):
+            pass
+
         return models.Bedrijf(
             bedrijfsnaam=row['bedrijfsnaam'],
             adres=row['adres'],
@@ -294,6 +307,7 @@ class ImportBedrijfTask(batch.BasicTask):
             type_bedrijf=row['type_bedrijf'],
             opmerkingen=row['opmerkingen'],
             geometrie_polygon=geom,
+            geometrie_point=point,
         )
 
 

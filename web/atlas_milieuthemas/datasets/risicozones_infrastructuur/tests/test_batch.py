@@ -16,6 +16,7 @@ class ImportAardgasleidingTest(object):
         entry = models.Aardgasleiding.objects.get(pk=3)
         assertNotEqual(entry.geometrie, None)
 
+
 class ImportImportAardgasGebiedTest(object):
     def task(self):
         return batch.ImportAardgasGebiedTask()
@@ -29,7 +30,6 @@ class ImportImportAardgasGebiedTest(object):
             imported = models.AardgasGebied.objects.filter(type=res[0]).count()
             assertEqual(imported, res[1])
 
-        
 
 class ImportInfrastructuurTestBase(object):
     """

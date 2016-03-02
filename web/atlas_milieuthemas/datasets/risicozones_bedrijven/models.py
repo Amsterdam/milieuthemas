@@ -91,6 +91,7 @@ class Bedrijf(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     type_bedrijf = models.CharField(max_length=100, null=True)
     opmerkingen = models.TextField(null=True)
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
+    geometrie_point = geo.PointField(null=True, srid=28992)
 
     objects = geo.GeoManager()
 
