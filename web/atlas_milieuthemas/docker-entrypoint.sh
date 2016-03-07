@@ -12,7 +12,7 @@ python manage.py collectstatic --noinput
 yes yes | python manage.py migrate --noinput
 
 # run import
-python run_import.py
+python manage.py run_import
 
 # sync geo views
 python manage.py sync_views
