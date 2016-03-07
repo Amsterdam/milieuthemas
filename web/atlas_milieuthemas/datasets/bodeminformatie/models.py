@@ -4,7 +4,7 @@ from django.contrib.gis.db import models as geo
 from datapunt_generic.generic import mixins
 
 
-class Grondmonster(mixins.ImportStatusMixin):
+class Grondmonster(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     locatie = models.CharField(max_length=100, null=True)
     am_nummer = models.CharField(max_length=40, null=True)
@@ -41,7 +41,7 @@ class Grondmonster(mixins.ImportStatusMixin):
     objects = geo.GeoManager()
 
 
-class Grondwatermonster(mixins.ImportStatusMixin):
+class Grondwatermonster(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     locatie = models.CharField(max_length=100, null=True)
     type_onderzoek = models.CharField(max_length=40, null=True)
@@ -98,7 +98,7 @@ class Grondwatermonster(mixins.ImportStatusMixin):
     objects = geo.GeoManager()
 
 
-class Asbest(mixins.ImportStatusMixin):
+class Asbest(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     locatie = models.CharField(max_length=100, null=True)
     type_onderzoek = models.CharField(max_length=40, null=True)

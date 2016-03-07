@@ -5,7 +5,7 @@ from datapunt_generic.generic import mixins
 from datasets.themas.models import Thema
 
 
-class HoogtebeperkendeVlakken(mixins.ImportStatusMixin):
+class HoogtebeperkendeVlakken(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     type = models.CharField(max_length=100, null=True)
     thema = models.ForeignKey(Thema, null=True)
@@ -17,8 +17,11 @@ class HoogtebeperkendeVlakken(mixins.ImportStatusMixin):
 
     objects = geo.GeoManager()
 
+    geo_view_exclude = ['date_modified', 'thema']
+    geo_view_include = ['thema_id']
 
-class Geluidzone(mixins.ImportStatusMixin):
+
+class Geluidzone(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     type = models.CharField(max_length=100, null=True)
     thema = models.ForeignKey(Thema, null=True)
@@ -26,11 +29,17 @@ class Geluidzone(mixins.ImportStatusMixin):
 
     objects = geo.GeoManager()
 
+    geo_view_exclude = ['date_modified', 'thema']
+    geo_view_include = ['thema_id']
 
-class Vogelvrijwaringsgebied(mixins.ImportStatusMixin):
+
+class Vogelvrijwaringsgebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     type = models.CharField(max_length=100, null=True)
     thema = models.ForeignKey(Thema, null=True)
     geometrie = geo.MultiPolygonField(null=True, srid=28992)
 
     objects = geo.GeoManager()
+
+    geo_view_exclude = ['date_modified', 'thema']
+    geo_view_include = ['thema_id']

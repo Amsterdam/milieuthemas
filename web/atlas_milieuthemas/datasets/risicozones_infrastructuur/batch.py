@@ -18,7 +18,6 @@ from datapunt_generic.generic.csv import process_csv
 log = logging.getLogger(__name__)  # pylint: disable=C0103
 
 
-
 class ImportAardgasleidingTask(batch.BasicTask):
     """Importing the aardgas pipe lines"""
     name = "Import dmb_aardgas_leiding"
