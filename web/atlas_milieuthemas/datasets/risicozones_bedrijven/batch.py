@@ -217,7 +217,7 @@ class ImportLPGTankTask(batch.BasicTask):
 
         return models.LPGTank(
             station_id=station_id,
-            kleur=parse_nummer(row['stationnummer'] or 0),
+            kleur=parse_nummer(row['kleur'] or 0),
             type=row['type_contour'],
             voldoet=row['voldoet'],
             afstandseis=row['afstandseis'],
