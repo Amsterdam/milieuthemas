@@ -1,0 +1,10 @@
+Id|Locatienaam|Type_onderzoek|Xcoordinaat|Ycoordinaat|Naam_boring|Naam_monster|Materiaal|Bovenkant|Onderkant|Monster_mengmonster|Concentratie|Stof|geometrie
+52|WCW-terrein|Nader Onderzoek 1|125900|485431|14|MM02|Grond|0|0|Mengmonster|4|Asbest (som)|POINT (125926.31 485543.54)
+53|WCW-terrein|Nader Onderzoek 1|125903|485459|15|MM02|Grond|0|0|Mengmonster|4|Asbest (som)|POINT (125928.81 485571.56)
+54|WCW-terrein 2|Verkennend Onderzoek 2|125042|485491|001|lc2MM1|Grond|0|1|Mengmonster|28|Asbest (som)|POINT (125068.27 485603.26)
+55|WCW-terrein 2|Verkennend Onderzoek 2|125042|485491|001|lc2MM5|Grond|1|2|Mengmonster|-10|Asbest (som)|POINT (125068.27 485603.26)
+56|WCW-terrein 2|Verkennend Onderzoek 2|125120|485450|002|lc2MM2|Grond|0|1|Mengmonster|133|Asbest (som)|POINT (125145.74 485562.25)
+57|WCW-terrein 2|Verkennend Onderzoek 2|125120|485450|002|lc2MM5|Grond|1|2|Mengmonster|-10|Asbest (som)|POINT (125145.74 485562.25)
+58|WCW-terrein 2|Verkennend Onderzoek 2|125015|485557|003|lc2MM3|Grond|0|1|Mengmonster|1|Asbest (som)|POINT (125040.92 485669.35)
+59|WCW-terrein 2|Verkennend Onderzoek 2|125015|485557|003|lc2MM5|Grond|1|2|Mengmonster|-10|Asbest (som)|POINT (125040.92 485669.35)
+60|WCW-terrein 2|Verkennend Onderzoek 2|124945|485589|004|lc2MM4|Grond|0|1|Mengmonster|310|Asbest (som)|POINT (124970.66 485700.87)
