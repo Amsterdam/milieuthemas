@@ -118,3 +118,18 @@ class ImportBedrijfTest(TaskTestCase):
         self.assertEqual(bedrijf.stadsdeel, 'Westpoort')
         self.assertEqual(bedrijf.categorie_bevi, 'EMBALLAGE, art.2.1.f')
         self.assertNotEqual(bedrijf.geometrie_polygon, None)
+
+
+class ImportContourTest(TaskTestCase):
+    def task(self):
+        return batch.ImportContourTask()
+
+    def test_import(self):
+        self.run_task()
+
+        imported = models.Contour.objects.count()
+        self.assertEqual(imported, 66)
+
+        contour = models.Contour.objects.get(bron_id=10)
+        self.assertEqual(contour.bedrijfsnaam, 'ACT')
+        self.assertEqual(contour.type_contour, 'Plaatsgebonden risico 10-6')

@@ -76,7 +76,7 @@ class Bron(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
     objects = geo.GeoManager()
-    
+
     def __repr__(self):
         return '<Bron %d: %s>' % (self.id, self.bedrijfsnaam)
 
@@ -97,3 +97,17 @@ class Bedrijf(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
 
     def __repr__(self):
         return '<Bedrijf %d: %s>' % (self.id, self.bedrijfsnaam)
+
+
+class Contour(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
+    bron_id = models.CharField(max_length=20, null=True)
+    bedrijfsnaam = models.CharField(max_length=64, null=True)
+    type_contour = models.CharField(max_length=64, null=True)
+    afstandseis = models.CharField(max_length=40, null=True)
+    voldoet = models.CharField(max_length=3, null=True)
+    geometrie = geo.MultiPolygonField(null=True, srid=28992)
+
+    objects = geo.GeoManager()
+
+    def __repr__(self):
+        return '<Contour %d: %s>' % (self.id, self.bedrijfsnaam)

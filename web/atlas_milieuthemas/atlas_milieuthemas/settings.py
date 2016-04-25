@@ -1,6 +1,5 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import sys
 
 from datapunt_generic.generic.database import get_docker_host
 
@@ -11,7 +10,6 @@ SECRET_KEY = os.getenv("SECRET_KEY", "default-secret")
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -84,7 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'atlas_milieuthemas.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -99,11 +96,9 @@ DATABASES = {
     }
 }
 
-
 BATCH_SETTINGS = dict(
     batch_size=100000
 )
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -118,7 +113,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -128,15 +122,34 @@ STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'static'))
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'slack': {
+            'format': '%(message)s',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+        },
+        'slackbot': {
+            'level': 'INFO',
+            'class': 'pyslack.SlackHandler',
+            'formatter': 'slack',
+            'token': os.getenv('SLACK_TOKEN', 'insecure'),
+            'username': 'atlas milieuthemas',
+            'channel': '#devops',
         },
     },
     'loggers': {
         'django': {
             'handlers': ['console'],
             'level': 'INFO',
+        },
+        # Debug all batch jobs
+        'batch': {
+            'handlers': ['slackbot'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
     },
 }

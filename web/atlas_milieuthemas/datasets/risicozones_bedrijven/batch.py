@@ -243,6 +243,7 @@ class ImportBronTask(batch.BasicTask):
     def process_row(self, row):
         # Making bron id a requirement
         if not row['bron_id']:
+            log.warn("Bron has an empty bron_id; skipping")
             return
 
         geom = GEOSGeometry(row['geometrie'])
@@ -284,6 +285,7 @@ class ImportBedrijfTask(batch.BasicTask):
     def process_row(self, row):
         # Making company name a requirement
         if not row['bedrijfsnaam']:
+            log.warn("Bedrijf has an empty bedrijfsnaam; skipping")
             return
 
         geom = GEOSGeometry(row['geometrie'])
@@ -311,6 +313,42 @@ class ImportBedrijfTask(batch.BasicTask):
         )
 
 
+class ImportContourTask(batch.BasicTask):
+    name = "Import dmb_veilig_contouren"
+
+    def before(self):
+        database.clear_models(models.Contour)
+
+    def after(self):
+        pass
+
+    def process(self):
+        source = os.path.join(self.path, "dmb_veilig_contouren.csv")
+        contouren = [contour for contour in process_csv(source, self.process_row) if contour]
+
+        models.Contour.objects.bulk_create(contouren, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        # Making bron id a requirement
+        if not row['bron_id']:
+            log.warn("Bron has an empty bron_id; skipping")
+            return
+
+        geom = GEOSGeometry(row['geometrie'])
+
+        if isinstance(geom, Polygon):
+            geom = MultiPolygon(geom)
+
+        return models.Contour(
+            bron_id=row['bron_id'],
+            bedrijfsnaam=row['bedrijfsnaam'],
+            type_contour=row['type_contour'],
+            afstandseis=row['afstandseis'],
+            voldoet=row['voldoet'],
+            geometrie=geom,
+        )
+
+
 class ImportRisicozonesBedrijvenJob(object):
     name = "Import risicozones bedrijven"
 
@@ -322,4 +360,5 @@ class ImportRisicozonesBedrijvenJob(object):
             ImportLPGTankTask(),
             ImportBronTask(),
             ImportBedrijfTask(),
+            ImportContourTask(),
         ]

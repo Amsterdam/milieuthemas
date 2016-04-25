@@ -18,6 +18,7 @@ class Command(BaseCommand):
         'schiphol',
         'bodeminformatie',
         'geluidzone',
+        'veiligheidsafstanden',
         'risicozones_bedrijven',
         'risicozones_infrastructuur',
         # 'brisantbom',
