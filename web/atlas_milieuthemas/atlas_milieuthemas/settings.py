@@ -156,7 +156,6 @@ REST_FRAMEWORK = dict(
     DEFAULT_PAGINATION_CLASS='drf_hal_json.pagination.HalPageNumberPagination',
     DEFAULT_PARSER_CLASSES=('drf_hal_json.parsers.JsonHalParser',),
     DEFAULT_RENDERER_CLASSES=(
-        'drf_hal_json.renderers.JsonHalRenderer',
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer'
     ),
