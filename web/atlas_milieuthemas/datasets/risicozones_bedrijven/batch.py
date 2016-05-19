@@ -199,6 +199,9 @@ class ImportLPGTankTask(batch.BasicTask):
         models.LPGTank.objects.bulk_create(tanks, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
+        if not row['type_contour']:
+            return
+
         station_id = int(row['stationnummer'])
 
         if station_id not in self.stations:

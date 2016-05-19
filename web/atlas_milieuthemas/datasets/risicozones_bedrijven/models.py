@@ -76,7 +76,7 @@ class Bron(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
     objects = geo.GeoManager()
-    
+
     def __repr__(self):
         return '<Bron %d: %s>' % (self.id, self.bedrijfsnaam)
 
