@@ -11,8 +11,8 @@ importer:
   volumes:
     - /mnt/data/diva_import:/app/diva
   environment:
-    DB_NAME: nap
-    DB_USER: nap
+    DB_NAME: milieuthemas
+    DB_USER: milieuthemas
     DB_PASSWORD: insecure
   command: >
     bash -c "/app/docker-wait.sh \
