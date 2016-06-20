@@ -40,4 +40,4 @@ db-backup:
                         -T auth*    \
                         -U milieuthemas \
                         -h db -p 5432 \
-                        nap > /tmp/backups/database.dump"
+                        milieuthemas > /tmp/backups/database.dump"
