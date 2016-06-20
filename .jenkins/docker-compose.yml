@@ -1,0 +1,43 @@
+database:
+  image: admin.datapunt.amsterdam.nl:5000/atlas/postgres
+  environment:
+    POSTGRES_PASSWORD: insecure
+    POSTGRES_USER: milieuthemas
+
+importer:
+  build: ../web
+  links:
+    - database:database
+  volumes:
+    - /mnt/data/diva_import:/app/diva
+  environment:
+    DB_NAME: nap
+    DB_USER: nap
+    DB_PASSWORD: insecure
+  command: >
+    bash -c "/app/docker-wait.sh \
+            && python manage.py migrate \
+            && python manage.py run_import"
+
+db-backup:
+  image: admin.datapunt.amsterdam.nl:5000/atlas/postgres
+  links:
+    - database:db
+  volumes:
+    - ./backups:/tmp/backups
+  command: >
+    bash -c "echo db:5432:milieuthemas:milieuthemas:insecure > ~/.pgpass \
+            && chmod 600 ~/.pgpass \
+            && pg_dump --clean \
+                        -Fc \
+                        -t bodeminformatie* \
+                        -t geluidzone* \
+                        -t risicozones* \
+                        -t schiphol* \
+                        -t themas* \
+                        -t veiligheidsafstanden* \
+                        -T django*  \
+                        -T auth*    \
+                        -U milieuthemas \
+                        -h db -p 5432 \
+                        nap > /tmp/backups/database.dump"
