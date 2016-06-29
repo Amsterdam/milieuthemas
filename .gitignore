@@ -6,3 +6,4 @@ reports
 *_dev_settings.py
 static
 .env
+.jenkins/backups
