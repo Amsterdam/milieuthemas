@@ -20,6 +20,9 @@ node {
 
         try {
             sh "docker-compose build"
+            sh "docker-compose up -d"
+            sh "sleep 10"
+            sh "docker-compose up -d"
             sh "docker-compose run --rm -u root web python manage.py jenkins"
 
             step([$class: "JUnitResultArchiver", testResults: "reports/junit.xml"])
