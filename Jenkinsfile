@@ -25,7 +25,7 @@ node {
 
     stage('Test') {
     tryStep "test", {
-        sh "docker-compose -p milieuthemas -f .jenkins/docker-compose.yml build"
+        sh "docker-compose -p milieuthemas -f .jenkins/docker-compose.yml build && " +
         sh "docker-compose -p milieuthemas -f .jenkins/docker-compose.yml run --rm -u root web python manage.py jenkins"
     }, {
         step([$class: "JUnitResultArchiver", testResults: "reports/junit.xml"])
