@@ -23,6 +23,12 @@ node {
         checkout scm
     }
 
+    stage ("Build base image")
+        tryStep "build", {
+            sh "docker-compose build"
+        }
+    }
+
     stage('Test') {
         tryStep "test", {
             sh "docker-compose run --rm -u root web python manage.py jenkins"
