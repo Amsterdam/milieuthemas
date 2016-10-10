@@ -41,7 +41,7 @@ node {
 
     stage("Build master image and push to registry") {
         tryStep "build", {
-            def image = docker.build("admin.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${env.BUILD_NUMBER}", "web")
+            def image = docker.build("build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${env.BUILD_NUMBER}", "web")
             image.push()
             image.push("develop")
         }
