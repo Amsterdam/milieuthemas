@@ -22,7 +22,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    'django_jenkins',
     'django_extensions',
 
     'django.contrib.gis',

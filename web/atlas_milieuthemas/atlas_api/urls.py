@@ -6,8 +6,8 @@ class DocumentedRouter(routers.DefaultRouter):
     """
     """
 
-    def get_api_root_view(self):
-        view = super().get_api_root_view()
+    def get_api_root_view(self, **kwargs):
+        view = super().get_api_root_view(**kwargs)
         cls = view.cls
 
         class Datapunt(cls):
