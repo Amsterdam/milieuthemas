@@ -4,6 +4,7 @@ from rest_framework import routers
 
 class DocumentedRouter(routers.DefaultRouter):
     """
+    We do not have a rest api
     """
 
     def get_api_root_view(self, **kwargs):
@@ -21,6 +22,6 @@ router = DocumentedRouter()
 
 
 urlpatterns = [
-    url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^', include(router.urls)),
+   # url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
+   url(r'^', include(router.urls)),
 ]
