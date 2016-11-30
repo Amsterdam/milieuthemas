@@ -46,24 +46,39 @@ class Command(BaseCommand):
         risicozones_infrastructuur=[
             datasets.risicozones_infrastructuur.batch.ImportRisicozonesInfrastructuurJob,
         ],
+
         # brisantbom=[
         #     datasets.brisantbom.batch.ImportBrisantbomJob,
         # ],
     )
 
     def add_arguments(self, parser):
-        parser.add_argument('dataset',
-                            nargs='*',
-                            default=self.ordered,
-                            help="Dataset to import, choose from {}".format(', '.join(self.imports.keys())))
+        parser.add_argument(
+            'dataset',
+            nargs='*',
+            default=self.ordered,
+            help="Dataset to import, choose from {}".format(', '.join(self.imports.keys())))
 
-        parser.add_argument('--no-import',
-                            action='store_false',
-                            dest='run-import',
-                            default=True,
-                            help='Skip database importing')
+        parser.add_argument(
+            '--no-import',
+            action='store_false',
+            dest='run-import',
+            default=True,
+            help='Skip database importing')
+
+        parser.add_argument(
+            '--download',
+            action='store_true',
+            dest='download',
+            default=False,
+            help='Download data from objectstore')
 
     def handle(self, *args, **options):
+
+        if options['download']:
+            import get_import_data
+            get_import_data.get_all_files()
+
         dataset = options['dataset']
 
         for ds in dataset:

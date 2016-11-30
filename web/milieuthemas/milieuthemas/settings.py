@@ -27,7 +27,6 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'rest_framework',
     'rest_framework_gis',
-    'corsheaders',
 
     'atlas',
     'geo_views',
@@ -40,6 +39,7 @@ INSTALLED_APPS = (
     'datasets.veiligheidsafstanden',
     'datasets.risicozones_bedrijven',
     'datasets.risicozones_infrastructuur',
+
     'datasets.brisantbom',
 
     'datapunt_generic.batch',
@@ -62,7 +62,7 @@ if DEBUG:
     INSTALLED_APPS += ('debug_toolbar', )
     MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
-ROOT_URLCONF = 'atlas_milieuthemas.urls'
+ROOT_URLCONF = 'milieuthemas.urls'
 
 TEMPLATES = [
     {
@@ -80,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'atlas_milieuthemas.wsgi.application'
+WSGI_APPLICATION = 'milieuthemas.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases

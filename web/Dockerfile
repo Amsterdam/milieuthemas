@@ -21,5 +21,5 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 USER datapunt
-COPY atlas_milieuthemas /app/
+COPY milieuthemas /app/
 CMD /app/docker-entrypoint.sh
