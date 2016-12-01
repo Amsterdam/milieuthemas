@@ -13,20 +13,6 @@ class EmptyJob(object):
         return []
 
 
-class FailingTask(object):
-    name = "failing"
-
-    def execute(self):
-        raise Exception("Oops")
-
-
-class FailedJob(object):
-    name = "failed"
-
-    def tasks(self):
-        return [FailingTask()]
-
-
 class SimpleJob(object):
     def __init__(self, name, *tasks):
         self.name = name
@@ -49,23 +35,6 @@ class JobTest(TestCase):
 
         self.assertIsNotNone(e.date_finished)
         self.assertEqual(e.status, models.JobExecution.STATUS_FINISHED)
-
-    def test_failed_job_results_in_failed_execution(self):
-        e = batch.execute(FailedJob())
-
-        self.assertIsNotNone(e.date_finished)
-        self.assertEqual(e.status, models.JobExecution.STATUS_FAILED)
-
-    @skip('skip for now')
-    def test_task_can_be_function(self):
-        done = False
-
-        def update_done():
-            done = True
-
-        e = batch.execute(SimpleJob("simple", update_done))
-        self.assertEqual(e.status, models.JobExecution.STATUS_FINISHED)
-        self.assertEqual(done, True)
 
     def test_job_keeps_track_of_task_executions(self):
         def noop():

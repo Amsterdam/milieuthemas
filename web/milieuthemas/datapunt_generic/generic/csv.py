@@ -21,7 +21,8 @@ def _context_reader(source, skip=0, quotechar=None, quoting=csv.QUOTE_NONE):
         raise ValueError("File not found: {}".format(source))
 
     with open(source, encoding='cp1252') as f:
-        rows = csv.reader(f, delimiter='|', quotechar=quotechar, quoting=quoting)
+        rows = csv.reader(
+            f, delimiter='|', quotechar=quotechar, quoting=quoting)
         for i in range(skip):
             next(rows)
 
@@ -31,8 +32,11 @@ def _context_reader(source, skip=0, quotechar=None, quoting=csv.QUOTE_NONE):
 
 
 def process_csv(source, process_row_callback):
-    with _context_reader(source, quotechar='"', quoting=csv.QUOTE_MINIMAL) as rows:
-        return [result for result in (process_row_callback(r) for r in rows) if result]
+    with _context_reader(
+            source, quotechar='"', quoting=csv.QUOTE_MINIMAL) as rows:
+        return [
+            result for result in (
+                process_row_callback(r) for r in rows) if result]
 
 
 def parse_decimal(d):

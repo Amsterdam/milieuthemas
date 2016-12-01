@@ -1,13 +1,24 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sys
 
 from datapunt_generic.generic.database import get_docker_host
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 DIVA_DIR = os.path.abspath(os.path.join(BASE_DIR, './', 'diva'))
+
+DATA_DIR = os.path.abspath(os.path.join(BASE_DIR, './', 'data'))
+
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
+
+if TESTING:
+    DATA_DIR = DIVA_DIR
+
 
 SECRET_KEY = os.getenv("SECRET_KEY", "default-secret")
 DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,7 +51,7 @@ INSTALLED_APPS = (
     'datasets.risicozones_bedrijven',
     'datasets.risicozones_infrastructuur',
 
-    'datasets.brisantbom',
+    'datasets.bommenkaart',
 
     'datapunt_generic.batch',
     'datapunt_generic.generic',
@@ -58,6 +69,7 @@ MIDDLEWARE = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
 if DEBUG:
     INSTALLED_APPS += ('debug_toolbar', )
     MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
@@ -88,8 +100,8 @@ WSGI_APPLICATION = 'milieuthemas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DB_NAME', 'postgres'),
-        'USER': os.getenv('DB_NAME', 'postgres'),
+        'NAME': os.getenv('DB_NAME', 'milieuthemas'),
+        'USER': os.getenv('DB_NAME', 'milieuthemas'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'insecure'),
         'HOST': os.getenv('DATABASE_PORT_5432_TCP_ADDR', get_docker_host()),
         'PORT': os.getenv('DATABASE_PORT_5432_TCP_PORT', '5402'),
@@ -120,16 +132,20 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'static'))
 
 LOGGING = {
+
     'version': 1,
     'disable_existing_loggers': False,
+
     'formatters': {
         'slack': {
             'format': '%(message)s',
         },
     },
+
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
         },
         'slackbot': {
             'level': 'INFO',

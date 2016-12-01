@@ -11,12 +11,14 @@ def clear_models(*models):
     """
     for model in models:
         # noinspection PyProtectedMember
-        connection.cursor().execute("TRUNCATE {} CASCADE".format(model._meta.db_table))
+        connection.cursor().execute(
+            "TRUNCATE {} CASCADE".format(model._meta.db_table))
+
 
 def clear_model_by_value(model, column, value):
     """
     Clears part of a model based on the value in a given column.
-    
+
     Important!
     Since this is not truncating the table the pk is not reset.
     """
@@ -24,6 +26,7 @@ def clear_model_by_value(model, column, value):
     if isinstance(value, str):
         value = "'{}'".format(value)
     connection.cursor().execute("DELETE FROM {0} WHERE {0}.{1} = {2}".format(model._meta.db_table, column, value))
+
 
 def get_docker_host():
     # TODO:

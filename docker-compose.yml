@@ -4,6 +4,7 @@ database:
     - "5402:5432"
   environment:
     POSTGRES_PASSWORD: insecure
+    POSTGRES_USER: milieuthemas
 
 web:
   build: ./web
