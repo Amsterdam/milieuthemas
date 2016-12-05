@@ -15,6 +15,8 @@ log = logging.getLogger(__name__)
 
 class ImportLPGStationTask(batch.BasicTask):
     name = "Import dmb_lpg_station"
+    model = models.LPGStation
+
     points = dict()
 
     def before(self):
@@ -68,6 +70,7 @@ class ImportLPGStationTask(batch.BasicTask):
 class ImportLPGVulpuntTask(batch.BasicTask):
     name = "Import dmb_lpg_vulpunt"
     stations = set()
+    model = models.LPGVulpunt
 
     def before(self):
         database.clear_models(models.LPGVulpunt)
@@ -130,6 +133,7 @@ class ImportLPGVulpuntTask(batch.BasicTask):
 class ImportLPGAfleverzuilTask(batch.BasicTask):
     name = "Import dmb_lpg_afleverzuil"
     stations = set()
+    model = models.LPGAfleverzuil
 
     def before(self):
         database.clear_models(models.LPGAfleverzuil)
@@ -184,6 +188,7 @@ class ImportLPGAfleverzuilTask(batch.BasicTask):
 class ImportLPGTankTask(batch.BasicTask):
     name = "Import dmb_lpg_tank"
     stations = set()
+    model = models.LPGTank
 
     def before(self):
         database.clear_models(models.LPGTank)
@@ -227,6 +232,7 @@ class ImportLPGTankTask(batch.BasicTask):
 
 class ImportBronTask(batch.BasicTask):
     name = "Import dmb_veilig_bronnen"
+    model = models.Bron
 
     def before(self):
         database.clear_models(models.Bron)
@@ -263,6 +269,7 @@ class ImportBronTask(batch.BasicTask):
 class ImportBedrijfTask(batch.BasicTask):
     name = "Import dmb_veilig_bedrijven"
     points = dict()
+    model = models.Bedrijf
 
     def before(self):
         source = os.path.join(self.path, "dmb_veilig_bedr_punten.csv")
@@ -315,6 +322,7 @@ class ImportBedrijfTask(batch.BasicTask):
 
 class ImportContourTask(batch.BasicTask):
     name = "Import dmb_veilig_contouren"
+    model = models.Contour
 
     def before(self):
         database.clear_models(models.Contour)

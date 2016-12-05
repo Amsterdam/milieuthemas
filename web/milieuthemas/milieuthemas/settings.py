@@ -131,42 +131,42 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'static'))
 
+
 LOGGING = {
 
     'version': 1,
     'disable_existing_loggers': False,
 
     'formatters': {
-        'slack': {
-            'format': '%(message)s',
+        'console': {
+            'format': '%(asctime)s - %(name)20s - %(levelname)s - %(message)s',
         },
+    },
+
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['console'],
     },
 
     'handlers': {
         'console': {
-            'class': 'logging.StreamHandler',
             'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
         },
-        'slackbot': {
-            'level': 'INFO',
-            'class': 'pyslack.SlackHandler',
-            'formatter': 'slack',
-            'token': os.getenv('SLACK_TOKEN', 'insecure'),
-            'username': 'atlas milieuthemas',
-            'channel': '#devops',
-        },
+
     },
+
     'loggers': {
         'django': {
             'handlers': ['console'],
             'level': 'INFO',
         },
-        # Debug all batch jobs
+
         'batch': {
-            'handlers': ['slackbot'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
     },
 }
 

@@ -15,6 +15,7 @@ log = logging.getLogger(__name__)
 
 class ImportGrondmonster(batch.BasicTask):
     name = "Import dmb_grondmonster"
+    model = models.Grondmonster
 
     def before(self):
         database.clear_models(models.Grondmonster)
@@ -73,6 +74,7 @@ class ImportGrondmonster(batch.BasicTask):
 
 class ImportGrondwatermonster(batch.BasicTask):
     name = "Import dmb_watermonster"
+    model = models.Grondwatermonster
 
     def before(self):
         database.clear_models(models.Grondwatermonster)
@@ -142,6 +144,7 @@ class ImportGrondwatermonster(batch.BasicTask):
 
 class ImportAsbest(batch.BasicTask):
     name = "Import dmb_asbest"
+    model = models.Asbest
 
     def before(self):
         database.clear_models(models.Asbest)

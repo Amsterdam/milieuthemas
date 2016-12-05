@@ -41,6 +41,11 @@ class ImportGeluidzoneTask(batch.BasicTask):
 
     def after(self):
         self.themas = None
+        for _, value in self.models.items():
+            model = value['model']
+            log.info(
+                '%s %s imported',
+                model.__name__, model.objects.count())
 
     def process(self):
         source = os.path.join(self.path, "dro_geluid.csv")
@@ -53,7 +58,6 @@ class ImportGeluidzoneTask(batch.BasicTask):
         ]
 
     def process_row(self, row):
-        model = None
         geluid_zone_type = row['type'].lower()
 
         try:

@@ -68,12 +68,14 @@ class BasicTask(object):
     class Meta:
         __class__ = ABCMeta
 
-    def __init__(self):
-        diva = settings.DIVA_DIR
-        if not os.path.exists(diva):
-            raise ValueError("DIVA_DIR not found: {}".format(diva))
+    def __init__(self, path='milieuthemas'):
 
-        self.path = os.path.join(diva, 'milieuthemas')
+        data = settings.DATA_DIR
+
+        if not os.path.exists(data):
+            raise ValueError("DATA_DIR not found: {}".format(data))
+
+        self.path = os.path.join(data, path)
 
     def execute(self):
         try:
@@ -87,9 +89,11 @@ class BasicTask(object):
     def before(self):
         pass
 
-    @abstractmethod
     def after(self):
-        pass
+        if hasattr(self, 'model'):
+            log.info(
+                '%5s %s imported'.format(
+                    self.model.objects.count(), self.model.__name__))
 
     @abstractmethod
     def process(self):

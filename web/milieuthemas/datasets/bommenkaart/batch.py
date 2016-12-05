@@ -55,6 +55,7 @@ def process_qgis_csv(source, process_row_callback):
 
 class ImportInslagenTask(batch.BasicTask):
     name = "import inslagen"
+    model = models.BomInslag
 
     def before(self):
         """
@@ -77,8 +78,8 @@ class ImportInslagenTask(batch.BasicTask):
         inslagen = [inslag for inslag in process_qgis_csv(
             source, self.process_row) if inslag]
 
-        models.BomInslag.objects.bulk_create(inslagen, batch_size=database.BATCH_SIZE)
-        log.info(models.BomInslag.objects.count())
+        models.BomInslag.objects.bulk_create(
+            inslagen, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
         """
@@ -125,7 +126,6 @@ class ImportInslagenTask(batch.BasicTask):
         )
         # m.save()
         return m
-
 
 # class ImportGevrijwaardTask(batch.BasicTask):
 #    name = "import gevrijwaard_gebied"
