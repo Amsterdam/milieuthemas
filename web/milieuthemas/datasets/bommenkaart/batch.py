@@ -63,12 +63,6 @@ class ImportInslagenTask(batch.BasicTask):
         """
         database.clear_models(models.BomInslag)
 
-    def after(self):
-        """
-        No cleanup werk needed
-        """
-        pass
-
     def process(self):
         """
         Processing the CSV
@@ -117,44 +111,81 @@ class ImportInslagenTask(batch.BasicTask):
         m = models.BomInslag(
             kenmerk=row['kenmerk'],
             type=row['soort_hand'],
-            # datum=datum,
+            datum=datum.replace('/', '-'),
             geometrie_point=point,
+            bron=row['bron1'],
             nauwkeurig=row['nauwkeurig'],
             opmerkingen=row['opmerkinge'],
             oorlogsinc=row['oorlogsinc'],
             pdf=row['hyperlink']  # FIXME create working link..
         )
-        # m.save()
+
         return m
 
-# class ImportGevrijwaardTask(batch.BasicTask):
-#    name = "import gevrijwaard_gebied"
-#
-#    def before(self):
-#        """
-#        Cleaning up before reimport
-#        """
-#        # database.clear_models(models.Brisantbom)
-#        pass
-#
-#    def after(self):
-#        """
-#        No cleanup werk needed
-#        """
-#        pass
-#
-#    def process(self):
-#        """
-#        Processing the CSV
-#        """
-#        return
-#        source = os.path.join(self.path, "inslagen.csv")
-#        brisantbommen = [brisantbom for brisantbom in process_csv(source, self.process_row) if brisantbom]
-#        models.Brisant.bulk_create(bristabommen, batch_size=database.BATCH_SIZE)
-#        log.info(models.GevrijwaardGebied.objects.count())
-#
-#    def process_row(self, row):
-#
+
+class ImportGevrijwaardTask(batch.BasicTask):
+    """
+    wkt,        geometrie
+    kenmerk     kenmerk
+    datum       datum
+    soort_hand, (?)
+    bron1       foto / document
+    Datum1,
+    Intekening,
+    Nauwkeurig, (leeg)
+    Opmerkinge,
+    """
+
+    name = "import gevrijwaard_gebied"
+    model = models.GevrijwaardGebied
+
+    def before(self):
+        """
+        Cleaning up before reimport
+        """
+        database.clear_models(models.GevrijwaardGebied)
+
+    def process(self):
+        """
+        Processing the CSV
+        """
+        source = os.path.join(self.path, "gevrijwaard_gebied.csv")
+
+        gebieden = [
+                gebied for gebied in
+                process_qgis_csv(source, self.process_row)
+                if gebied]
+
+        models.GevrijwaardGebied.objects.bulk_create(
+            gebieden, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+
+        geom = GEOSGeometry(row['wkt'])
+
+        poly = None
+
+        if isinstance(geom, MultiPolygon):
+            poly = geom
+        else:
+            raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
+
+        datum = row['datum']
+
+        if not datum:
+            datum = row['datum1']
+
+        m = models.GevrijwaardGebied(
+            kenmerk=row['kenmerk'],
+            type=row['soort_hand'],
+            datum=datum.replace('/', '-'),
+            geometrie_polygon=poly,
+            bron=row['bron1'],
+            nauwkeurig=row['nauwkeurig'],
+            opmerkingen=row['opmerkinge'],
+        )
+
+        return m
 #
 # class ImportOnderzochtTask(batch.BasicTask):
 #     name = "import reeds_uitgevoerd_ce_onderzoeken"
@@ -218,14 +249,14 @@ class ImportInslagenTask(batch.BasicTask):
 #     def process_row(self, row):
 #
 
+
 class ImportBommenkaartJob(object):
     name = "Import bommenkaart informatie"
 
     def tasks(self):
         return[
             ImportInslagenTask(path='bommenkaart/csv'),
-
             # ImportVerdachtTask(path='bommenkaart/csv/'),
             # ImportOnderzochtTask(path='bommenkaart/csv/'),
-            # ImportGevrijwaardTask(path='bommenkaart/csv/'),
+            ImportGevrijwaardTask(path='bommenkaart/csv/'),
         ]

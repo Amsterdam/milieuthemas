@@ -30,6 +30,7 @@ class ImportLPGStationTask(batch.BasicTask):
 
     def after(self):
         self.points.clear()
+        super().after()
 
     def process(self):
         source = os.path.join(self.path, "dmb_lpg_station.csv")
@@ -78,6 +79,7 @@ class ImportLPGVulpuntTask(batch.BasicTask):
 
     def after(self):
         self.stations = None
+        super().after()
 
     def process(self):
         source = os.path.join(self.path, "dmb_lpg_vulpunt.csv")
@@ -141,6 +143,7 @@ class ImportLPGAfleverzuilTask(batch.BasicTask):
 
     def after(self):
         self.stations = None
+        super().after()
 
     def process(self):
         source = os.path.join(self.path, "dmb_lpg_afleverzuil.csv")
@@ -196,6 +199,7 @@ class ImportLPGTankTask(batch.BasicTask):
 
     def after(self):
         self.stations = None
+        super().after()
 
     def process(self):
         source = os.path.join(self.path, "dmb_lpg_tank.csv")
@@ -236,9 +240,6 @@ class ImportBronTask(batch.BasicTask):
 
     def before(self):
         database.clear_models(models.Bron)
-
-    def after(self):
-        pass
 
     def process(self):
         source = os.path.join(self.path, "dmb_veilig_bronnen.csv")
@@ -282,6 +283,7 @@ class ImportBedrijfTask(batch.BasicTask):
 
     def after(self):
         self.points.clear()
+        super().after()
 
     def process(self):
         source = os.path.join(self.path, "dmb_veilig_bedrijven.csv")
@@ -326,9 +328,6 @@ class ImportContourTask(batch.BasicTask):
 
     def before(self):
         database.clear_models(models.Contour)
-
-    def after(self):
-        pass
 
     def process(self):
         source = os.path.join(self.path, "dmb_veilig_contouren.csv")

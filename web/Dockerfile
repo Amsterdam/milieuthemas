@@ -21,6 +21,7 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY milieuthemas /app/
+
 RUN chmod -R 777 /app/data/
 
 USER datapunt

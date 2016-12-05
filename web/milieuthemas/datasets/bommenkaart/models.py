@@ -6,11 +6,6 @@ from datapunt_generic.generic import mixins
 
 from django.contrib.gis.db import models as geo
 
-from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.gis.geos import Point
-from django.contrib.gis.geos import LineString
-from django.contrib.gis.geos import MultiPolygon
-
 
 class BomInslag(mixins.ModelViewFieldsMixin,
                 mixins.ImportStatusMixin):
@@ -30,9 +25,15 @@ class BomInslag(mixins.ModelViewFieldsMixin,
     geometrie_point = geo.PointField(null=True, srid=28992)
 
 
-#class BrisantbomOnderzoek(mixins.ImportStatusMixin):
-#    datum = models.DateField(null=True)
-#    detectie = models.NullBooleanField()
-#    Onderzoekbureau = models.CharField(max_length=32, null=True)
-#    opdrachtgever = models.CharField(max_length=64, null=True)
+class GevrijwaardGebied(
+        mixins.ModelViewFieldsMixin,
+        mixins.ImportStatusMixin):
 
+    bron = models.CharField(max_length=100, null=True)
+
+    kenmerk = models.CharField(max_length=32)
+    type = models.CharField(max_length=100, null=True)
+    datum = models.DateField(null=True)
+    opmerkingen = models.TextField(null=True)
+    nauwkeurig = models.CharField(max_length=100, null=True)
+    geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)

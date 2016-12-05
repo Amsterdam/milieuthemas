@@ -24,6 +24,7 @@ class ImportVeiligheidsafstandenTask(batch.BasicTask):
 
     def after(self):
         self.themas = None
+        super().after()
 
     def process(self):
         source = os.path.join(self.path, "dro_veiligheid.csv")

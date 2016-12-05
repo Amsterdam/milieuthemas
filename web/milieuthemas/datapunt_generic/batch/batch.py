@@ -92,7 +92,7 @@ class BasicTask(object):
     def after(self):
         if hasattr(self, 'model'):
             log.info(
-                '%5s %s imported',
+                '%5s %s imported\n',
                 self.model.objects.count(), self.model.__name__)
 
     @abstractmethod
