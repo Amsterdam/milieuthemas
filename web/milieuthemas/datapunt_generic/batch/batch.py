@@ -68,7 +68,7 @@ class BasicTask(object):
     class Meta:
         __class__ = ABCMeta
 
-    def __init__(self, path='milieuthemas'):
+    def __init__(self, path='Milieuthemas'):
 
         data = settings.DATA_DIR
 
@@ -92,8 +92,8 @@ class BasicTask(object):
     def after(self):
         if hasattr(self, 'model'):
             log.info(
-                '%5s %s imported'.format(
-                    self.model.objects.count(), self.model.__name__))
+                '%5s %s imported',
+                self.model.objects.count(), self.model.__name__)
 
     @abstractmethod
     def process(self):

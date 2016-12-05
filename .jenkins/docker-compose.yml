@@ -8,15 +8,15 @@ importer:
   build: ../web
   links:
     - database:database
-  volumes:
-    - /mnt/data/diva_import:/app/diva
-#    - ../web/atlas_milieuthemas/diva:/app/diva
   environment:
     DB_NAME: milieuthemas
     DB_USER: milieuthemas
     DB_PASSWORD: insecure
+    OS_PASSWORD_BAG:
+    OS_PASSWORD_BOM:
   command: >
     bash -c "/app/docker-wait.sh \
+            && python get_import_data.py \
             && python manage.py migrate \
             && python manage.py sync_views \
             && python manage.py run_import "
