@@ -48,8 +48,6 @@ logging.getLogger("swiftclient").setLevel(logging.WARNING)
 print(MILIEUTHEMA)
 print(BOMMENKAART)
 
-DATA_DIR = 'diva/'
-
 m_store = MILIEUTHEMA
 
 bag_connection = Connection(

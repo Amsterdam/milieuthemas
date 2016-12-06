@@ -38,6 +38,7 @@ db-backup:
                         -t schiphol* \
                         -t themas* \
                         -t veiligheidsafstanden* \
+                        -t bommenkaart \
                         -t geo* \
                         -T django*  \
                         -T auth*    \
