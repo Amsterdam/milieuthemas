@@ -11,10 +11,10 @@ class BomInslag(mixins.ModelViewFieldsMixin,
                 mixins.ImportStatusMixin):
 
     kenmerk = models.CharField(max_length=32)
-    type = models.CharField(max_length=100, null=True)
+    type = models.CharField(max_length=300, null=True)
 
-    bron = models.CharField(max_length=100, null=True)
-    nauwkeurig = models.CharField(max_length=100, null=True)
+    bron = models.CharField(max_length=300, null=True)
+    nauwkeurig = models.CharField(max_length=200, null=True)
 
     datum = models.DateField(null=True)
 
@@ -29,13 +29,13 @@ class GevrijwaardGebied(
         mixins.ModelViewFieldsMixin,
         mixins.ImportStatusMixin):
 
-    bron = models.CharField(max_length=100, null=True)
+    bron = models.CharField(max_length=200, null=True)
 
     kenmerk = models.CharField(max_length=32)
-    type = models.CharField(max_length=100, null=True)
+    type = models.CharField(max_length=200, null=True)
     datum = models.DateField(null=True)
     opmerkingen = models.TextField(null=True)
-    nauwkeurig = models.CharField(max_length=100, null=True)
+    nauwkeurig = models.CharField(max_length=200, null=True)
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
 
@@ -43,23 +43,23 @@ class VerdachtGebied(
         mixins.ModelViewFieldsMixin,
         mixins.ImportStatusMixin):
 
-    bron = models.CharField(max_length=100, null=True)
+    bron = models.CharField(max_length=200, null=True)
 
     kenmerk = models.CharField(max_length=32)
     # hoofdgroep
-    type = models.CharField(max_length=100, null=True)
+    type = models.CharField(max_length=200, null=True)
     # subsoort
-    subtype = models.CharField(max_length=100, null=True)
+    subtype = models.CharField(max_length=200, null=True)
 
-    aantal = models.CharField(max_length=100, null=True)
-    kaliber = models.CharField(max_length=100, null=True)
-    verschijning = models.CharField(max_length=100, null=True)
+    aantal = models.CharField(max_length=200, null=True)
+    kaliber = models.CharField(max_length=200, null=True)
+    verschijning = models.CharField(max_length=200, null=True)
 
-    oorlogshandeling = models.CharField(max_length=100, null=True)
-    afbakening = models.CharField(max_length=100, null=True)
+    oorlogshandeling = models.CharField(max_length=200, null=True)
+    afbakening = models.CharField(max_length=200, null=True)
 
-    horizontaal = models.CharField(max_length=100, null=True)
-    cartografie = models.CharField(max_length=100, null=True)
+    horizontaal = models.CharField(max_length=200, null=True)
+    cartografie = models.CharField(max_length=200, null=True)
     pdf = models.CharField(max_length=200)
 
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
@@ -71,15 +71,15 @@ class UitgevoerdOnderzoek(
 
     kenmerk = models.CharField(max_length=32)
 
-    type = models.CharField(max_length=100, null=True)
+    type = models.CharField(max_length=200, null=True)
 
     datum = models.DateField(null=True)
 
-    onderzoeksgebied = models.CharField(max_length=100, null=True)
+    onderzoeksgebied = models.CharField(max_length=200, null=True)
 
-    opdrachtgever = models.CharField(max_length=100, null=True)
-    opdrachtnemer = models.CharField(max_length=100, null=True)
+    opdrachtgever = models.CharField(max_length=200, null=True)
+    opdrachtnemer = models.CharField(max_length=200, null=True)
 
-    verdacht_gebied = models.CharField(max_length=100, null=True)
+    verdacht_gebied = models.CharField(max_length=200, null=True)
 
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)

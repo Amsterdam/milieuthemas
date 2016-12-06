@@ -5,6 +5,8 @@ import csv
 
 from contextlib import contextmanager
 
+from dateutil.parser import parse
+
 # Packages
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.geos import Point
@@ -53,27 +55,44 @@ def process_qgis_csv(source, process_row_callback):
                 if result]
 
 
-class ImportInslagenTask(batch.BasicTask):
+def _set_date(obj, datestring):
+    """
+    Try to parse the date provided in the dataset
+    """
+    if not datestring:
+        return
+
+    try:
+        obj.datum = parse(datestring.replace('/', '-'))
+    except ValueError:
+        log.error('Invalid date Error "%s"', datestring)
+
+
+class ImportProces(batch.BasicTask):
+
+    def process(self):
+        """
+        Processing the CSV
+        """
+        source = os.path.join(self.path, self.source)
+
+        objects = [_object for _object in process_qgis_csv(
+            source, self.process_row) if _object]
+
+        self.model.objects.bulk_create(
+            objects, batch_size=database.BATCH_SIZE)
+
+
+class ImportInslagenTask(ImportProces):
     name = "import inslagen"
     model = models.BomInslag
+    source = "inslagen.csv"
 
     def before(self):
         """
         Cleaning up before reimport
         """
         database.clear_models(models.BomInslag)
-
-    def process(self):
-        """
-        Processing the CSV
-        """
-        source = os.path.join(self.path, "inslagen.csv")
-
-        inslagen = [inslag for inslag in process_qgis_csv(
-            source, self.process_row) if inslag]
-
-        models.BomInslag.objects.bulk_create(
-            inslagen, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
         """
@@ -111,7 +130,6 @@ class ImportInslagenTask(batch.BasicTask):
         m = models.BomInslag(
             kenmerk=row['kenmerk'],
             type=row['soort_hand'],
-            datum=datum.replace('/', '-'),
             geometrie_point=point,
             bron=row['bron1'],
             nauwkeurig=row['nauwkeurig'],
@@ -120,10 +138,12 @@ class ImportInslagenTask(batch.BasicTask):
             pdf=row['hyperlink']  # FIXME create working link..
         )
 
+        _set_date(m, datum.replace('/', '-'))
+
         return m
 
 
-class ImportGevrijwaardTask(batch.BasicTask):
+class ImportGevrijwaardTask(ImportProces):
     """
     wkt,        geometrie
     kenmerk     kenmerk
@@ -138,26 +158,13 @@ class ImportGevrijwaardTask(batch.BasicTask):
 
     name = "import gevrijwaard_gebied"
     model = models.GevrijwaardGebied
+    source = "gevrijwaard_gebied.csv"
 
     def before(self):
         """
         Cleaning up before reimport
         """
         database.clear_models(models.GevrijwaardGebied)
-
-    def process(self):
-        """
-        Processing the CSV
-        """
-        source = os.path.join(self.path, "gevrijwaard_gebied.csv")
-
-        gebieden = [
-                gebied for gebied in
-                process_qgis_csv(source, self.process_row)
-                if gebied]
-
-        models.GevrijwaardGebied.objects.bulk_create(
-            gebieden, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
 
@@ -178,39 +185,27 @@ class ImportGevrijwaardTask(batch.BasicTask):
         m = models.GevrijwaardGebied(
             kenmerk=row['kenmerk'],
             type=row['soort_hand'],
-            datum=datum.replace('/', '-'),
             geometrie_polygon=poly,
             bron=row['bron1'],
             nauwkeurig=row['nauwkeurig'],
             opmerkingen=row['opmerkinge'],
         )
 
+        _set_date(m, datum.replace('/', '-'))
+
         return m
 
 
-class ImportVerdachtGebiedTask(batch.BasicTask):
+class ImportVerdachtGebiedTask(ImportProces):
     name = "import verdachte gebieden"
     model = models.VerdachtGebied
+    source = "verdachte_gebieden.csv"
 
     def before(self):
         """
         Cleaning up before reimport
         """
         database.clear_models(models.VerdachtGebied)
-
-    def process(self):
-        """
-        Processing the CSV
-        """
-        source = os.path.join(self.path, "verdachte_gebieden.csv")
-
-        gebieden = [
-                gebied for gebied in
-                process_qgis_csv(source, self.process_row)
-                if gebied]
-
-        models.VerdachtGebied.objects.bulk_create(
-            gebieden, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
         """
@@ -263,30 +258,16 @@ class ImportVerdachtGebiedTask(batch.BasicTask):
         return m
 
 
-class ImportUitgevoerdOnderzoekTask(batch.BasicTask):
+class ImportUitgevoerdOnderzoekTask(ImportProces):
     name = "import onderzochte gebieden"
     model = models.UitgevoerdOnderzoek
+    source = "reeds_uitgevoerd_ce_onderzoek.csv"
 
     def before(self):
         """
         Cleaning up before reimport
         """
         database.clear_models(models.UitgevoerdOnderzoek)
-
-    def process(self):
-        """
-        Processing the CSV
-        """
-        source = os.path.join(
-            self.path, "reeds_uitgevoerd_ce_onderzoek.csv")
-
-        gebieden = [
-                gebied for gebied in
-                process_qgis_csv(source, self.process_row)
-                if gebied]
-
-        models.UitgevoerdOnderzoek.objects.bulk_create(
-            gebieden, batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
         """
@@ -325,9 +306,10 @@ class ImportUitgevoerdOnderzoekTask(batch.BasicTask):
 
             verdacht_gebied=row['verdacht_g'],
 
-            datum=datum.replace('/', '-'),
             geometrie_polygon=poly,
         )
+
+        _set_date(m, datum.replace('/', '-'))
 
         return m
 
