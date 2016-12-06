@@ -186,68 +186,150 @@ class ImportGevrijwaardTask(batch.BasicTask):
         )
 
         return m
-#
-# class ImportOnderzochtTask(batch.BasicTask):
-#     name = "import reeds_uitgevoerd_ce_onderzoeken"
-#
-#     def before(self):
-#         """
-#         Cleaning up before reimport
-#         """
-#         # database.clear_models(models.Brisantbom)
-#         pass
-#
-#     def after(self):
-#         """
-#         No cleanup werk needed
-#         """
-#         pass
-#
-#     def process(self):
-#         """
-#         Processing the CSV
-#         """
-#         return
-#         source = os.path.join(self.path, "reeds_uitgevoerd_ce_onderzoek.csv")
-#         brisantbommen = [brisantbom for brisantbom in process_csv(source, self.process_row) if brisantbom]
-#
-#         models.Brisant.bulk_create(bristabommen, batch_size=database.BATCH_SIZE)
-#         log.info(models.OnderzochtGebied.objects.count())
-#
-#     def process_row(self, row):
-#         return None
-#
-#
-#
-# class ImportVerdachtTask(batch.BasicTask):
-#     name = "import verdacht gebied"
-#
-#     def before(self):
-#         """
-#         Cleaning up before reimport
-#         """
-#         return
-#         #database.clear_models(models.Brisantbom)
-#
-#     def after(self):
-#         """
-#         No cleanup werk needed
-#         """
-#         pass
-#
-#     def process(self):
-#         """
-#         Processing the CSV
-#         """
-#         return
-#
-#         source = os.path.join(self.path, "gevrijwaard_gebied.csv")
-#         brisantbommen = [brisantbom for brisantbom in process_csv(source, self.process_row) if brisantbom]
-#
-#         models.Brisant.bulk_create(bristabommen, batch_size=database.BATCH_SIZE)
-#
-#     def process_row(self, row):
-#
+
+
+class ImportVerdachtGebiedTask(batch.BasicTask):
+    name = "import verdachte gebieden"
+    model = models.VerdachtGebied
+
+    def before(self):
+        """
+        Cleaning up before reimport
+        """
+        database.clear_models(models.VerdachtGebied)
+
+    def process(self):
+        """
+        Processing the CSV
+        """
+        source = os.path.join(self.path, "verdachte_gebieden.csv")
+
+        gebieden = [
+                gebied for gebied in
+                process_qgis_csv(source, self.process_row)
+                if gebied]
+
+        models.VerdachtGebied.objects.bulk_create(
+            gebieden, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        """
+        wkt
+        kenmerk
+        hoofdgroep
+        subsoort
+        kaliber
+        aantallen
+        verschijni
+        oorlogshan
+        afbakening
+        horizontal
+        cartografi
+        opmerkinge
+        hyperlink
+        """
+
+        geom = GEOSGeometry(row['wkt'])
+
+        poly = None
+
+        if isinstance(geom, MultiPolygon):
+            poly = geom
+        else:
+            log.error('Geo error')
+            raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
+
+        m = models.VerdachtGebied(
+
+            kenmerk=row['kenmerk'],
+
+            type=row['hoofdgroep'],
+            subtype=row['hoofdgroep'],
+
+            aantal=row['aantallen'],
+            kaliber=row['kaliber'],
+            verschijning=row['verschijni'],
+
+            oorlogshandeling=row['oorlogshan'],
+            afbakening=row['afbakening'],
+
+            horizontaal=row['horizontal'],
+            cartografie=row['cartografi'],
+            pdf=row['hyperlink'],
+
+            geometrie_polygon=poly,
+        )
+
+        return m
+
+
+class ImportUitgevoerdOnderzoekTask(batch.BasicTask):
+    name = "import onderzochte gebieden"
+    model = models.UitgevoerdOnderzoek
+
+    def before(self):
+        """
+        Cleaning up before reimport
+        """
+        database.clear_models(models.UitgevoerdOnderzoek)
+
+    def process(self):
+        """
+        Processing the CSV
+        """
+        source = os.path.join(
+            self.path, "reeds_uitgevoerd_ce_onderzoek.csv")
+
+        gebieden = [
+                gebied for gebied in
+                process_qgis_csv(source, self.process_row)
+                if gebied]
+
+        models.UitgevoerdOnderzoek.objects.bulk_create(
+            gebieden, batch_size=database.BATCH_SIZE)
+
+    def process_row(self, row):
+        """
+        wkT
+        kenmerk
+        soort_rapp
+        onderzoeks (gebieds naam)
+        opdrachtne
+        opdrachtge
+        verdacht_g
+        datum
+        """
+
+        geom = GEOSGeometry(row['wkt'])
+
+        poly = None
+
+        if isinstance(geom, MultiPolygon):
+            poly = geom
+        else:
+            log.error('Geo error')
+            raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
+
+        datum = row['datum']
+
+        m = models.UitgevoerdOnderzoek(
+
+            kenmerk=row['kenmerk'],
+
+            type=row['soort_rapp'],
+
+            onderzoeksgebied=row['onderzoeks'],
+
+            opdrachtnemer=row['opdrachtne'],
+            opdrachtgever=row['opdrachtge'],
+
+            verdacht_gebied=row['verdacht_g'],
+
+            datum=datum.replace('/', '-'),
+            geometrie_polygon=poly,
+        )
+
+        return m
 
 
 class ImportBommenkaartJob(object):
@@ -256,7 +338,7 @@ class ImportBommenkaartJob(object):
     def tasks(self):
         return[
             ImportInslagenTask(path='bommenkaart/csv'),
-            # ImportVerdachtTask(path='bommenkaart/csv/'),
-            # ImportOnderzochtTask(path='bommenkaart/csv/'),
+            ImportVerdachtGebiedTask(path='bommenkaart/csv/'),
+            ImportUitgevoerdOnderzoekTask(path='bommenkaart/csv/'),
             ImportGevrijwaardTask(path='bommenkaart/csv/'),
         ]
