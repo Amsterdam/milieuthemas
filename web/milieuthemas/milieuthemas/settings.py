@@ -18,7 +18,7 @@ if TESTING:
 
 SECRET_KEY = os.getenv("SECRET_KEY", "default-secret")
 DEBUG = False
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 

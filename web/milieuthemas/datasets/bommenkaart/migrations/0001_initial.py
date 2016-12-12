@@ -80,7 +80,7 @@ class Migration(migrations.Migration):
                 ('bron', models.CharField(max_length=200, null=True)),
                 ('kenmerk', models.CharField(max_length=32)),
                 ('type', models.CharField(max_length=200, null=True)),
-                ('subtype', models.CharField(max_length=200, null=True)),
+                ('subtype', models.CharField(max_length=400, null=True)),
                 ('aantal', models.CharField(max_length=200, null=True)),
                 ('kaliber', models.CharField(max_length=200, null=True)),
                 ('verschijning', models.CharField(max_length=200, null=True)),

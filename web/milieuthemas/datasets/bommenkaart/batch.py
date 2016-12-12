@@ -82,6 +82,15 @@ class ImportProces(batch.BasicTask):
         self.model.objects.bulk_create(
             objects, batch_size=database.BATCH_SIZE)
 
+    def pdf_link(self, pdf_name):
+        """
+        The object store link:
+
+        https://atlas.amsterdam.nl/bommenkaart/RAP_000000_.pdf
+        """
+        url = "https://atlas.amsterdam.nl/bommenkaart/{}"
+        return url.format(pdf_name)
+
 
 class ImportInslagenTask(ImportProces):
     name = "import inslagen"
@@ -135,7 +144,7 @@ class ImportInslagenTask(ImportProces):
             nauwkeurig=row['nauwkeurig'],
             opmerkingen=row['opmerkinge'],
             oorlogsinc=row['oorlogsinc'],
-            pdf=row['hyperlink']  # FIXME create working link..
+            pdf=self.pdf_link(row['hyperlink'])  # FIXME create working link..
         )
 
         _set_date(m, datum.replace('/', '-'))
@@ -239,7 +248,7 @@ class ImportVerdachtGebiedTask(ImportProces):
             kenmerk=row['kenmerk'],
 
             type=row['hoofdgroep'],
-            subtype=row['hoofdgroep'],
+            subtype=row['subsoort'],
 
             aantal=row['aantallen'],
             kaliber=row['kaliber'],
@@ -250,7 +259,7 @@ class ImportVerdachtGebiedTask(ImportProces):
 
             horizontaal=row['horizontal'],
             cartografie=row['cartografi'],
-            pdf=row['hyperlink'],
+            pdf=self.pdf_link(row['hyperlink']),
 
             geometrie_polygon=poly,
         )
