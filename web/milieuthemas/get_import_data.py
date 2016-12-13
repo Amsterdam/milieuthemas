@@ -11,12 +11,10 @@ from swiftclient.client import Connection
 # from dateutil import parser
 
 log = logging.getLogger(__name__)
-
 log.setLevel(logging.DEBUG)
 
 
 assert os.getenv('OS_PASSWORD_BAG')
-# assert os.getenv('OS_PASSWORD_BOM')
 
 
 MILIEUTHEMA = dict(
