@@ -16,7 +16,7 @@ log.setLevel(logging.DEBUG)
 
 
 assert os.getenv('OS_PASSWORD_BAG')
-assert os.getenv('OS_PASSWORD_BOM')
+# assert os.getenv('OS_PASSWORD_BOM')
 
 
 MILIEUTHEMA = dict(
@@ -29,24 +29,11 @@ MILIEUTHEMA = dict(
     REGION_NAME='NL',
 )
 
-BOMMENKAART = dict(
-    VERSION='2.0',
-    AUTHURL='https://identity.stack.cloudvps.com/v2.0',
-    TENANT_NAME='BGE000081_Bommenkaart',
-    # TENANT_ID='0efc828b88584759893253f563b35f9b',
-    TENANT_ID='e063b706cffc4002883c28d531f0234f',
-    USER='bommenkaart',
-    PASSWORD=os.getenv('OS_PASSWORD_BOM', 'insecure'),
-    REGION_NAME='NL',
-)
-
-
 logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger("swiftclient").setLevel(logging.WARNING)
 
 print(MILIEUTHEMA)
-print(BOMMENKAART)
 
 m_store = MILIEUTHEMA
 
@@ -58,17 +45,6 @@ bag_connection = Connection(
     auth_version=m_store['VERSION'],
     os_options={'tenant_id': m_store['TENANT_ID'],
                 'region_name': m_store['REGION_NAME']})
-
-b_store = BOMMENKAART
-
-bom_connection = Connection(
-    authurl=b_store['AUTHURL'],
-    user=b_store['USER'],
-    key=b_store['PASSWORD'],
-    tenant_name=b_store['TENANT_NAME'],
-    auth_version=b_store['VERSION'],
-    os_options={'tenant_id': b_store['TENANT_ID'],
-                'region_name': b_store['REGION_NAME']})
 
 
 def get_store_object(connection, folder, object_meta_data):
@@ -142,7 +118,7 @@ def get_all_files():
     """
 
     all_sources = [
-        (bom_connection, 'bommenkaart'),
+        (bag_connection, 'Bommenkaart'),
         (bag_connection, 'Milieuthemas')
     ]
 
