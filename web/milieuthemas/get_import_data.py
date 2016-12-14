@@ -22,7 +22,7 @@ MILIEUTHEMA = dict(
     AUTHURL='https://identity.stack.cloudvps.com/v2.0',
     TENANT_NAME='BGE000081 Milieuthemas',
     TENANT_ID='e063b706cffc4002883c28d531f0234f',
-    USER='bommenkaart',
+    USER='milieuthemas',
     PASSWORD=os.getenv('OS_PASSWORD_MILIEUTHEMAS', 'insecure'),
     REGION_NAME='NL',
 )
