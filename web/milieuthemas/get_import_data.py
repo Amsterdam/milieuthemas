@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
 
-assert os.getenv('OS_PASSWORD_Milieuthemas')
+assert os.getenv('OS_PASSWORD_MILIEUTHEMAS')
 
 
 MILIEUTHEMA = dict(
@@ -23,7 +23,7 @@ MILIEUTHEMA = dict(
     TENANT_NAME='BGE000081 Milieuthemas',
     TENANT_ID='e063b706cffc4002883c28d531f0234f',
     USER='bommenkaart',
-    PASSWORD=os.getenv('OS_PASSWORD_Milieuthemas', 'insecure'),
+    PASSWORD=os.getenv('OS_PASSWORD_MILIEUTHEMAS', 'insecure'),
     REGION_NAME='NL',
 )
 

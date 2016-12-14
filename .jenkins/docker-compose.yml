@@ -12,8 +12,7 @@ importer:
     DB_NAME: milieuthemas
     DB_USER: milieuthemas
     DB_PASSWORD: insecure
-    OS_PASSWORD_Milieuthemas:
-    OS_PASSWORD_BOM:
+    OS_PASSWORD_MILIEUTHEMAS:
   command: >
     bash -c "/app/docker-wait.sh \
             && python get_import_data.py \
