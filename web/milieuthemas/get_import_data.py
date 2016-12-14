@@ -14,16 +14,16 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
 
-assert os.getenv('OS_PASSWORD_BAG')
+assert os.getenv('OS_PASSWORD_Milieuthemas')
 
 
 MILIEUTHEMA = dict(
     VERSION='2.0',
     AUTHURL='https://identity.stack.cloudvps.com/v2.0',
-    TENANT_NAME='BGE000081 BAG',
-    TENANT_ID='4f2f4b6342444c84b3580584587cfd18',
-    USER='bag_brk',
-    PASSWORD=os.getenv('OS_PASSWORD_BAG', 'insecure'),
+    TENANT_NAME='BGE000081 Milieuthemas',
+    TENANT_ID='e063b706cffc4002883c28d531f0234f',
+    USER='bommenkaart',
+    PASSWORD=os.getenv('OS_PASSWORD_Milieuthemas', 'insecure'),
     REGION_NAME='NL',
 )
 
