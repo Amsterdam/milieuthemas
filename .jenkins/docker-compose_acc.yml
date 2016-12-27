@@ -19,14 +19,14 @@ tests:
             && python manage.py test"
 
 importer:
-  image: build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:production
+  image: build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:acceptance
   links:
     - database:database
   environment:
     DB_NAME: milieuthemas
     DB_USER: milieuthemas
     DB_PASSWORD: insecure
-    MILIEUTHEMAS_OBJECTSTORE_PASSWORD:
+    OS_PASSWORD_MILIEUTHEMAS:
   command: >
     bash -c "/app/docker-wait.sh \
             && python get_import_data.py \
