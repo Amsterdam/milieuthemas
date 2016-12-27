@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
 
-assert os.getenv('OS_PASSWORD_MILIEUTHEMAS')
+assert os.getenv('MILIEUTHEMAS_OBJECTSTORE_PASSWORD')
 
 
 MILIEUTHEMA = dict(
@@ -23,7 +23,7 @@ MILIEUTHEMA = dict(
     TENANT_NAME='BGE000081 Milieuthemas',
     TENANT_ID='e063b706cffc4002883c28d531f0234f',
     USER='milieuthemas',
-    PASSWORD=os.getenv('OS_PASSWORD_MILIEUTHEMAS', 'insecure'),
+    PASSWORD=os.getenv('MILIEUTHEMAS_OBJECTSTORE_PASSWORD', 'insecure'),
     REGION_NAME='NL',
 )
 
