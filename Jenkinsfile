@@ -23,26 +23,37 @@ node {
         checkout scm
     }
 
-    stage ("Build base image") {
-        tryStep "build", {
-            sh "docker-compose build"
-        }
-    }
-
     stage('Test') {
         tryStep "test", {
-            sh "docker-compose run --rm -u root web python manage.py test"
+            sh "docker-compose -p milieuthemas -f .jenkins/docker-compose.yml build"
+            sh "docker-compose -p milieuthemas -f .jenkins/docker-compose.yml run --rm tests"
         }, {
-            sh "docker-compose down"
+            sh "docker-compose -p milieuthemas -f .jenkins/docker-compose.yml down"
         }
     }
 
-    stage("Build master image and push to registry") {
+    stage("Build acceptance image") {
         tryStep "build", {
             def image = docker.build("build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${env.BUILD_NUMBER}", "web")
             image.push()
-            image.push("develop")
+            image.push("acceptance")
         }
     }
 }
 
+stage('Waiting for approval') {
+    slackSend channel: '#ci-channel', color: 'warning', message: 'Milieuthemas is waiting for Production Release - please confirm'
+    input "Deploy to Production?"
+}
+
+node {
+    stage('Push production image') {
+    tryStep "image tagging", {
+        def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${env.BUILD_NUMBER}")
+        image.pull()
+
+            image.push("production")
+            image.push("latest")
+        }
+    }
+}

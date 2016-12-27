@@ -19,7 +19,7 @@ tests:
             && python manage.py test"
 
 importer:
-  image: build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:production
+  image: build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:acceptance
   links:
     - database:database
   environment:
