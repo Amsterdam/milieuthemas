@@ -16,5 +16,5 @@ web:
     - $PWD/reports:/app/reports
   environment:
     SECRET_KEY: hoi
-    DB_NAME: postgres
+    DB_NAME: milieuthemas
     DB_PASSWORD: insecure
