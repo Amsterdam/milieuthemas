@@ -7,3 +7,6 @@ reports
 static
 .env
 .jenkins/backups
+
+.project
+.pydevproject
