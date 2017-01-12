@@ -51,7 +51,7 @@ services:
                           -t veiligheidsafstanden* \
                           -t bommenkaart* \
                           -t geo* \
-                          -T django*  \
+                          -t django_migrations  \
                           -T auth*    \
                           -U milieuthemas \
                           -h database -p 5432 \
