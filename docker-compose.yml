@@ -17,6 +17,8 @@ services:
     volumes:
       - $PWD/reports:/app/reports
     environment:
-      SECRET_KEY: hoi
-      DB_NAME: milieuthemas
-      DB_PASSWORD: insecure
+      - SECRET_KEY=insecure
+      - DB_NAME=milieuthemas
+      - DB_PASSWORD=insecure
+      - CONSUL_HOST=${CONSUL_HOST:-notset}
+      - CONSUL_PORT=${CONSUL_PORT:-8500}
