@@ -1,17 +1,34 @@
+from django.contrib.sites.models import Site
 from django.db import migrations
 
 from geo_views import migrate
+from milieuthemas import settings
+
+API_DOMAIN = 'API Domain'
+
+
+def create_site(apps, *args, **kwargs):
+    Site.objects.create(
+        domain=settings.DATAPUNT_API_URL,
+        name=API_DOMAIN
+    )
+
+
+def delete_site(apps, *args, **kwargs):
+    Site.objects.filter(name='API Domain').delete()
 
 
 class Migration(migrations.Migration):
     dependencies = [
         ('sites', '0002_alter_domain_unique'),
     ]
+
     operations = [
+        migrations.RunPython(code=create_site, reverse_code=delete_site),
 
         migrate.ManageView(
             view_name='geo_bommenkaart_bominslag_point',
-            sql="""
+            sql=f"""
                 SELECT
                   bominslag.bron,
                   bominslag.oorlogsinc,
@@ -27,12 +44,12 @@ class Migration(migrations.Migration):
                 FROM
                   bommenkaart_bominslag bominslag , django_site site
                 WHERE
-                  bominslag.geometrie_point IS NOT NULL;
+                  bominslag.geometrie_point IS NOT NULL and site.domain = '{API_DOMAIN}';
             """),
 
         migrate.ManageView(
             view_name='geo_bommenkaart_gevrijwaardgebied_polygon',
-            sql="""
+            sql=f"""
                 SELECT
                   gg.bron,
                   gg.type,
@@ -46,12 +63,12 @@ class Migration(migrations.Migration):
                 FROM
                   bommenkaart_gevrijwaardgebied gg, django_site site
                 WHERE
-                  gg.geometrie_polygon IS NOT NULL;
-            """),
+                  gg.geometrie_polygon IS NOT NULL and site.domain = '{API_DOMAIN}';
+            """.format(api_domain=API_DOMAIN)),
 
         migrate.ManageView(
             view_name='geo_bommenkaart_uitgevoerdonderzoek_polygon',
-            sql="""
+            sql=f"""
                 SELECT
                   uo.type,
                   uo.kenmerk,
@@ -66,12 +83,12 @@ class Migration(migrations.Migration):
                 FROM
                   bommenkaart_uitgevoerdonderzoek uo, django_site site
                 WHERE
-                  uo.geometrie_polygon IS NOT NULL;
-            """),
+                  uo.geometrie_polygon IS NOT NULL and site.domain = '{API_DOMAIN}';
+            """.format(api_domain=API_DOMAIN)),
 
         migrate.ManageView(
             view_name='geo_bommenkaart_verdachtgebied_polygon',
-            sql="""
+            sql=f"""
                 SELECT
                   vg.bron,
                   vg.afbakening,
@@ -91,6 +108,6 @@ class Migration(migrations.Migration):
                 FROM
                   bommenkaart_verdachtgebied vg, django_site site
                 WHERE
-                  vg.geometrie_polygon IS NOT NULL;
-            """)
+                  vg.geometrie_polygon IS NOT NULL and site.domain = '{API_DOMAIN}';
+            """.format(api_domain=API_DOMAIN))
     ]

@@ -13,6 +13,9 @@ DATA_DIR = os.path.abspath(os.path.join(BASE_DIR, './', 'data'))
 OVERRIDE_HOST_ENV_VAR = 'DATABASE_HOST_OVERRIDE'
 OVERRIDE_PORT_ENV_VAR = 'DATABASE_PORT_OVERRIDE'
 
+DATAPUNT_API_URL = os.getenv(
+    'DATAPUNT_API_URL', 'https://api.datapunt.amsterdam.nl/')
+
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
 if TESTING:
@@ -38,6 +41,7 @@ def get_database_key():
         return LocationKey.docker
 
     return LocationKey.local
+
 
 # Application definition
 
@@ -74,7 +78,6 @@ INSTALLED_APPS = PROJECT_APPS + [
     'rest_framework_gis',
 ]
 
-
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -87,7 +90,7 @@ MIDDLEWARE = (
 )
 
 if DEBUG:
-    INSTALLED_APPS += ('debug_toolbar', )
+    INSTALLED_APPS += ('debug_toolbar',)
     MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
 ROOT_URLCONF = 'milieuthemas.urls'
@@ -109,7 +112,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'milieuthemas.wsgi.application'
-
 
 DATABASE_OPTIONS = {
     LocationKey.docker: {
@@ -164,7 +166,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'static'))
-
 
 LOGGING = {
 
