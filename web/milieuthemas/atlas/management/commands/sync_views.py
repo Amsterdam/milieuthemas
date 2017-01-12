@@ -20,8 +20,10 @@ class Command(BaseCommand):
         cursor = connection.cursor()
 
         for view in self.views:
-            cursor.execute("DROP VIEW IF EXISTS {}".format(view['view_name']))
-            cursor.execute("CREATE VIEW {} AS {}".format(view['view_name'], view['sql']))
+            cursor.execute(
+                "DROP VIEW IF EXISTS {}".format(view['view_name']))
+            cursor.execute(
+                "CREATE VIEW {} AS {}".format(view['view_name'], view['sql']))
 
         self.stdout.write('synced {} views'.format(len(self.views)))
 
@@ -31,7 +33,8 @@ class Command(BaseCommand):
         for app_model in app_models:
             model_class = app_model.model_class()
 
-            if not issubclass(model_class, ModelViewFieldsMixin):
+            if model_class is None or not issubclass(model_class,
+                                                     ModelViewFieldsMixin):
                 continue
 
             model = model_class()
@@ -40,7 +43,9 @@ class Command(BaseCommand):
             model_table = '{}_{}'.format(app_model.app_label, app_model.model)
 
             for geo_field in model.model_geo_fields:
-                view_name = '{}{}_{}'.format(GEO_VIEW_PREFIX, app_model.app_label, app_model.model)
+                view_name = '{}{}_{}'.format(GEO_VIEW_PREFIX,
+                                             app_model.app_label,
+                                             app_model.model)
 
                 if 'line' in geo_field:
                     view_name += '_line'
