@@ -20,6 +20,12 @@ services:
       - database
     environment:
       MILIEUTHEMAS_OBJECTSTORE_PASSWORD:
+      DB_NAME: milieuthemas
+      DB_USER: milieuthemas
+      DB_PASSWORD: insecure
+      DATABASE_HOST_OVERRIDE: database
+      DATABASE_PORT_OVERRIDE: 5432
+      METADATA_URL: "${METADATA_URL}"
     command: >
       bash -c "/app/docker-wait.sh \
               && python get_import_data.py \
