@@ -15,7 +15,7 @@ class QueryMetadata(metadata.SimpleMetadata):
         return result
 
 
-class BommenkaartRouter(routers.DefaultRouter):
+class ExplosievenRouter(routers.DefaultRouter):
     """
     Informatie over explosieven in de stad. Inslagen (met mogelijke
     blindgangers), gevrijwaarde, verdachte en ondezochte gebieden.
@@ -32,9 +32,9 @@ class BommenkaartRouter(routers.DefaultRouter):
         return Bommenkaart.as_view()
 
 
-bommenkaart = BommenkaartRouter()
+explosieven = ExplosievenRouter()
 
-bommenkaart.register(r'inslagen', BomInslagViewset)
-bommenkaart.register(r'gevrijwaardgebied', GevrijwaardGebiedViewSet)
-bommenkaart.register(r'uitgevoerdonderzoek', UitgevoerdOnderzoekViewSet)
-bommenkaart.register(r'verdachtgebied', VerdachtGebiedViewSet)
+explosieven.register(r'inslagen', InslagViewset)
+explosieven.register(r'gevrijwaardgebied', GevrijwaardGebiedViewSet)
+explosieven.register(r'uitgevoerdonderzoek', UitgevoerdOnderzoekViewSet)
+explosieven.register(r'verdachtgebied', VerdachtGebiedViewSet)

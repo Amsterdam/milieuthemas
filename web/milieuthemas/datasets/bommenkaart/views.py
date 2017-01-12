@@ -17,7 +17,7 @@ class ExpansionMetadata(metadata.SimpleMetadata):
         return result
 
 
-class BomInslagViewset(rest.AtlasViewSet):
+class InslagViewset(rest.AtlasViewSet):
     """
     Inslagen uitleg
     """

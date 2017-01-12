@@ -31,7 +31,7 @@ class Command(BaseCommand):
         app_models = models.ContentType.objects.all()
 
         for app_model in app_models:
-            model_class = app_model.model_class()
+            model_class = app_model.model_zclass()
 
             if model_class is None or not issubclass(model_class,
                                                      ModelViewFieldsMixin):
