@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 FROM
                   bommenkaart_bominslag bominslag , django_site site
                 WHERE
-                  bominslag.geometrie_point IS NOT NULL and site.domain = '{API_DOMAIN}';
+                  bominslag.geometrie_point IS NOT NULL and site.name = '{API_DOMAIN}';
             """),
 
         migrate.ManageView(
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 FROM
                   bommenkaart_gevrijwaardgebied gg, django_site site
                 WHERE
-                  gg.geometrie_polygon IS NOT NULL and site.domain = '{API_DOMAIN}';
+                  gg.geometrie_polygon IS NOT NULL and site.name = '{API_DOMAIN}';
             """.format(api_domain=API_DOMAIN)),
 
         migrate.ManageView(
@@ -83,7 +83,7 @@ class Migration(migrations.Migration):
                 FROM
                   bommenkaart_uitgevoerdonderzoek uo, django_site site
                 WHERE
-                  uo.geometrie_polygon IS NOT NULL and site.domain = '{API_DOMAIN}';
+                  uo.geometrie_polygon IS NOT NULL and site.name = '{API_DOMAIN}';
             """.format(api_domain=API_DOMAIN)),
 
         migrate.ManageView(
@@ -108,6 +108,6 @@ class Migration(migrations.Migration):
                 FROM
                   bommenkaart_verdachtgebied vg, django_site site
                 WHERE
-                  vg.geometrie_polygon IS NOT NULL and site.domain = '{API_DOMAIN}';
+                  vg.geometrie_polygon IS NOT NULL and site.name = '{API_DOMAIN}';
             """.format(api_domain=API_DOMAIN))
     ]
