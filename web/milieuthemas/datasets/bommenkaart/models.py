@@ -4,8 +4,7 @@ from django.db import models
 from datapunt_generic.generic import mixins
 
 
-class BomInslag(mixins.ModelViewFieldsMixin,
-                mixins.ImportStatusMixin):
+class BomInslag(mixins.ImportStatusMixin):
     kenmerk = models.CharField(max_length=32)
     type = models.CharField(max_length=300, null=True)
 
@@ -39,8 +38,7 @@ class BomInslagDBView(models.Model):
     uri = models.TextField(max_length=300)
 
 
-class GevrijwaardGebied(mixins.ModelViewFieldsMixin,
-                        mixins.ImportStatusMixin):
+class GevrijwaardGebied(mixins.ImportStatusMixin):
     bron = models.CharField(max_length=200, null=True)
 
     kenmerk = models.CharField(max_length=32)
@@ -66,8 +64,7 @@ class GevrijwaardGebiedDbView(models.Model):
     uri = models.TextField(max_length=300)
 
 
-class VerdachtGebied(mixins.ModelViewFieldsMixin,
-                     mixins.ImportStatusMixin):
+class VerdachtGebied(mixins.ImportStatusMixin):
     bron = models.CharField(max_length=200, null=True)
 
     kenmerk = models.CharField(max_length=32)
@@ -111,8 +108,7 @@ class VerdachtGebiedDbView(models.Model):
     uri = models.TextField(max_length=300)
 
 
-class UitgevoerdOnderzoek(mixins.ModelViewFieldsMixin,
-                          mixins.ImportStatusMixin):
+class UitgevoerdOnderzoek(mixins.ImportStatusMixin):
     kenmerk = models.CharField(max_length=32)
     type = models.CharField(max_length=200, null=True)
     datum = models.DateField(null=True)
