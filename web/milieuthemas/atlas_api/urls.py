@@ -1,6 +1,8 @@
 from django.conf.urls import url, include
 from rest_framework import routers
 
+from datasets.bommenkaart.urls import bommenkaart
+
 
 class DocumentedRouter(routers.DefaultRouter):
     """
@@ -20,8 +22,8 @@ class DocumentedRouter(routers.DefaultRouter):
 
 router = DocumentedRouter()
 
-
 urlpatterns = [
-   # url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
-   url(r'^', include(router.urls)),
+    # url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^', include(router.urls)),
+    url(r'^bommenkaart/', include(bommenkaart.urls)),
 ]

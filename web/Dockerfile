@@ -1,4 +1,4 @@
-FROM python:3.5
+FROM build.datapunt.amsterdam.nl:5000/atlas/python:latest
 MAINTAINER datapunt.ois@amsterdam.nl
 
 ENV PYTHONUNBUFFERED 1
@@ -8,6 +8,7 @@ EXPOSE 8000
 RUN apt-get update \
 	&& apt-get install -y \
 		libgeos-dev \
+		gdal-bin \
 		netcat \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \

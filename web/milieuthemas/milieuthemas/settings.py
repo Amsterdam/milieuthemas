@@ -15,34 +15,18 @@ TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 if TESTING:
     DATA_DIR = DIVA_DIR
 
-
-SECRET_KEY = os.getenv("SECRET_KEY", "default-secret")
-DEBUG = False
-# DEBUG = True
+default_secret = "default-secret"
+SECRET_KEY = os.getenv("SECRET_KEY", default_secret)
+DEBUG = SECRET_KEY == default_secret
 
 ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.humanize',
-
-    'django_extensions',
-
-    'django.contrib.gis',
-    'rest_framework',
-    'rest_framework_gis',
-
+PROJECT_APPS = [
     'atlas',
     'geo_views',
     'atlas_api',
-
     'datasets.themas',
     'datasets.schiphol',
     'datasets.bodeminformatie',
@@ -50,13 +34,27 @@ INSTALLED_APPS = (
     'datasets.veiligheidsafstanden',
     'datasets.risicozones_bedrijven',
     'datasets.risicozones_infrastructuur',
-
     'datasets.bommenkaart',
-
     'datapunt_generic.batch',
     'datapunt_generic.generic',
     'datapunt_generic.health',
-)
+]
+
+INSTALLED_APPS = PROJECT_APPS + [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    'django_extensions',
+    'django.contrib.sites',
+
+    'django.contrib.gis',
+    'rest_framework',
+    'rest_framework_gis',
+]
 
 
 MIDDLEWARE = (
@@ -183,13 +181,16 @@ REST_FRAMEWORK = dict(
         'rest_framework.authentication.SessionAuthentication',
     ),
     DEFAULT_PAGINATION_CLASS='drf_hal_json.pagination.HalPageNumberPagination',
-    DEFAULT_PARSER_CLASSES=('drf_hal_json.parsers.JsonHalParser',),
+    DEFAULT_PARSER_CLASSES=(
+        'drf_hal_json.parsers.JsonHalParser',
+    ),
     DEFAULT_RENDERER_CLASSES=(
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer'
     ),
-    DEFAULT_FILTER_BACKENDS=('rest_framework.filters.DjangoFilterBackend',),
-    COERCE_DECIMAL_TO_STRING=False,
+    DEFAULT_FILTER_BACKENDS=(
+        'django_filters.rest_framework.DjangoFilterBackend',
+    )
 )
 
 CORS_ORIGIN_REGEX_WHITELIST = (
