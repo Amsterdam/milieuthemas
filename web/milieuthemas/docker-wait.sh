@@ -4,8 +4,8 @@ set -u
 set -e
 
 # wait for postgres
-while ! nc -z database 5401
+while ! nc -z database 5432
 do
 	echo "Waiting for postgres..."
-	sleep 2
+	sleep 0.5
 done

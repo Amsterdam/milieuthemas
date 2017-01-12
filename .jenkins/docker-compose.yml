@@ -9,13 +9,7 @@ services:
   tests:
     build: ../web
     links:
-      - database:database
-    environment:
-      DB_NAME: milieuthemas
-      DB_USER: milieuthemas
-      DB_HOST: database
-      DB_PASSWORD: insecure
-      DB_PORT_5432: 5432
+      - database
     command: >
       bash -c "/app/docker-wait.sh \
               && python manage.py test"
