@@ -1,20 +1,22 @@
-database:
-  image: build.datapunt.amsterdam.nl:5000/atlas/postgres
-  ports:
-    - "5402:5432"
-  environment:
-    POSTGRES_PASSWORD: insecure
-    POSTGRES_USER: milieuthemas
+version: '2.1'
+services:
+  database:
+    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    ports:
+      - "5402:5432"
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_USER: milieuthemas
 
-web:
-  build: ./web
-  ports:
-    - "8101:8000"
-  links:
-    - database:database
-  volumes:
-    - $PWD/reports:/app/reports
-  environment:
-    SECRET_KEY: hoi
-    DB_NAME: milieuthemas
-    DB_PASSWORD: insecure
+  web:
+    build: ./web
+    ports:
+      - "8101:8000"
+    links:
+      - database
+    volumes:
+      - $PWD/reports:/app/reports
+    environment:
+      SECRET_KEY: hoi
+      DB_NAME: milieuthemas
+      DB_PASSWORD: insecure

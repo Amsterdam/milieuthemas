@@ -1,60 +1,62 @@
-database:
-  image: build.datapunt.amsterdam.nl:5000/atlas/postgres
-  environment:
-    POSTGRES_PASSWORD: insecure
-    POSTGRES_USER: milieuthemas
+version: '2.1'
+services:
+  database:
+    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_USER: milieuthemas
 
-tests:
-  build: ../web
-  links:
-    - database:database
-  environment:
-    DB_NAME: milieuthemas
-    DB_USER: milieuthemas
-    DB_HOST: database
-    DB_PASSWORD: insecure
-    DB_PORT_5432: 5432
-  command: >
-    bash -c "/app/docker-wait.sh \
-            && python manage.py test"
+  tests:
+    build: ../web
+    links:
+      - database:database
+    environment:
+      DB_NAME: milieuthemas
+      DB_USER: milieuthemas
+      DB_HOST: database
+      DB_PASSWORD: insecure
+      DB_PORT_5432: 5432
+    command: >
+      bash -c "/app/docker-wait.sh \
+              && python manage.py test"
 
-importer:
-  image: build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${ENVIRONMENT}
-  links:
-    - database:database
-  environment:
-    DB_NAME: milieuthemas
-    DB_USER: milieuthemas
-    DB_PASSWORD: insecure
-    MILIEUTHEMAS_OBJECTSTORE_PASSWORD:
-  command: >
-    bash -c "/app/docker-wait.sh \
-            && python get_import_data.py \
-            && python manage.py migrate \
-            && python manage.py sync_views \
-            && python manage.py run_import "
+  importer:
+    image: build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${ENVIRONMENT}
+    links:
+      - database:database
+    environment:
+      DB_NAME: milieuthemas
+      DB_USER: milieuthemas
+      DB_PASSWORD: insecure
+      MILIEUTHEMAS_OBJECTSTORE_PASSWORD:
+    command: >
+      bash -c "/app/docker-wait.sh \
+              && python get_import_data.py \
+              && python manage.py migrate \
+              && python manage.py sync_views \
+              && python manage.py run_import "
 
-db-backup:
-  image: build.datapunt.amsterdam.nl:5000/atlas/postgres
-  links:
-    - database:db
-  volumes:
-    - ./backups:/tmp/backups
-  command: >
-    bash -c "echo db:5432:milieuthemas:milieuthemas:insecure > ~/.pgpass \
-            && chmod 600 ~/.pgpass \
-            && pg_dump --clean \
-                        -Fc \
-                        -t bodeminformatie* \
-                        -t geluidzone* \
-                        -t risicozones* \
-                        -t schiphol* \
-                        -t themas* \
-                        -t veiligheidsafstanden* \
-                        -t bommenkaart* \
-                        -t geo* \
-                        -T django*  \
-                        -T auth*    \
-                        -U milieuthemas \
-                        -h db -p 5432 \
-                        milieuthemas > /tmp/backups/database.dump"
+  db-backup:
+    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    links:
+      - database:db
+    volumes:
+      - ./backups:/tmp/backups
+    command: >
+      bash -c "echo db:5432:milieuthemas:milieuthemas:insecure > ~/.pgpass \
+              && chmod 600 ~/.pgpass \
+              && pg_dump --clean \
+                          -Fc \
+                          -t bodeminformatie* \
+                          -t geluidzone* \
+                          -t risicozones* \
+                          -t schiphol* \
+                          -t themas* \
+                          -t veiligheidsafstanden* \
+                          -t bommenkaart* \
+                          -t geo* \
+                          -T django*  \
+                          -T auth*    \
+                          -U milieuthemas \
+                          -h db -p 5432 \
+                          milieuthemas > /tmp/backups/database.dump"
