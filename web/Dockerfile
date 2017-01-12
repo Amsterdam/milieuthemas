@@ -4,7 +4,7 @@ MAINTAINER datapunt.ois@amsterdam.nl
 ENV PYTHONUNBUFFERED 1
 ENV CONSUL_HOST=${CONSUL_HOST:-notset}
 ENV CONSUL_PORT=${CONSUL_PORT:-8500}
-ENV DATAPUNT_API_URL=${DATAPUNT_API_URL:-https://api-acc.datapunt.amsterdam.nl/}
+ENV DATAPUNT_API_URL=${DATAPUNT_API_URL:-https://api.datapunt.amsterdam.nl/}
 
 
 EXPOSE 8000

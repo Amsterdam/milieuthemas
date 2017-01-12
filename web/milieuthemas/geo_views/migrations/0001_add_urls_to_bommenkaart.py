@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                   bominslag.nauwkeurig,
                   bominslag.datum,
                   bominslag.pdf,
-                  site.domain || 'milieuthemas/minutie/inslagen/' || bominslag.id || '/' AS uri,
+                  site.domain || 'milieuthemas/explosieven/inslagen/' || bominslag.id || '/' AS uri,
                   bominslag.geometrie_point AS geometrie
                 FROM
                   bommenkaart_bominslag bominslag , django_site site
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                   gg.id,
                   gg.nauwkeurig,
                   gg.datum,
-                  site.domain || 'milieuthemas/minutie/gevrijwaardgebied/' || gg.id || '/' AS uri,
+                  site.domain || 'milieuthemas/explosieven/gevrijwaardgebied/' || gg.id || '/' AS uri,
                   gg.geometrie_polygon AS geometrie
                 FROM
                   bommenkaart_gevrijwaardgebied gg, django_site site
@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
                   uo.onderzoeksgebied,
                   uo.datum,
                   uo.opdrachtgever,
-                  site.domain || 'milieuthemas/minutie/uitgevoerdonderzoek/' || uo.id || '/' AS uri,
+                  site.domain || 'milieuthemas/explosieven/uitgevoerdonderzoek/' || uo.id || '/' AS uri,
                   uo.geometrie_polygon AS geometrie
                 FROM
                   bommenkaart_uitgevoerdonderzoek uo, django_site site
@@ -103,7 +103,7 @@ class Migration(migrations.Migration):
                   vg.oorlogshandeling,
                   vg.verschijning,
                   vg.pdf,
-                  site.domain || 'milieuthemas/minutie/verdachtgebied/' || vg.id || '/' AS uri,
+                  site.domain || 'milieuthemas/explosieven/verdachtgebied/' || vg.id || '/' AS uri,
                   vg.geometrie_polygon AS geometrie
                 FROM
                   bommenkaart_verdachtgebied vg, django_site site

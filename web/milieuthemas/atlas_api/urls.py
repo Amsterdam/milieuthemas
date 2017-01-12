@@ -5,10 +5,6 @@ from datasets.bommenkaart.urls import bommenkaart
 
 
 class DocumentedRouter(routers.DefaultRouter):
-    """
-    We do not have a rest api
-    """
-
     def get_api_root_view(self, **kwargs):
         view = super().get_api_root_view(**kwargs)
         cls = view.cls
@@ -23,7 +19,6 @@ class DocumentedRouter(routers.DefaultRouter):
 router = DocumentedRouter()
 
 urlpatterns = [
-    # url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^', include(router.urls)),
-    url(r'^bommenkaart/', include(bommenkaart.urls)),
+    url(r'^explosieven/', include(bommenkaart.urls)),
 ]
