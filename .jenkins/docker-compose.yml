@@ -17,11 +17,8 @@ services:
   importer:
     image: build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${ENVIRONMENT}
     links:
-      - database:database
+      - database
     environment:
-      DB_NAME: milieuthemas
-      DB_USER: milieuthemas
-      DB_PASSWORD: insecure
       MILIEUTHEMAS_OBJECTSTORE_PASSWORD:
     command: >
       bash -c "/app/docker-wait.sh \
@@ -33,11 +30,11 @@ services:
   db-backup:
     image: build.datapunt.amsterdam.nl:5000/atlas/postgres
     links:
-      - database:db
+      - database
     volumes:
       - ./backups:/tmp/backups
     command: >
-      bash -c "echo db:5432:milieuthemas:milieuthemas:insecure > ~/.pgpass \
+      bash -c "echo database:5432:milieuthemas:milieuthemas:insecure > ~/.pgpass \
               && chmod 600 ~/.pgpass \
               && pg_dump --clean \
                           -Fc \
@@ -52,5 +49,5 @@ services:
                           -T django*  \
                           -T auth*    \
                           -U milieuthemas \
-                          -h db -p 5432 \
+                          -h database -p 5432 \
                           milieuthemas > /tmp/backups/database.dump"
