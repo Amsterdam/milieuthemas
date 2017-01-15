@@ -29,7 +29,7 @@ class GevrijwaardGebied(BommenkaartMixin, rest.HALSerializer):
 
 class UitgevoerdOnderzoek(BommenkaartMixin, rest.HALSerializer):
     class Meta:
-        model = models.UitgevoerdOnderzoek
+        model = models.UitgevoerdOnderzoekDbView
         fields = (
             '_links',
             'kenmerk',
@@ -39,7 +39,7 @@ class UitgevoerdOnderzoek(BommenkaartMixin, rest.HALSerializer):
 
 class VerdachtGebied(BommenkaartMixin, rest.HALSerializer):
     class Meta:
-        model = models.VerdachtGebied
+        model = models.VerdachtGebiedDbView
         fields = (
             '_links',
             'kenmerk',
@@ -89,13 +89,12 @@ class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
             '_links',
             'id',
             'uri',
-            'bron',
             'kenmerk',
             'type',
             'opdrachtnemer',
             'verdacht_gebied',
             'onderzoeksgebied',
-            'opdrachtgever'
+            'opdrachtgever',
             'datum',
         )
 

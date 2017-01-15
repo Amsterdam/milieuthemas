@@ -47,7 +47,7 @@ class UitgevoerdOnderzoekViewSet(rest.AtlasViewSet):
     """
 
     metadata_class = ExpansionMetadata
-    queryset = models.UitgevoerdOnderzoek.objects.all()
+    queryset = models.UitgevoerdOnderzoekDbView.objects.all()
     serializer_detail_class = serializers.UitgevoerdOnderzoekDetail
     serializer_class = serializers.UitgevoerdOnderzoek
     filter_fields = set()
@@ -59,7 +59,7 @@ class VerdachtGebiedViewSet(rest.AtlasViewSet):
     """
 
     metadata_class = ExpansionMetadata
-    queryset = models.VerdachtGebied.objects.all()
+    queryset = models.VerdachtGebiedDbView.objects.all()
     serializer_detail_class = serializers.VerdachtGebiedDetail
     serializer_class = serializers.VerdachtGebied
     filter_fields = set()

@@ -25,11 +25,11 @@ class ExplosievenRouter(routers.DefaultRouter):
         view = super().get_api_root_view(**kwargs)
         cls = view.cls
 
-        class Bommenkaart(cls):
+        class Explosieven(cls):
             pass
 
-        Bommenkaart.__doc__ = self.__doc__
-        return Bommenkaart.as_view()
+        Explosieven.__doc__ = self.__doc__
+        return Explosieven.as_view()
 
 
 explosieven = ExplosievenRouter()

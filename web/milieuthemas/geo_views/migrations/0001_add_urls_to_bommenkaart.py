@@ -8,7 +8,7 @@ API_DOMAIN = 'API Domain'
 
 
 def create_site(apps, *args, **kwargs):
-    Site.objects.create(
+    Site.objects.update_or_create(
         domain=settings.DATAPUNT_API_URL,
         name=API_DOMAIN
     )
