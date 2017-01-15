@@ -1,4 +1,3 @@
-from rest_framework import routers
 from datasets.bommenkaart.views import *
 
 
@@ -15,26 +14,9 @@ class QueryMetadata(metadata.SimpleMetadata):
         return result
 
 
-class ExplosievenRouter(routers.DefaultRouter):
-    """
-    Informatie over explosieven in de stad. Inslagen (met mogelijke
-    blindgangers), gevrijwaarde, verdachte en ondezochte gebieden.
-    """
-
-    def get_api_root_view(self, **kwargs):
-        view = super().get_api_root_view(**kwargs)
-        cls = view.cls
-
-        class Explosieven(cls):
-            pass
-
-        Explosieven.__doc__ = self.__doc__
-        return Explosieven.as_view()
-
-
-explosieven = ExplosievenRouter()
-
-explosieven.register(r'inslagen', InslagViewset)
-explosieven.register(r'gevrijwaardgebied', GevrijwaardGebiedViewSet)
-explosieven.register(r'uitgevoerdonderzoek', UitgevoerdOnderzoekViewSet)
-explosieven.register(r'verdachtgebied', VerdachtGebiedViewSet)
+def register_apis(router):
+    router.register(r'explosieven/inslagen', InslagViewset)
+    router.register(r'explosieven/gevrijwaardgebied', GevrijwaardGebiedViewSet)
+    router.register(r'explosieven/verdachtgebied', VerdachtGebiedViewSet)
+    router.register(r'explosieven/uitgevoerdonderzoek',
+                    UitgevoerdOnderzoekViewSet)
