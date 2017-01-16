@@ -3,7 +3,7 @@ from collections import OrderedDict
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .. import batch
+from datasets.bommenkaart import batch
 
 
 def test_response(testcase, response, expected_data):
