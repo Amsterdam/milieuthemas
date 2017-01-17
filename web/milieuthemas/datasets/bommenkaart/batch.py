@@ -141,6 +141,7 @@ class ImportInslagenTask(ImportProces):
             type=row['soort_hand'],
             geometrie_point=point,
             bron=row['bron1'],
+            intekening=row['intekening'],
             nauwkeurig=row['nauwkeurig'],
             opmerkingen=row['opmerkinge'],
             oorlogsinc=row['oorlogsinc'],
@@ -198,6 +199,7 @@ class ImportGevrijwaardTask(ImportProces):
             bron=row['bron1'],
             nauwkeurig=row['nauwkeurig'],
             opmerkingen=row['opmerkinge'],
+            intekening=row['intekening'],
         )
 
         _set_date(m, datum.replace('/', '-'))
@@ -259,6 +261,7 @@ class ImportVerdachtGebiedTask(ImportProces):
 
             horizontaal=row['horizontal'],
             cartografie=row['cartografi'],
+            opmerkingen=row['opmerkinge'],
             pdf=self.pdf_link(row['hyperlink']),
 
             geometrie_polygon=poly,

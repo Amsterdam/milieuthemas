@@ -50,6 +50,7 @@ class ImportBomInslagTest(APITestCase):
             'nauwkeurig': '5 meter',
             'datum': '1943-07-22',
             'pdf': 'https://atlas.amsterdam.nl/bommenkaart/RAP_430717A.pdf',
+            'intekening': 'Luchtfoto',
             'dataset': 'bommenkaart'
         })
 
@@ -88,6 +89,7 @@ class ImportGevrijwaardGebiedTest(APITestCase):
             'opmerkingen': 'Vrijgave tot 14,5 meter -mv '
                            'middels dieptedetectie en grondradar',
             'nauwkeurig': '',
+            'intekening': 'Kaartmateriaal',
             'dataset': 'bommenkaart'})
 
 
@@ -130,6 +132,7 @@ class ImportVerdachtGebiedTest(APITestCase):
             'oorlogshandeling': 'RAP_400630B',
             'verschijning': 'Afgeworpen',
             'pdf': 'https://atlas.amsterdam.nl/bommenkaart/RAP_400630B.pdf',
+            'opmerkingen': 'afbakening conform Saricon 11S037-VO-01',
             'dataset': 'bommenkaart'})
 
 

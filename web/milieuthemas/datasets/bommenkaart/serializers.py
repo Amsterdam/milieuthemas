@@ -63,6 +63,7 @@ class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
             'nauwkeurig',
             'datum',
             'pdf',
+            'intekening'
         )
 
 
@@ -79,6 +80,7 @@ class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
             'datum',
             'opmerkingen',
             'nauwkeurig',
+            'intekening',
         )
 
 
@@ -118,4 +120,5 @@ class VerdachtGebiedDetail(BommenkaartMixin, rest.HALSerializer):
             'oorlogshandeling',
             'verschijning',
             'pdf',
+            'opmerkingen',
         )

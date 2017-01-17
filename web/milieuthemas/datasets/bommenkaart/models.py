@@ -16,6 +16,7 @@ class BomInslag(mixins.ImportStatusMixin):
     opmerkingen = models.TextField(null=True)
     oorlogsinc = models.CharField(max_length=200)
     pdf = models.CharField(max_length=200)
+    intekening = models.CharField(max_length=200)
 
     geometrie_point = geo.PointField(null=True, srid=28992)
 
@@ -36,6 +37,7 @@ class BomInslagDBView(models.Model):
     geometrie = geo.PointField(null=True, srid=28992)
     id = models.IntegerField(primary_key=True)
     uri = models.TextField(max_length=300)
+    intekening = models.CharField(max_length=200)
 
 
 class GevrijwaardGebied(mixins.ImportStatusMixin):
@@ -46,6 +48,7 @@ class GevrijwaardGebied(mixins.ImportStatusMixin):
     datum = models.DateField(null=True)
     opmerkingen = models.TextField(null=True)
     nauwkeurig = models.CharField(max_length=200, null=True)
+    intekening = models.CharField(max_length=200)
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
 
@@ -60,6 +63,7 @@ class GevrijwaardGebiedDbView(models.Model):
     datum = models.DateField(null=True)
     opmerkingen = models.TextField(null=True)
     nauwkeurig = models.CharField(max_length=200, null=True)
+    intekening = models.CharField(max_length=200)
     id = models.IntegerField(primary_key=True)
     uri = models.TextField(max_length=300)
 
@@ -83,6 +87,7 @@ class VerdachtGebied(mixins.ImportStatusMixin):
     horizontaal = models.CharField(max_length=200, null=True)
     cartografie = models.CharField(max_length=200, null=True)
     pdf = models.CharField(max_length=200)
+    opmerkingen = models.TextField(null=True)
 
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
@@ -106,6 +111,7 @@ class VerdachtGebiedDbView(models.Model):
     pdf = models.CharField(max_length=200)
     id = models.IntegerField(primary_key=True)
     uri = models.TextField(max_length=300)
+    opmerkingen = models.TextField(max_length=300)
 
 
 class UitgevoerdOnderzoek(mixins.ImportStatusMixin):
