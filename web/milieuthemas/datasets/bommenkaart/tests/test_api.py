@@ -49,6 +49,7 @@ class ImportBomInslagTest(APITestCase):
             'opmerkingen': '',
             'nauwkeurig': '5 meter',
             'datum': '1943-07-22',
+            'datum_inslag': None,
             'pdf': 'https://atlas.amsterdam.nl/bommenkaart/RAP_430717A.pdf',
             'intekening': 'Luchtfoto',
             'dataset': 'bommenkaart'
