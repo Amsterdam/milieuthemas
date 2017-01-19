@@ -51,13 +51,15 @@ class GevrijwaardGebiedFilter(FilterSet):
     type = filters.CharFilter(lookup_expr=['exact', 'iexact'])
     kenmerk = filters.CharFilter(lookup_expr=['exact', 'iexact'])
     datum = filters.DateFilter()
+    datum_inslag = filters.DateFilter()
 
     class Meta:
         model = models.GevrijwaardGebiedDbView
         fields = (
             'kenmerk',
             'type',
-            'datum'
+            'datum',
+            'datum_inslag'
         )
 
 

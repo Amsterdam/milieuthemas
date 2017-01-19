@@ -12,6 +12,7 @@ class BomInslag(mixins.ImportStatusMixin):
     nauwkeurig = models.CharField(max_length=200, null=True)
 
     datum = models.DateField(null=True)
+    datum_inslag = models.DateField(null=True)
 
     opmerkingen = models.TextField(null=True)
     oorlogsinc = models.CharField(max_length=200)

@@ -1,24 +1,17 @@
 # Python
+import csv
 import logging
 import os
-import csv
-
 from contextlib import contextmanager
 
 from dateutil.parser import parse
-
-# Packages
 from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.gis.geos import Point
-from django.contrib.gis.geos import LineString
 from django.contrib.gis.geos import MultiPolygon
+from django.contrib.gis.geos import Point
 
-from django.contrib.gis.geos.error import GEOSException
-
-# Project
-from . import models
 from datapunt_generic.batch import batch
 from datapunt_generic.generic import database
+from . import models
 
 log = logging.getLogger('bommenkaart')
 log.setLevel(logging.DEBUG)
@@ -38,7 +31,6 @@ def _context_reader(source):
         raise ValueError("File not found: {}".format(source))
 
     with open(source) as f:
-
         rows = csv.reader(f, delimiter=',')
         headers = [h.lower() for h in next(rows)]
 
@@ -51,11 +43,11 @@ def process_qgis_csv(source, process_row_callback):
     """
     with _context_reader(source) as rows:
         return [result for result in (
-                process_row_callback(r) for r in rows)
+            process_row_callback(r) for r in rows)
                 if result]
 
 
-def _set_date(obj, datestring):
+def parse_date(datestring):
     """
     Try to parse the date provided in the dataset
     """
@@ -63,12 +55,14 @@ def _set_date(obj, datestring):
         return
 
     try:
-        obj.datum = parse(datestring.replace('/', '-'))
+        return parse(datestring.replace('/', '-'))
     except ValueError:
         log.error('Invalid date Error "%s"', datestring)
 
 
 class ImportProces(batch.BasicTask):
+    def before(self):
+        pass
 
     def process(self):
         """
@@ -108,10 +102,10 @@ class ImportInslagenTask(ImportProces):
         bron header
         wKT         geometrie
         kenmerk     kenmerk
-        datum       datum
+        datum       datum van inslag
         soort_hand  type
         bron1       foto / document
-        datum1      als datum1 er niet is dan 2 wel
+        datum1      datum brondocument
         intekening  Bron informatie?
         nauwkeurig  .
         opmerkinge  .
@@ -122,8 +116,6 @@ class ImportInslagenTask(ImportProces):
             print('No id, skipping')
             return
 
-        point = None
-
         geom = GEOSGeometry(row['wkt'])
 
         if isinstance(geom, Point):
@@ -131,12 +123,7 @@ class ImportInslagenTask(ImportProces):
         else:
             raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
 
-        datum = row['datum']
-
-        if not datum:
-            datum = row['datum1']
-
-        m = models.BomInslag(
+        return models.BomInslag(
             kenmerk=row['kenmerk'],
             type=row['soort_hand'],
             geometrie_point=point,
@@ -145,25 +132,23 @@ class ImportInslagenTask(ImportProces):
             nauwkeurig=row['nauwkeurig'],
             opmerkingen=row['opmerkinge'],
             oorlogsinc=row['oorlogsinc'],
-            pdf=self.pdf_link(row['hyperlink'])  # FIXME create working link..
+            pdf=self.pdf_link(row['hyperlink']),
+            datum_inslag=parse_date(row['datum']),
+            datum=parse_date(row['datum1'])
         )
-
-        _set_date(m, datum.replace('/', '-'))
-
-        return m
 
 
 class ImportGevrijwaardTask(ImportProces):
     """
     wkt,        geometrie
     kenmerk     kenmerk
-    datum       datum
+    datum       (Wordt niet geïmporteerd)
     soort_hand, (?)
     bron1       foto / document
-    Datum1,
-    Intekening,
-    Nauwkeurig, (leeg)
-    Opmerkinge,
+    datum1,     Datum rapport
+    intekening,
+    nauwkeurig, (leeg)
+    opmerkinge,
     """
 
     name = "import gevrijwaard_gebied"
@@ -187,12 +172,7 @@ class ImportGevrijwaardTask(ImportProces):
         else:
             raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
 
-        datum = row['datum']
-
-        if not datum:
-            datum = row['datum1']
-
-        m = models.GevrijwaardGebied(
+        return models.GevrijwaardGebied(
             kenmerk=row['kenmerk'],
             type=row['soort_hand'],
             geometrie_polygon=poly,
@@ -200,11 +180,8 @@ class ImportGevrijwaardTask(ImportProces):
             nauwkeurig=row['nauwkeurig'],
             opmerkingen=row['opmerkinge'],
             intekening=row['intekening'],
+            datum=parse_date(row['datum1'])
         )
-
-        _set_date(m, datum.replace('/', '-'))
-
-        return m
 
 
 class ImportVerdachtGebiedTask(ImportProces):
@@ -237,15 +214,13 @@ class ImportVerdachtGebiedTask(ImportProces):
 
         geom = GEOSGeometry(row['wkt'])
 
-        poly = None
-
         if isinstance(geom, MultiPolygon):
             poly = geom
         else:
             log.error('Geo error')
             raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
 
-        m = models.VerdachtGebied(
+        return models.VerdachtGebied(
 
             kenmerk=row['kenmerk'],
 
@@ -266,8 +241,6 @@ class ImportVerdachtGebiedTask(ImportProces):
 
             geometrie_polygon=poly,
         )
-
-        return m
 
 
 class ImportUitgevoerdOnderzoekTask(ImportProces):
@@ -295,42 +268,29 @@ class ImportUitgevoerdOnderzoekTask(ImportProces):
 
         geom = GEOSGeometry(row['wkt'])
 
-        poly = None
-
         if isinstance(geom, MultiPolygon):
             poly = geom
         else:
             log.error('Geo error')
             raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
 
-        datum = row['datum']
-
-        m = models.UitgevoerdOnderzoek(
-
+        return models.UitgevoerdOnderzoek(
             kenmerk=row['kenmerk'],
-
             type=row['soort_rapp'],
-
             onderzoeksgebied=row['onderzoeks'],
-
             opdrachtnemer=row['opdrachtne'],
             opdrachtgever=row['opdrachtge'],
-
             verdacht_gebied=row['verdacht_g'],
-
             geometrie_polygon=poly,
+            datum=parse_date(row['datum'])
         )
-
-        _set_date(m, datum.replace('/', '-'))
-
-        return m
 
 
 class ImportBommenkaartJob(object):
     name = "Import bommenkaart informatie"
 
     def tasks(self):
-        return[
+        return [
             ImportInslagenTask(path='Bommenkaart/bommenkaart/csv'),
             ImportVerdachtGebiedTask(path='Bommenkaart/bommenkaart/csv/'),
             ImportUitgevoerdOnderzoekTask(path='Bommenkaart/bommenkaart/csv/'),

@@ -1,4 +1,4 @@
-FROM amsterdam/docker_python:latest
+FROM datapunt/docker_python:testing
 MAINTAINER datapunt.ois@amsterdam.nl
 
 ENV PYTHONUNBUFFERED 1
@@ -11,9 +11,6 @@ EXPOSE 8000
 
 RUN apt-get update \
 	&& apt-get install -y \
-		libgeos-dev \
-		gdal-bin \
-		netcat \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 	&& adduser --system datapunt \
@@ -27,7 +24,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY milieuthemas /app/
 
-RUN chmod -R 777 /app/data/
+RUN chown -R datapunt /app
+RUN chmod +x /app/*.sh
 
 USER datapunt
 CMD /app/docker-entrypoint.sh

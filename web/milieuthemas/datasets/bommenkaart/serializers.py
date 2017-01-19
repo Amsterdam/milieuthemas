@@ -62,6 +62,7 @@ class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
             'opmerkingen',
             'nauwkeurig',
             'datum',
+            'datum_inslag',
             'pdf',
             'intekening'
         )
