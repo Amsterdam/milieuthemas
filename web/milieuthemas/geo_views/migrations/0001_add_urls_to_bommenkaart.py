@@ -30,15 +30,15 @@ class Migration(migrations.Migration):
             view_name='geo_bommenkaart_bominslag_point',
             sql=f"""
                 SELECT
-                  bominslag.bron,
-                  bominslag.oorlogsinc,
-                  bominslag.type,
-                  bominslag.kenmerk,
-                  bominslag.opmerkingen,
-                  bominslag.id,
-                  bominslag.nauwkeurig,
-                  bominslag.datum,
-                  bominslag.pdf,
+                  bominslag.bron as bron,
+                  bominslag.oorlogsinc as oorlogsinc,
+                  'bommenkaart/bominslag' as type ,
+                  bominslag.kenmerk as kenmerk,
+                  bominslag.opmerkingen as opmerkingen,
+                  bominslag.id as id,
+                  bominslag.nauwkeurig as nauwkeurig,
+                  bominslag.datum as datum,
+                  bominslag.pdf as pdf,
                   site.domain || 'milieuthemas/explosieven/inslagen/' || bominslag.id || '/' AS uri,
                   bominslag.geometrie_point AS geometrie
                 FROM
@@ -51,13 +51,13 @@ class Migration(migrations.Migration):
             view_name='geo_bommenkaart_gevrijwaardgebied_polygon',
             sql=f"""
                 SELECT
-                  gg.bron,
-                  gg.type,
-                  gg.kenmerk,
-                  gg.opmerkingen,
-                  gg.id,
-                  gg.nauwkeurig,
-                  gg.datum,
+                  gg.bron as bron,
+                  'bommenkaart/gevrijwaardgebied' as type,
+                  gg.kenmerk as kenmerk,
+                  gg.opmerkingen as opmerkingen,
+                  gg.id as id,
+                  gg.nauwkeurig as nauwkeurig,
+                  gg.datum as datum,
                   site.domain || 'milieuthemas/explosieven/gevrijwaardgebied/' || gg.id || '/' AS uri,
                   gg.geometrie_polygon AS geometrie
                 FROM
@@ -70,14 +70,14 @@ class Migration(migrations.Migration):
             view_name='geo_bommenkaart_uitgevoerdonderzoek_polygon',
             sql=f"""
                 SELECT
-                  uo.type,
-                  uo.kenmerk,
-                  uo.id,
-                  uo.opdrachtnemer,
-                  uo.verdacht_gebied,
-                  uo.onderzoeksgebied,
-                  uo.datum,
-                  uo.opdrachtgever,
+                  'bommenkaart/uitgevoerdonderzoek' as type,
+                  uo.kenmerk as kenmerk,
+                  uo.id as id,
+                  uo.opdrachtnemer as opdrachtnemer,
+                  uo.verdacht_gebied as verdacht_gebied,
+                  uo.onderzoeksgebied as onderzoeksgebied,
+                  uo.datum as datum,
+                  uo.opdrachtgever as opdrachtgever,
                   site.domain || 'milieuthemas/explosieven/uitgevoerdonderzoek/' || uo.id || '/' AS uri,
                   uo.geometrie_polygon AS geometrie
                 FROM
@@ -90,19 +90,19 @@ class Migration(migrations.Migration):
             view_name='geo_bommenkaart_verdachtgebied_polygon',
             sql=f"""
                 SELECT
-                  vg.bron,
-                  vg.afbakening,
-                  vg.aantal,
-                  vg.cartografie,
-                  vg.type,
-                  vg.kenmerk,
-                  vg.horizontaal,
-                  vg.id,
-                  vg.kaliber,
-                  vg.subtype,
-                  vg.oorlogshandeling,
-                  vg.verschijning,
-                  vg.pdf,
+                  vg.bron as bron,
+                  vg.afbakening as afbakening,
+                  vg.aantal as aantal,
+                  vg.cartografie as cartografie,
+                  'bommenkaart/verdachtgebied' as type,
+                  vg.kenmerk as kenmerk,
+                  vg.horizontaal as horizontaal,
+                  vg.id as id,
+                  vg.kaliber as kaliber,
+                  vg.subtype as subtype,
+                  vg.oorlogshandeling as oorlogshandeling,
+                  vg.verschijning as verschijning,
+                  vg.pdf as pdf,
                   site.domain || 'milieuthemas/explosieven/verdachtgebied/' || vg.id || '/' AS uri,
                   vg.geometrie_polygon AS geometrie
                 FROM
