@@ -8,9 +8,12 @@ class BommenkaartMixin(rest.DataSetSerializerMixin):
 
 # list serializers
 class BomInslag(BommenkaartMixin, rest.HALSerializer):
+    _display = rest.DisplayField(source='kenmerk')
+
     class Meta:
         model = models.BomInslagDBView
         fields = (
+            '_display',
             '_links',
             'kenmerk',
             'type',
@@ -18,9 +21,12 @@ class BomInslag(BommenkaartMixin, rest.HALSerializer):
 
 
 class GevrijwaardGebied(BommenkaartMixin, rest.HALSerializer):
+    _display = rest.DisplayField(source='kenmerk')
+
     class Meta:
         model = models.GevrijwaardGebiedDbView
         fields = (
+            '_display',
             '_links',
             'kenmerk',
             'type',
@@ -28,9 +34,12 @@ class GevrijwaardGebied(BommenkaartMixin, rest.HALSerializer):
 
 
 class UitgevoerdOnderzoek(BommenkaartMixin, rest.HALSerializer):
+    _display = rest.DisplayField(source='kenmerk')
+
     class Meta:
         model = models.UitgevoerdOnderzoekDbView
         fields = (
+            '_display',
             '_links',
             'kenmerk',
             'type',
@@ -38,9 +47,12 @@ class UitgevoerdOnderzoek(BommenkaartMixin, rest.HALSerializer):
 
 
 class VerdachtGebied(BommenkaartMixin, rest.HALSerializer):
+    _display = rest.DisplayField(source='kenmerk')
+
     class Meta:
         model = models.VerdachtGebiedDbView
         fields = (
+            '_display',
             '_links',
             'kenmerk',
             'type',
@@ -49,9 +61,12 @@ class VerdachtGebied(BommenkaartMixin, rest.HALSerializer):
 
 # detail serializers
 class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
+    _display = rest.DisplayField(source='kenmerk')
+
     class Meta:
         model = models.BomInslagDBView
         fields = (
+            '_display',
             '_links',
             'id',
             'uri',
@@ -69,9 +84,12 @@ class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
 
 
 class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
+    _display = rest.DisplayField(source='kenmerk')
+
     class Meta:
         model = models.GevrijwaardGebiedDbView
         fields = (
+            '_display',
             '_links',
             'id',
             'uri',
@@ -86,9 +104,12 @@ class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
 
 
 class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
+    _display = rest.DisplayField(source='kenmerk')
+
     class Meta:
         model = models.UitgevoerdOnderzoekDbView
         fields = (
+            '_display',
             '_links',
             'id',
             'uri',
@@ -103,9 +124,12 @@ class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
 
 
 class VerdachtGebiedDetail(BommenkaartMixin, rest.HALSerializer):
+    _display = rest.DisplayField(source='kenmerk')
+
     class Meta:
         model = models.VerdachtGebiedDbView
         fields = (
+            '_display',
             '_links',
             'id',
             'uri',
