@@ -23,6 +23,7 @@ class ImportBomInslagTest(APITestCase):
         self.assertTrue('_links' in data)
         self.assertTrue('results' in data)
         self.assertEqual(len(data['results']), 25)
+        self.assertEqual(data['results'][10]['_display'], 'KR_430722011')
         self.assertEqual(data['results'][10]['dataset'], 'bommenkaart')
         self.assertEqual(data['results'][10]['kenmerk'], 'KR_430722011')
         self.assertEqual(data['results'][10]['type'], 'Krater')
@@ -31,6 +32,7 @@ class ImportBomInslagTest(APITestCase):
         response = self.client.get('/milieuthemas/explosieven/inslagen/1/')
 
         test_response(self, response, {
+            '_display': 'KR_430722001',
             '_links': OrderedDict([
                 (
                     'self', {
@@ -68,6 +70,7 @@ class ImportGevrijwaardGebiedTest(APITestCase):
         self.assertTrue('_links' in data)
         self.assertTrue('results' in data)
         self.assertEqual(len(data['results']), 19)
+        self.assertEqual(data['results'][10]['_display'], 'GG_009')
         self.assertEqual(data['results'][10]['dataset'], 'bommenkaart')
         self.assertEqual(data['results'][10]['kenmerk'], 'GG_009')
         self.assertEqual(data['results'][10]['type'], 'Vrijgave')
@@ -77,6 +80,7 @@ class ImportGevrijwaardGebiedTest(APITestCase):
                                    '/explosieven/gevrijwaardgebied/1/')
 
         test_response(self, response, {
+            '_display': 'GG_001A',
             '_links': OrderedDict([('self', {
                 'href': 'http://testserver/milieuthemas'
                         '/explosieven/gevrijwaardgebied/1/'})]),
@@ -106,6 +110,7 @@ class ImportVerdachtGebiedTest(APITestCase):
         self.assertTrue('_links' in data)
         self.assertTrue('results' in data)
         self.assertEqual(len(data['results']), 4)
+        self.assertEqual(data['results'][3]['_display'], 'VGA_400815A')
         self.assertEqual(data['results'][3]['dataset'], 'bommenkaart')
         self.assertEqual(data['results'][3]['kenmerk'], 'VGA_400815A')
         self.assertEqual(data['results'][3]['type'], 'Afwerpmunitie')
@@ -115,6 +120,7 @@ class ImportVerdachtGebiedTest(APITestCase):
                                    '/explosieven/verdachtgebied/1/')
 
         test_response(self, response, {
+            '_display': 'VGA_400630B',
             '_links': OrderedDict([('self', {
                 'href': 'http://testserver/milieuthemas'
                         '/explosieven/verdachtgebied/1/'})]),
@@ -149,6 +155,7 @@ class ImportUitgevoedOnderzoekTest(APITestCase):
         self.assertTrue('_links' in data)
         self.assertTrue('results' in data)
         self.assertEqual(len(data['results']), 9)
+        self.assertEqual(data['results'][8]['_display'], '-')
         self.assertEqual(data['results'][8]['dataset'], 'bommenkaart')
         self.assertEqual(data['results'][8]['kenmerk'], '-')
         self.assertEqual(data['results'][8]['type'], 'Detectie')
@@ -158,6 +165,7 @@ class ImportUitgevoedOnderzoekTest(APITestCase):
                                    '/explosieven/uitgevoerdonderzoek/1/')
 
         test_response(self, response, {
+            '_display': '128103',
             '_links': OrderedDict([('self', {
                 'href': 'http://testserver/milieuthemas'
                         '/explosieven/uitgevoerdonderzoek/1/'})]),
