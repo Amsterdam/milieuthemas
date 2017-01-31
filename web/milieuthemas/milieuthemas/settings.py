@@ -62,7 +62,7 @@ PROJECT_APPS = [
     'datapunt_generic.health',
 ]
 
-INSTALLED_APPS = PROJECT_APPS + [
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,7 +77,7 @@ INSTALLED_APPS = PROJECT_APPS + [
     'rest_framework',
     'rest_framework_swagger',
     'rest_framework_gis',
-]
+    ] + PROJECT_APPS
 
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
