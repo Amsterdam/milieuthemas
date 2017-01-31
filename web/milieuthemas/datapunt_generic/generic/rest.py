@@ -99,7 +99,7 @@ class RelatedSummaryField(serializers.Field):
 class DisplayField(serializers.Field):
 
     def __init__(self, *args, **kwargs):
-        kwargs['source'] = '*'
+        kwargs['source'] = kwargs.get('source', '*')
         kwargs['read_only'] = True
         super().__init__(*args, **kwargs)
 
