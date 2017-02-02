@@ -54,5 +54,3 @@ class ImportAsbestTest(TaskTestCase):
         monster = models.Asbest.objects.get(geo_id=54)
         self.assertEqual(monster.locatie, 'WCW-terrein 2')
         self.assertNotEqual(monster.geometrie, None)
-
-

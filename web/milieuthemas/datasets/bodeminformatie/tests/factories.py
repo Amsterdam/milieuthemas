@@ -34,4 +34,3 @@ class AsbestFactory(factory.DjangoModelFactory):
     geo_id = fuzzy.FuzzyInteger(0, 10)
     concentratie = fuzzy.FuzzyInteger(-10, 310)
     geometrie = Point(0.0, 1.1)
-

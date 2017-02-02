@@ -12,7 +12,7 @@ class ImportAardgasleidingTest(object):
 
         imported = models.Aardgasleiding.objects.count()
         self.assertEqual(9, imported)
-        
+
         entry = models.Aardgasleiding.objects.get(pk=3)
         assertNotEqual(entry.geometrie, None)
 
@@ -34,7 +34,7 @@ class ImportImportAardgasGebiedTest(object):
 class ImportInfrastructuurTestBase(object):
     """
     Base infrastructuur test class
-    
+
     Sub class must define:
     task_name - the task to run
     infrastructuur_type - the two letter code for the type

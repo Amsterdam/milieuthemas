@@ -60,5 +60,3 @@ def parse_nummer(s):
         return None
 
     return int(s, 10)
-
-
