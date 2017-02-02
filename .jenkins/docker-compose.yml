@@ -30,7 +30,6 @@ services:
       bash -c "/app/docker-wait.sh \
               && python get_import_data.py \
               && python manage.py migrate \
-              && python manage.py sync_views \
               && python manage.py run_import "
 
   db-backup:
