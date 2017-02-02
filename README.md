@@ -18,16 +18,19 @@ or
 
 	docker-compose up
 
+
+Run migrate to create the needed database tables
+
+    manage.py migrate 
+
+
+Import db data from prod
+
+    docker-compose exec database update-db.sh milieuthemas
+
+
 The API should now be available on http://localhost:8000/
 
-To run an import, execute:
-
-	./atlas_milieuthemas/manage.py run_import
-
-
-To see the various options for partial imports, execute:
-
-	./atlas_milieuthemas/manage.py run_import --help
 
 Accessing the docker database container for view testing:
 
