@@ -18,8 +18,8 @@ class Migration(migrations.Migration):
                 SELECT
                   bominslag.bron,
                   bominslag.oorlogsinc,
-                  'bommenkaart_bominslag' as type,
-                  bominslag.kenmerk,
+                  'bommenkaart/bominslag' as type,
+                  bominslag.kenmerk as display,
                   bominslag.opmerkingen,
                   bominslag.id,
                   bominslag.nauwkeurig,
