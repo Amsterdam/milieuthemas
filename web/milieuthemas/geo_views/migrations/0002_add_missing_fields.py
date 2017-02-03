@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 SELECT
                   bominslag.bron,
                   bominslag.oorlogsinc,
-                  bominslag.type,
+                  'bommenkaart/bominslag' as type,
                   bominslag.kenmerk,
                   bominslag.opmerkingen,
                   bominslag.id,
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
             sql=f"""
                 SELECT
                   gg.bron,
-                  gg.type,
+                  'bommenkaart/gevrijwaardgebied' as type,
                   gg.kenmerk,
                   gg.opmerkingen,
                   gg.id,
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
             view_name='geo_bommenkaart_uitgevoerdonderzoek_polygon',
             sql=f"""
                 SELECT
-                  uo.type,
+                  'bommenkaart/uitgevoerdonderzoek' as type,
                   uo.kenmerk,
                   uo.id,
                   uo.opdrachtnemer,
@@ -82,7 +82,7 @@ class Migration(migrations.Migration):
                   vg.afbakening,
                   vg.aantal,
                   vg.cartografie,
-                  vg.type,
+                  'bommenkaart/verdachtgebied' as type,
                   vg.kenmerk,
                   vg.horizontaal,
                   vg.id,
