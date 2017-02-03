@@ -11,7 +11,7 @@ class BomInslag(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
 
     class Meta:
-        model = models.BomInslagDBView
+        model = models.BomInslag
         fields = (
             '_display',
             '_links',
@@ -24,7 +24,7 @@ class GevrijwaardGebied(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
 
     class Meta:
-        model = models.GevrijwaardGebiedDbView
+        model = models.GevrijwaardGebied
         fields = (
             '_display',
             '_links',
@@ -37,7 +37,7 @@ class UitgevoerdOnderzoek(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
 
     class Meta:
-        model = models.UitgevoerdOnderzoekDbView
+        model = models.UitgevoerdOnderzoek
         fields = (
             '_display',
             '_links',
@@ -50,7 +50,7 @@ class VerdachtGebied(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
 
     class Meta:
-        model = models.VerdachtGebiedDbView
+        model = models.VerdachtGebied
         fields = (
             '_display',
             '_links',
@@ -64,12 +64,11 @@ class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
 
     class Meta:
-        model = models.BomInslagDBView
+        model = models.BomInslag
         fields = (
             '_display',
             '_links',
             'id',
-            'uri',
             'bron',
             'oorlogsinc',
             'type',
@@ -87,12 +86,11 @@ class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
 
     class Meta:
-        model = models.GevrijwaardGebiedDbView
+        model = models.GevrijwaardGebied
         fields = (
             '_display',
             '_links',
             'id',
-            'uri',
             'bron',
             'kenmerk',
             'type',
@@ -107,12 +105,11 @@ class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
 
     class Meta:
-        model = models.UitgevoerdOnderzoekDbView
+        model = models.UitgevoerdOnderzoek
         fields = (
             '_display',
             '_links',
             'id',
-            'uri',
             'kenmerk',
             'type',
             'opdrachtnemer',
@@ -127,12 +124,11 @@ class VerdachtGebiedDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
 
     class Meta:
-        model = models.VerdachtGebiedDbView
+        model = models.VerdachtGebied
         fields = (
             '_display',
             '_links',
             'id',
-            'uri',
             'bron',
             'kenmerk',
             'type',

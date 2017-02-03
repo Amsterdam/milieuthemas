@@ -26,7 +26,7 @@ class InslagFilter(FilterSet):
     datum = filters.DateFilter()
 
     class Meta:
-        model = models.BomInslagDBView
+        model = models.BomInslag
         fields = (
             'kenmerk',
             'type',
@@ -40,7 +40,7 @@ class InslagViewset(rest.AtlasViewSet):
     """
 
     metadata_class = ExpansionMetadata
-    queryset = models.BomInslagDBView.objects.all()
+    queryset = models.BomInslag.objects.all()
     serializer_detail_class = serializers.BomInslagDetail
     serializer_class = serializers.BomInslag
     filter_backends = (DjangoFilterBackend,)
@@ -54,7 +54,7 @@ class GevrijwaardGebiedFilter(FilterSet):
     datum_inslag = filters.DateFilter()
 
     class Meta:
-        model = models.GevrijwaardGebiedDbView
+        model = models.GevrijwaardGebied
         fields = (
             'kenmerk',
             'type',
@@ -69,7 +69,7 @@ class GevrijwaardGebiedViewSet(rest.AtlasViewSet):
     """
 
     metadata_class = ExpansionMetadata
-    queryset = models.GevrijwaardGebiedDbView.objects.all()
+    queryset = models.GevrijwaardGebied.objects.all()
     serializer_detail_class = serializers.GevrijwaardGebiedDetail
     serializer_class = serializers.GevrijwaardGebied
     filter_backends = (DjangoFilterBackend,)
@@ -84,7 +84,7 @@ class UitgevoerdOnderzoekFilter(FilterSet):
     datum = filters.DateFilter()
 
     class Meta:
-        model = models.UitgevoerdOnderzoekDbView
+        model = models.UitgevoerdOnderzoek
         fields = (
             'kenmerk',
             'type',
@@ -100,7 +100,7 @@ class UitgevoerdOnderzoekViewSet(rest.AtlasViewSet):
     """
 
     metadata_class = ExpansionMetadata
-    queryset = models.UitgevoerdOnderzoekDbView.objects.all()
+    queryset = models.UitgevoerdOnderzoek.objects.all()
     serializer_detail_class = serializers.UitgevoerdOnderzoekDetail
     serializer_class = serializers.UitgevoerdOnderzoek
     filter_backends = (DjangoFilterBackend,)
@@ -118,7 +118,7 @@ class VerdachtGebiedFilter(FilterSet):
     afbakening = filters.CharFilter(lookup_expr=['exact', 'iexact'])
 
     class Meta:
-        model = models.VerdachtGebiedDbView
+        model = models.VerdachtGebied
         fields = (
             'kenmerk',
             'type',
@@ -137,7 +137,7 @@ class VerdachtGebiedViewSet(rest.AtlasViewSet):
     """
 
     metadata_class = ExpansionMetadata
-    queryset = models.VerdachtGebiedDbView.objects.all()
+    queryset = models.VerdachtGebied.objects.all()
     serializer_detail_class = serializers.VerdachtGebiedDetail
     serializer_class = serializers.VerdachtGebied
     filter_backends = (DjangoFilterBackend,)

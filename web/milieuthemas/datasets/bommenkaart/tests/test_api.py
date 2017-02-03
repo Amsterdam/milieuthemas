@@ -30,7 +30,7 @@ class ImportBomInslagTest(APITestCase):
 
     def test_first(self):
         response = self.client.get('/milieuthemas/explosieven/inslagen/1/')
-
+        print(response.data)
         test_response(self, response, {
             '_display': 'KR_430722001',
             '_links': OrderedDict([
@@ -42,8 +42,6 @@ class ImportBomInslagTest(APITestCase):
                 )
             ]),
             'id': 1,
-            'uri': 'https://api.datapunt.amsterdam.nl/milieuthemas'
-                   '/explosieven/inslagen/1/',
             'bron': 'D-855_4042.jpg',
             'oorlogsinc': 'RAP_430717A',
             'type': 'Krater',
@@ -85,8 +83,6 @@ class ImportGevrijwaardGebiedTest(APITestCase):
                 'href': 'http://testserver/milieuthemas'
                         '/explosieven/gevrijwaardgebied/1/'})]),
             'id': 1,
-            'uri': 'https://api.datapunt.amsterdam.nl/milieuthemas'
-                   '/explosieven/gevrijwaardgebied/1/',
             'bron': '5150505-PVO-TEK-003',
             'kenmerk': 'GG_001A',
             'type': 'Vrijgave',
@@ -125,8 +121,6 @@ class ImportVerdachtGebiedTest(APITestCase):
                 'href': 'http://testserver/milieuthemas'
                         '/explosieven/verdachtgebied/1/'})]),
             'id': 1,
-            'uri': 'https://api.datapunt.amsterdam.nl'
-                   '/milieuthemas/explosieven/verdachtgebied/1/',
             'bron': None,
             'kenmerk': 'VGA_400630B',
             'type': 'Afwerpmunitie',
@@ -170,8 +164,6 @@ class ImportUitgevoedOnderzoekTest(APITestCase):
                 'href': 'http://testserver/milieuthemas'
                         '/explosieven/uitgevoerdonderzoek/1/'})]),
             'id': 1,
-            'uri': 'https://api.datapunt.amsterdam.nl/milieuthemas'
-                   '/explosieven/uitgevoerdonderzoek/1/',
             'kenmerk': '128103',
             'type': 'Probleeminventarisatie',
             'opdrachtnemer': 'IBA',
