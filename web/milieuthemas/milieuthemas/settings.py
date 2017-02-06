@@ -117,25 +117,25 @@ WSGI_APPLICATION = 'milieuthemas.wsgi.application'
 DATABASE_OPTIONS = {
     LocationKey.docker: {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DB_NAME', 'milieuthemas'),
-        'USER': os.getenv('DB_USER', 'milieuthemas'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'insecure'),
+        'NAME': os.getenv('DATABASE_NAME', 'milieuthemas'),
+        'USER': os.getenv('DATABASE_USER', 'milieuthemas'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'insecure'),
         'HOST': 'database',
         'PORT': '5432'
     },
     LocationKey.local: {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DB_NAME', 'milieuthemas'),
-        'USER': os.getenv('DB_USER', 'milieuthemas'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'insecure'),
+        'NAME': os.getenv('DATABASE_NAME', 'milieuthemas'),
+        'USER': os.getenv('DATABASE_USER', 'milieuthemas'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'insecure'),
         'HOST': get_docker_host(),
         'PORT': '5402'
     },
     LocationKey.override: {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DB_NAME', 'milieuthemas'),
-        'USER': os.getenv('DB_USER', 'milieuthemas'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'insecure'),
+        'NAME': os.getenv('DATABASE_NAME', 'milieuthemas'),
+        'USER': os.getenv('DATABASE_USER', 'milieuthemas'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'insecure'),
         'HOST': os.getenv(OVERRIDE_HOST_ENV_VAR),
         'PORT': os.getenv(OVERRIDE_PORT_ENV_VAR, '5432')
     },
