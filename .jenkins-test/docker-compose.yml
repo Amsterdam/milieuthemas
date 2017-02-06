@@ -1,0 +1,15 @@
+version: '2.1'
+services:
+  database:
+    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_USER: milieuthemas
+
+  tests:
+    build: ../web
+    links:
+      - database
+    command: >
+      bash -c "/app/docker-wait.sh \
+              && python manage.py test"

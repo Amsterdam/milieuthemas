@@ -23,6 +23,7 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY milieuthemas /app/
+COPY .jenkins-import /.jenkins-import/
 
 RUN chown -R datapunt /app
 RUN chmod +x /app/*.sh
