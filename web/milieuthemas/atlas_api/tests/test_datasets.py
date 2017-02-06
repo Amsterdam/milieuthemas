@@ -41,8 +41,8 @@ class BrowseDatasetsTestCase(APITransactionTestCase):
 
             self.assertIn('count', response.data,
                           'No count attribute in {}'.format(url))
-            # self.assertNotEqual(response.data['count'], 0,
-            #                     'Wrong result count for {}'.format(url))
+            self.assertNotEqual(response.data['count'], 0,
+                                'Wrong result count for {}'.format(url))
 
     def test_details(self):
         for url in self.datasets:

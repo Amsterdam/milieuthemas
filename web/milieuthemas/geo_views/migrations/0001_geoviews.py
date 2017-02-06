@@ -31,6 +31,7 @@ class Migration(migrations.Migration):
                   bominslag.bron,
                   bominslag.oorlogsinc,
                   'bommenkaart/bominslag' as type,
+                  bominslag.type as detail_type,
                   bominslag.kenmerk as display,
                   bominslag.opmerkingen,
                   bominslag.id,
@@ -53,6 +54,7 @@ class Migration(migrations.Migration):
                 SELECT
                   gg.bron,
                   'bommenkaart/gevrijwaardgebied' as type,
+                  gg.type as detail_type,
                   gg.kenmerk as display,
                   gg.opmerkingen,
                   gg.id,
@@ -72,6 +74,7 @@ class Migration(migrations.Migration):
             sql=f"""
                 SELECT
                   'bommenkaart/uitgevoerdonderzoek' as type,
+                  uo.type as detail_type,
                   uo.kenmerk as display,
                   uo.id,
                   uo.opdrachtnemer,
@@ -96,6 +99,7 @@ class Migration(migrations.Migration):
                   vg.aantal,
                   vg.cartografie,
                   'bommenkaart/verdachtgebied' as type,
+                  vg.type as detail_type,
                   vg.kenmerk as display,
                   vg.horizontaal,
                   vg.id,

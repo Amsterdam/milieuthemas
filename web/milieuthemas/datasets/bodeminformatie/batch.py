@@ -2,12 +2,11 @@ import logging
 import os
 
 from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.gis.geos.error import GEOSException
 
 from datapunt_generic.batch import batch
 from datapunt_generic.generic import database
-
-from datapunt_generic.generic.csv import process_csv, parse_decimal, parse_datum, parse_nummer
+from datapunt_generic.generic.csv import process_csv, parse_decimal, \
+    parse_datum, parse_nummer
 from . import models
 
 log = logging.getLogger(__name__)
@@ -22,17 +21,19 @@ class ImportGrondmonster(batch.BasicTask):
 
     def process(self):
         source = os.path.join(self.path, "dmb_grondmonster.csv")
-        monsters = [monster for monster in process_csv(source, self.process_row) if monster]
+        monsters = [monster for monster in process_csv(source, self.process_row)
+                    if monster]
 
-        models.Grondmonster.objects.bulk_create(monsters, batch_size=database.BATCH_SIZE)
+        models.Grondmonster.objects.bulk_create(monsters,
+                                                batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
         try:
             rapportdatum = parse_datum(row['rapportdatum'])
         except ValueError as msg:
-            log.warn("Grondmonster {} unable to parse date {}; skipping".format(
-                    row['id'],
-                    row['rapportdatum'],
+            log.warning("Grondmonster {} unable to parse date {}; skipping".format(
+                row['id'],
+                row['rapportdatum'],
             ))
             return
 
@@ -81,9 +82,11 @@ class ImportGrondwatermonster(batch.BasicTask):
 
     def process(self):
         source = os.path.join(self.path, "dmb_watermonster.csv")
-        monsters = [monster for monster in process_csv(source, self.process_row) if monster]
+        monsters = [monster for monster in process_csv(source, self.process_row)
+                    if monster]
 
-        models.Grondwatermonster.objects.bulk_create(monsters, batch_size=database.BATCH_SIZE)
+        models.Grondwatermonster.objects.bulk_create(monsters,
+                                                     batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
         return models.Grondwatermonster(
@@ -129,7 +132,8 @@ class ImportGrondwatermonster(batch.BasicTask):
             tetrachlooretheen=parse_nummer(row['tetrachlooretheen']),
             tetrachloormethaan=parse_nummer(row['tetrachloormethaan']),
             tolueen=parse_nummer(row['tolueen']),
-            trans_dichlooretheen_12=parse_nummer(row['trans_dichlooretheen_12']),
+            trans_dichlooretheen_12=parse_nummer(
+                row['trans_dichlooretheen_12']),
             tribroommethaan=parse_nummer(row['tribroommethaan']),
             trichlooretheen=parse_nummer(row['trichlooretheen']),
             trichloormethaan=parse_nummer(row['trichloormethaan']),
@@ -151,9 +155,11 @@ class ImportAsbest(batch.BasicTask):
 
     def process(self):
         source = os.path.join(self.path, "dmb_asbest.csv")
-        asbest = [asbest for asbest in process_csv(source, self.process_row) if asbest]
+        asbest = [asbest for asbest in process_csv(source, self.process_row) if
+                  asbest]
 
-        models.Asbest.objects.bulk_create(asbest, batch_size=database.BATCH_SIZE)
+        models.Asbest.objects.bulk_create(asbest,
+                                          batch_size=database.BATCH_SIZE)
 
     def process_row(self, row):
         return models.Asbest(
