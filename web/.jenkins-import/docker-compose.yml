@@ -45,6 +45,7 @@ services:
                           -t bommenkaart* \
                           -t geo* \
                           -t django_migrations  \
+                          -t django_content_type \
                           -t django_site \
                           -T auth*    \
                           -U milieuthemas \
