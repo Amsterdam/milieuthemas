@@ -21,6 +21,8 @@ def delete_site(apps, *args, **kwargs):
 class Migration(migrations.Migration):
     dependencies = [
         ('sites', '0002_alter_domain_unique'),
+        ('bommenkaart', '0002_add_missing_fields'),
+        ('bommenkaart', '0003_fix_dates'),
     ]
 
     operations = [
