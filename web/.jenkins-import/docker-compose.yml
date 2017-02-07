@@ -46,7 +46,7 @@ services:
                           -t schiphol* \
                           -t themas* \
                           -t veiligheidsafstanden* \
-                          -t geo_* \
+                          -T geo_* \
                           -T auth* \
                           -T batch* \
                           -T django_admin_log \
