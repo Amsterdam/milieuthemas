@@ -36,17 +36,6 @@ services:
               && chmod 600 ~/.pgpass \
               && pg_dump --clean \
                           -Fc \
-                          -t bodeminformatie* \
-                          -t geluidzone* \
-                          -t risicozones* \
-                          -t schiphol* \
-                          -t themas* \
-                          -t veiligheidsafstanden* \
-                          -t bommenkaart* \
-                          -t geo* \
-                          -t django_migrations \
-                          -t django_site \
-                          -T auth* \
                           -U milieuthemas \
                           -h database -p 5432 \
                           milieuthemas > /tmp/backups/database.dump"
