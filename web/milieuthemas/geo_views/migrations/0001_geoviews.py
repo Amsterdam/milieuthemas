@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('contenttypes', '0002_remove_content_type_name'),
         ('sites', '0002_alter_domain_unique'),
-        ('bommenkaart', '0004_auto_20170206_1453'),
+        ('bommenkaart', '0006_auto_20170207_0920'),
     ]
 
     operations = [
