@@ -47,7 +47,7 @@ services:
                           -t themas* \
                           -t veiligheidsafstanden* \
                           -t geo_* \
-                          -T auth* \
+                          -t auth* \
                           -T batch* \
                           -T django_admin_log \
                           -T django_session \
