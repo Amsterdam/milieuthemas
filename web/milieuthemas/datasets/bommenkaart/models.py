@@ -26,7 +26,7 @@ class GevrijwaardGebied(mixins.ImportStatusMixin):
     bron = models.CharField(max_length=200, null=True)
 
     kenmerk = models.CharField(max_length=32)
-    type = models.CharField(max_length=200, null=True)
+    type = models.CharField(max_length=255, null=True)
     datum = models.DateField(null=True)
     opmerkingen = models.TextField(null=True)
     nauwkeurig = models.CharField(max_length=200, null=True)
@@ -39,7 +39,7 @@ class VerdachtGebied(mixins.ImportStatusMixin):
 
     kenmerk = models.CharField(max_length=32)
     # hoofdgroep
-    type = models.CharField(max_length=200, null=True)
+    type = models.CharField(max_length=255, null=True)
     # subsoort
     subtype = models.CharField(max_length=200, null=True)
 
@@ -60,7 +60,7 @@ class VerdachtGebied(mixins.ImportStatusMixin):
 
 class UitgevoerdOnderzoek(mixins.ImportStatusMixin):
     kenmerk = models.CharField(max_length=32)
-    type = models.CharField(max_length=200, null=True)
+    type = models.CharField(max_length=255, null=True)
     datum = models.DateField(null=True)
     onderzoeksgebied = models.CharField(max_length=200, null=True)
     opdrachtgever = models.CharField(max_length=200, null=True)
