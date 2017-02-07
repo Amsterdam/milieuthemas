@@ -36,7 +36,6 @@ services:
               && chmod 600 ~/.pgpass \
               && pg_dump --clean \
                           -Fc \
-
                           -t bodeminformatie* \
                           -t bommenkaart* \
                           -t django_content_type \
@@ -48,7 +47,6 @@ services:
                           -t themas* \
                           -t veiligheidsafstanden* \
                           -t geo_* \
-
                           -T auth* \
                           -T batch* \
                           -T django_admin_log \
