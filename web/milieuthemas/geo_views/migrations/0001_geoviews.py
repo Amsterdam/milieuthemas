@@ -26,6 +26,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(code=create_site, reverse_code=delete_site),
         migrate.ManageView(
             view_name='geo_bommenkaart_bominslag_point',
             sql=f"""

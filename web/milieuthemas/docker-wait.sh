@@ -7,5 +7,5 @@ set -e
 while ! nc -z database 5432
 do
 	echo "Waiting for postgres..."
-	sleep 0.5
+	sleep 2
 done
