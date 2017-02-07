@@ -1,6 +1,8 @@
+import json
 from collections import OrderedDict
 
-from rest_framework import renderers, serializers, pagination, response, viewsets, filters, reverse
+from rest_framework import renderers, serializers, pagination, response, \
+    viewsets, filters, reverse
 from rest_framework.reverse import reverse
 from rest_framework.utils.urls import replace_query_param
 from rest_framework_extensions.mixins import DetailSerializerMixin
@@ -53,12 +55,14 @@ class HALPagination(pagination.PageNumberPagination):
             self_link = self_link[:-4]
 
         if self.page.has_next():
-            next_link = replace_query_param(self_link, self.page_query_param, self.page.next_page_number())
+            next_link = replace_query_param(self_link, self.page_query_param,
+                                            self.page.next_page_number())
         else:
             next_link = None
 
         if self.page.has_previous():
-            prev_link = replace_query_param(self_link, self.page_query_param, self.page.previous_page_number())
+            prev_link = replace_query_param(self_link, self.page_query_param,
+                                            self.page.previous_page_number())
         else:
             prev_link = None
 
@@ -103,3 +107,23 @@ class DisplayField(serializers.Field):
 
     def to_representation(self, value):
         return str(value)
+
+
+class GeometryField(serializers.Field):
+    def to_internal_value(self, data):
+        return super(data)
+
+    read_only = True
+
+    def get_attribute(self, obj):
+        # Checking if point geometry exists. If not returning the
+        # regular multipoly geometry
+        return getattr(obj, self.source)
+
+    def to_representation(self, value):
+        # Serilaize the GeoField. Value could be either None,
+        # Point or MultiPoly
+        res = ''
+        if value:
+            res = json.loads(value.geojson)
+        return res

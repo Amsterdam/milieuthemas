@@ -62,6 +62,7 @@ class VerdachtGebied(BommenkaartMixin, rest.HALSerializer):
 # detail serializers
 class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    geometrie = rest.GeometryField(source='geometrie_point')
 
     class Meta:
         model = models.BomInslag
@@ -78,12 +79,14 @@ class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
             'datum',
             'datum_inslag',
             'pdf',
-            'intekening'
+            'intekening',
+            'geometrie'
         )
 
 
 class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    geometrie = rest.GeometryField(source='geometrie_polygon')
 
     class Meta:
         model = models.GevrijwaardGebied
@@ -98,11 +101,13 @@ class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
             'opmerkingen',
             'nauwkeurig',
             'intekening',
+            'geometrie'
         )
 
 
 class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    geometrie = rest.GeometryField(source='geometrie_polygon')
 
     class Meta:
         model = models.UitgevoerdOnderzoek
@@ -117,11 +122,13 @@ class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
             'onderzoeksgebied',
             'opdrachtgever',
             'datum',
+            'geometrie'
         )
 
 
 class VerdachtGebiedDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    geometrie = rest.GeometryField(source='geometrie_polygon')
 
     class Meta:
         model = models.VerdachtGebied
@@ -142,4 +149,5 @@ class VerdachtGebiedDetail(BommenkaartMixin, rest.HALSerializer):
             'verschijning',
             'pdf',
             'opmerkingen',
+            'geometrie'
         )
