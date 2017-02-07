@@ -43,10 +43,9 @@ services:
                           -t veiligheidsafstanden* \
                           -t bommenkaart* \
                           -t geo* \
-                          -t django_migrations  \
-                          -t django_content_type \
+                          -t django_migrations \
                           -t django_site \
-                          -T auth*    \
+                          -T auth* \
                           -U milieuthemas \
                           -h database -p 5432 \
                           milieuthemas > /tmp/backups/database.dump"
