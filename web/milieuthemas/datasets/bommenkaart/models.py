@@ -41,7 +41,7 @@ class VerdachtGebied(mixins.ImportStatusMixin):
     # hoofdgroep
     type = models.CharField(max_length=255, null=True)
     # subsoort
-    subtype = models.CharField(max_length=200, null=True)
+    subtype = models.CharField(max_length=255, null=True)
 
     aantal = models.CharField(max_length=200, null=True)
     kaliber = models.CharField(max_length=200, null=True)
