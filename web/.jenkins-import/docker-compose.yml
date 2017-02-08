@@ -38,7 +38,6 @@ services:
                           -Fc \
                           -t bodeminformatie* \
                           -t bommenkaart* \
-                          -t django_content_type \
                           -t django_migrations \
                           -t django_site \
                           -t geluidzone* \
@@ -46,11 +45,10 @@ services:
                           -t schiphol* \
                           -t themas* \
                           -t veiligheidsafstanden* \
-                          -t geo_* \
+                          -t geo* \
                           -t auth* \
                           -T batch* \
-                          -T django_admin_log \
-                          -T django_session \
+                          -T django* \
                           -U milieuthemas \
                           -h database -p 5432 \
                           milieuthemas > /tmp/backups/database.dump"
