@@ -47,8 +47,6 @@ services:
                           -t veiligheidsafstanden* \
                           -t geo* \
                           -t auth* \
-                          -T batch* \
-                          -T django* \
                           -U milieuthemas \
                           -h database -p 5432 \
                           milieuthemas > /tmp/backups/database.dump"
