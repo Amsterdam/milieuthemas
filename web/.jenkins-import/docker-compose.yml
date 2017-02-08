@@ -46,7 +46,6 @@ services:
                 -t themas* \
                 -t veiligheidsafstanden* \
                 -t geo* \
-                -t auth* \
                 -U milieuthemas \
                 -h database -p 5432 \
                 milieuthemas > /tmp/backups/database.dump"
