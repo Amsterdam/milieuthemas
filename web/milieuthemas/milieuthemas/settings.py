@@ -63,6 +63,7 @@ PROJECT_APPS = [
 ]
 
 INSTALLED_APPS = [
+    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -80,7 +81,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -210,6 +212,10 @@ INTERNAL_IPS = ['127.0.0.1']
 REST_FRAMEWORK = dict(
     PAGE_SIZE=25,
     MAX_PAGINATE_BY=100,
+    DEFAULT_AUTHENTICATION_CLASSES=(
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
     DEFAULT_PAGINATION_CLASS='drf_hal_json.pagination.HalPageNumberPagination',
     DEFAULT_PARSER_CLASSES=(
         'drf_hal_json.parsers.JsonHalParser',
