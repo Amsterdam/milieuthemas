@@ -30,7 +30,7 @@ python manage.py collectstatic --noinput
 #yes yes | python manage.py migrate --noinput
 
 # sync geo views
-python manage.py sync_views
+# python manage.py sync_views
 
 # run uwsgi
 exec uwsgi --ini /app/uwsgi.ini
