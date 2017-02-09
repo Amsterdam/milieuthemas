@@ -35,6 +35,7 @@ services:
               && chmod 600 ~/.pgpass \
               && pg_dump \
                 --clean \
+                -Fc \
                 -U milieuthemas \
                 -h database -p 5432 \
                 milieuthemas > /tmp/backups/database.dump"
