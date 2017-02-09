@@ -35,6 +35,7 @@ services:
       bash -c "echo database:5432:milieuthemas:milieuthemas:insecure > ~/.pgpass \
               && chmod 600 ~/.pgpass \
               && pg_dump \
+                --clean \
                 -Fc \
                 -U milieuthemas \
                 -h database -p 5432 \
