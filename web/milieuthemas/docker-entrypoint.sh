@@ -27,8 +27,7 @@ cd /app
 python manage.py collectstatic --noinput
 
 # migrate database tables
-yes yes | python manage.py migrate geo_views zero
-yes yes | python manage.py migrate --noinput
+#yes yes | python manage.py migrate --noinput
 
 # sync geo views
 python manage.py sync_views
