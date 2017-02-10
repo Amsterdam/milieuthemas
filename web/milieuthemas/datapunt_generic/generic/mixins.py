@@ -106,7 +106,7 @@ class ModelViewFieldsMixin(object):
             return ''
 
     @property
-    def url(self) -> str:
+    def uri(self) -> str:
         """
         Generate a url for the model
         If the model has a url_path parameter
@@ -114,6 +114,6 @@ class ModelViewFieldsMixin(object):
         otherwise an empty string is returned
         """
         try:
-            return f", '{settings.DATAPUNT_API_URL}{self.url_path}' || id || '/' as url"
+            return f", '{settings.DATAPUNT_API_URL}{self.url_path}' || id || '/' as uri"
         except AttributeError:
             return ''

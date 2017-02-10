@@ -75,5 +75,5 @@ class Command(BaseCommand):
 
                 self.views.append({
                     'view_name': view_name,
-                    'sql': f'SELECT {view_fields}, {geo_field} as geometrie {model.model_display_field}{model.url} FROM {model_table} WHERE {geo_field} IS NOT NULL'
+                    'sql': f'SELECT {view_fields}, {geo_field} as geometrie {model.model_display_field}{model.uri} FROM {model_table} WHERE {geo_field} IS NOT NULL'
                 })
