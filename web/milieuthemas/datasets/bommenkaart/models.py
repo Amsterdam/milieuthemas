@@ -4,10 +4,10 @@ from django.db import models
 from datapunt_generic.generic import mixins
 
 
-class BomInslag(mixins.ImportStatusMixin):
+class BomInslag(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     kenmerk = models.CharField(max_length=32)
-    type = models.CharField(max_length=300, null=True)
-
+    type = models.CharField(max_length=128, null=True)  # Dataset/data type
+    detail_type = models.CharField(max_length=300, null=True)
     bron = models.CharField(max_length=300, null=True)
     nauwkeurig = models.CharField(max_length=200, null=True)
 
@@ -21,25 +21,36 @@ class BomInslag(mixins.ImportStatusMixin):
 
     geometrie_point = geo.PointField(null=True, srid=28992)
 
+    # Geoview settings
+    display_field = 'kenmerk'
+    geo_view_exclude = ['pdf']
 
-class GevrijwaardGebied(mixins.ImportStatusMixin):
+
+class GevrijwaardGebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     bron = models.CharField(max_length=200, null=True)
-
+    type = models.CharField(max_length=128, null=True)  # Dataset/data type
     kenmerk = models.CharField(max_length=32)
-    type = models.CharField(max_length=255, null=True)
+    detail_type = models.CharField(max_length=255, null=True)
+
     datum = models.DateField(null=True)
+
     opmerkingen = models.TextField(null=True)
     nauwkeurig = models.CharField(max_length=200, null=True)
     intekening = models.CharField(max_length=200)
+
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
+    # Geoview settings
+    display_field = 'kenmerk'
 
-class VerdachtGebied(mixins.ImportStatusMixin):
+
+class VerdachtGebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     bron = models.CharField(max_length=200, null=True)
 
     kenmerk = models.CharField(max_length=32)
+    type = models.CharField(max_length=128, null=True)  # Dataset/data type
     # hoofdgroep
-    type = models.CharField(max_length=255, null=True)
+    detail_type = models.CharField(max_length=255, null=True)
     # subsoort
     subtype = models.CharField(max_length=255, null=True)
 
@@ -57,13 +68,24 @@ class VerdachtGebied(mixins.ImportStatusMixin):
 
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
+    # Geoview settings
+    display_field = 'kenmerk'
+    geo_view_exclude = ['pdf']
 
-class UitgevoerdOnderzoek(mixins.ImportStatusMixin):
+
+class UitgevoerdOnderzoek(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     kenmerk = models.CharField(max_length=32)
-    type = models.CharField(max_length=255, null=True)
+    type = models.CharField(max_length=128, null=True)  # Dataset/data type
+    detail_type = models.CharField(max_length=255, null=True)
+
     datum = models.DateField(null=True)
+
     onderzoeksgebied = models.CharField(max_length=200, null=True)
     opdrachtgever = models.CharField(max_length=200, null=True)
     opdrachtnemer = models.CharField(max_length=200, null=True)
     verdacht_gebied = models.CharField(max_length=200, null=True)
+
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
+
+    # Geoview settings
+    display_field = 'kenmerk'

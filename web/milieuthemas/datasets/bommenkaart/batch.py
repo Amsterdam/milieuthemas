@@ -125,7 +125,8 @@ class ImportInslagenTask(ImportProces):
 
         return models.BomInslag(
             kenmerk=row['kenmerk'],
-            type=row['soort_hand'],
+            type='bommenkaart/bominslag',
+            detail_type=row['soort_hand'],
             geometrie_point=point,
             bron=row['bron1'],
             intekening=row['intekening'],
@@ -174,7 +175,8 @@ class ImportGevrijwaardTask(ImportProces):
 
         return models.GevrijwaardGebied(
             kenmerk=row['kenmerk'],
-            type=row['soort_hand'],
+            type='bommenkaart/gevrijwaardgebied',
+            detail_type=row['soort_hand'],
             geometrie_polygon=poly,
             bron=row['bron1'],
             nauwkeurig=row['nauwkeurig'],
@@ -223,8 +225,8 @@ class ImportVerdachtGebiedTask(ImportProces):
         return models.VerdachtGebied(
 
             kenmerk=row['kenmerk'],
-
-            type=row['hoofdgroep'],
+            type='bommenkaart/verdachtgebied',
+            detail_type=row['hoofdgroep'],
             subtype=row['subsoort'],
 
             aantal=row['aantallen'],
@@ -276,7 +278,8 @@ class ImportUitgevoerdOnderzoekTask(ImportProces):
 
         return models.UitgevoerdOnderzoek(
             kenmerk=row['kenmerk'],
-            type=row['soort_rapp'],
+            type='bommenkaart/uitgevoerdonderzoek',
+            detail_type=row['soort_rapp'],
             onderzoeksgebied=row['onderzoeks'],
             opdrachtnemer=row['opdrachtne'],
             opdrachtgever=row['opdrachtge'],

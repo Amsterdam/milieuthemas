@@ -16,7 +16,7 @@ class BomInslag(BommenkaartMixin, rest.HALSerializer):
             '_display',
             '_links',
             'kenmerk',
-            'type',
+            'detail_type',
         )
 
 
@@ -29,7 +29,7 @@ class GevrijwaardGebied(BommenkaartMixin, rest.HALSerializer):
             '_display',
             '_links',
             'kenmerk',
-            'type',
+            'detail_type',
         )
 
 
@@ -42,7 +42,7 @@ class UitgevoerdOnderzoek(BommenkaartMixin, rest.HALSerializer):
             '_display',
             '_links',
             'kenmerk',
-            'type',
+            'detail_type',
         )
 
 
@@ -55,7 +55,7 @@ class VerdachtGebied(BommenkaartMixin, rest.HALSerializer):
             '_display',
             '_links',
             'kenmerk',
-            'type',
+            'detail_type',
         )
 
 
@@ -72,7 +72,7 @@ class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
             'id',
             'bron',
             'oorlogsinc',
-            'type',
+            'detail_type',
             'kenmerk',
             'opmerkingen',
             'nauwkeurig',
@@ -96,7 +96,7 @@ class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
             'id',
             'bron',
             'kenmerk',
-            'type',
+            'detail_type',
             'datum',
             'opmerkingen',
             'nauwkeurig',
@@ -116,7 +116,7 @@ class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
             '_links',
             'id',
             'kenmerk',
-            'type',
+            'detail_type',
             'opdrachtnemer',
             'verdacht_gebied',
             'onderzoeksgebied',
@@ -138,7 +138,7 @@ class VerdachtGebiedDetail(BommenkaartMixin, rest.HALSerializer):
             'id',
             'bron',
             'kenmerk',
-            'type',
+            'detail_type',
             'afbakening',
             'aantal',
             'cartografie',

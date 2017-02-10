@@ -82,3 +82,17 @@ class ModelViewFieldsMixin(object):
         include = getattr(self, 'geo_view_include', [])
 
         return list(set(include + [fld for fld in self.get_model_fields() if fld not in exclude]))
+
+    @property
+    def model_display_field(self):
+        """
+        Specify a display field for the view
+        If the model has a display_field set, it is
+        added to the view as the 'display'. If not
+        an empty string is returnd. This makes it safe
+        to include this in every query
+        """
+        try:
+            return f', {self.display_field} as display'
+        except AttributeError:
+            return ''

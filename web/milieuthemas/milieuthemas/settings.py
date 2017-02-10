@@ -47,8 +47,10 @@ def get_database_key():
 
 PROJECT_APPS = [
     'atlas',
-    'geo_views',
     'atlas_api',
+    'datapunt_generic.batch',
+    'datapunt_generic.generic',
+    'datapunt_generic.health',
     'datasets.themas',
     'datasets.schiphol',
     'datasets.bodeminformatie',
@@ -57,9 +59,6 @@ PROJECT_APPS = [
     'datasets.risicozones_bedrijven',
     'datasets.risicozones_infrastructuur',
     'datasets.bommenkaart',
-    'datapunt_generic.batch',
-    'datapunt_generic.generic',
-    'datapunt_generic.health',
 ]
 
 INSTALLED_APPS = [
