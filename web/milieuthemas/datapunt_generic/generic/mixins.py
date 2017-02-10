@@ -1,5 +1,8 @@
+# Packages
 from django.contrib.gis.db import models as geo
 from django.db import models
+# Project
+from django.conf import settings
 
 
 class ImportStatusMixin(models.Model):
@@ -63,7 +66,14 @@ class ModelViewFieldsMixin(object):
                   geo.MultiPointField, geo.MultiPolygonField, geo.PointField, geo.PolygonField, geo.RasterField]
 
     def get_model_fields(self):
-        return [f.name for f in self._meta.fields]
+        """
+        Returning a list of the fields
+        Because Django names a foreign key
+        colums with _id, the field name is altered
+        to reflect that as we are generating the SQL
+        ourselves
+        """
+        return [f.name if not isinstance(f, models.ForeignKey) else f'{f.name}_id' for f in self._meta.fields]
 
     def get_geo_classnames(self):
         return [f.__name__ for f in self.geo_fields]
@@ -84,7 +94,7 @@ class ModelViewFieldsMixin(object):
         return list(set(include + [fld for fld in self.get_model_fields() if fld not in exclude]))
 
     @property
-    def model_display_field(self):
+    def model_display_field(self) -> str:
         """
         Specify a display field for the view
         If the model has a display_field set, it is
@@ -94,5 +104,18 @@ class ModelViewFieldsMixin(object):
         """
         try:
             return f', {self.display_field} as display'
+        except AttributeError:
+            return ''
+
+    @property
+    def url(self) -> str:
+        """
+        Generate a url for the model
+        If the model has a url_path parameter
+        a url will be built and added to the view
+        otherwise an empty string is returned
+        """
+        try:
+            return f", '{settings.DATAPUNT_API_URL}{self.url_path}' || id || '/' as url"
         except AttributeError:
             return ''

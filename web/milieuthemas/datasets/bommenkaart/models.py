@@ -24,6 +24,7 @@ class BomInslag(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     # Geoview settings
     display_field = 'kenmerk'
     geo_view_exclude = ['pdf']
+    url_path = 'milieuthemas/explosieven/inslagen/'
 
 
 class GevrijwaardGebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -42,7 +43,7 @@ class GevrijwaardGebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
 
     # Geoview settings
     display_field = 'kenmerk'
-
+    url_path = 'milieuthemas/explosieven/gevrijwaardgebied/'
 
 class VerdachtGebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     bron = models.CharField(max_length=200, null=True)
@@ -71,6 +72,7 @@ class VerdachtGebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     # Geoview settings
     display_field = 'kenmerk'
     geo_view_exclude = ['pdf']
+    url_path = 'milieuthemas/explosieven/verdachtgebied/'
 
 
 class UitgevoerdOnderzoek(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -89,3 +91,4 @@ class UitgevoerdOnderzoek(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin)
 
     # Geoview settings
     display_field = 'kenmerk'
+    url_path = 'milieuthemas/explosieven/uitgevoerdonderzoek/'
