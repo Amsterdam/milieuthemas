@@ -26,7 +26,7 @@ class ImportBomInslagTest(APITestCase):
         self.assertEqual(data['results'][10]['_display'], 'KR_430722011')
         self.assertEqual(data['results'][10]['dataset'], 'bommenkaart')
         self.assertEqual(data['results'][10]['kenmerk'], 'KR_430722011')
-        self.assertEqual(data['results'][10]['detail_type'], 'Krater')
+        self.assertEqual(data['results'][10]['type'], 'Krater')
 
     def test_first(self):
         response = self.client.get('/milieuthemas/explosieven/inslagen/1/')
@@ -44,7 +44,7 @@ class ImportBomInslagTest(APITestCase):
             'id': 1,
             'bron': 'D-855_4042.jpg',
             'oorlogsinc': 'RAP_430717A',
-            'detail_type': 'Krater',
+            'type': 'Krater',
             'kenmerk': 'KR_430722001',
             'opmerkingen': '',
             'nauwkeurig': '5 meter',
@@ -78,7 +78,7 @@ class ImportGevrijwaardGebiedTest(APITestCase):
         self.assertEqual(data['results'][10]['_display'], 'GG_009')
         self.assertEqual(data['results'][10]['dataset'], 'bommenkaart')
         self.assertEqual(data['results'][10]['kenmerk'], 'GG_009')
-        self.assertEqual(data['results'][10]['detail_type'], 'Vrijgave')
+        self.assertEqual(data['results'][10]['type'], 'Vrijgave')
 
     def test_first(self):
         response = self.client.get('/milieuthemas'
@@ -92,7 +92,7 @@ class ImportGevrijwaardGebiedTest(APITestCase):
             'id': 1,
             'bron': '5150505-PVO-TEK-003',
             'kenmerk': 'GG_001A',
-            'detail_type': 'Vrijgave',
+            'type': 'Vrijgave',
             'datum': '2015-07-10',
             'opmerkingen': 'Vrijgave tot 14,5 meter -mv '
                            'middels dieptedetectie en grondradar',
@@ -172,7 +172,7 @@ class ImportVerdachtGebiedTest(APITestCase):
         self.assertEqual(data['results'][3]['_display'], 'VGA_400815A')
         self.assertEqual(data['results'][3]['dataset'], 'bommenkaart')
         self.assertEqual(data['results'][3]['kenmerk'], 'VGA_400815A')
-        self.assertEqual(data['results'][3]['detail_type'], 'Afwerpmunitie')
+        self.assertEqual(data['results'][3]['type'], 'Afwerpmunitie')
 
     def test_first(self):
         response = self.client.get('/milieuthemas'
@@ -186,7 +186,7 @@ class ImportVerdachtGebiedTest(APITestCase):
             'id': 1,
             'bron': None,
             'kenmerk': 'VGA_400630B',
-            'detail_type': 'Afwerpmunitie',
+            'type': 'Afwerpmunitie',
             'afbakening': 'Blindganger',
             'aantal': '1 (blindganger)',
             'cartografie': '10 meter',
@@ -262,7 +262,7 @@ class ImportVerdachtGebiedTest(APITestCase):
             self.assertEqual(data['results'][8]['_display'], '-')
             self.assertEqual(data['results'][8]['dataset'], 'bommenkaart')
             self.assertEqual(data['results'][8]['kenmerk'], '-')
-            self.assertEqual(data['results'][8]['detail_type'], 'Detectie')
+            self.assertEqual(data['results'][8]['type'], 'Detectie')
 
         def test_first(self):
             response = self.client.get('/milieuthemas'
@@ -275,7 +275,7 @@ class ImportVerdachtGebiedTest(APITestCase):
                             '/explosieven/uitgevoerdonderzoek/1/'})]),
                 'id': 1,
                 'kenmerk': '128103',
-                'detail_type': 'Probleeminventarisatie',
+                'type': 'Probleeminventarisatie',
                 'opdrachtnemer': 'IBA',
                 'verdacht_gebied': 'Gedeeltelijk',
                 'onderzoeksgebied': 'Zeeburgereiland',

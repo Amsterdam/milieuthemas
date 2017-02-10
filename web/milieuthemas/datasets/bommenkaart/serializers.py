@@ -1,5 +1,8 @@
-from datapunt_generic.generic import rest
+# Packages
+from rest_framework import serializers
+# Project
 from . import models
+from datapunt_generic.generic import rest
 
 
 class BommenkaartMixin(rest.DataSetSerializerMixin):
@@ -9,6 +12,7 @@ class BommenkaartMixin(rest.DataSetSerializerMixin):
 # list serializers
 class BomInslag(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    type = serializers.CharField(max_length=300, source='detail_type')
 
     class Meta:
         model = models.BomInslag
@@ -16,12 +20,13 @@ class BomInslag(BommenkaartMixin, rest.HALSerializer):
             '_display',
             '_links',
             'kenmerk',
-            'detail_type',
+            'type',
         )
 
 
 class GevrijwaardGebied(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    type = serializers.CharField(max_length=300, source='detail_type')
 
     class Meta:
         model = models.GevrijwaardGebied
@@ -29,12 +34,13 @@ class GevrijwaardGebied(BommenkaartMixin, rest.HALSerializer):
             '_display',
             '_links',
             'kenmerk',
-            'detail_type',
+            'type',
         )
 
 
 class UitgevoerdOnderzoek(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    type = serializers.CharField(max_length=300, source='detail_type')
 
     class Meta:
         model = models.UitgevoerdOnderzoek
@@ -42,12 +48,13 @@ class UitgevoerdOnderzoek(BommenkaartMixin, rest.HALSerializer):
             '_display',
             '_links',
             'kenmerk',
-            'detail_type',
+            'type',
         )
 
 
 class VerdachtGebied(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    type = serializers.CharField(max_length=300, source='detail_type')
 
     class Meta:
         model = models.VerdachtGebied
@@ -55,13 +62,14 @@ class VerdachtGebied(BommenkaartMixin, rest.HALSerializer):
             '_display',
             '_links',
             'kenmerk',
-            'detail_type',
+            'type',
         )
 
 
 # detail serializers
 class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    type = serializers.CharField(max_length=300, source='detail_type')
     geometrie = rest.GeometryField(source='geometrie_point')
 
     class Meta:
@@ -72,8 +80,8 @@ class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
             'id',
             'bron',
             'oorlogsinc',
-            'detail_type',
             'kenmerk',
+            'type',
             'opmerkingen',
             'nauwkeurig',
             'datum',
@@ -86,6 +94,7 @@ class BomInslagDetail(BommenkaartMixin, rest.HALSerializer):
 
 class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    type = serializers.CharField(max_length=300, source='detail_type')
     geometrie = rest.GeometryField(source='geometrie_polygon')
 
     class Meta:
@@ -96,7 +105,7 @@ class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
             'id',
             'bron',
             'kenmerk',
-            'detail_type',
+            'type',
             'datum',
             'opmerkingen',
             'nauwkeurig',
@@ -107,6 +116,7 @@ class GevrijwaardGebiedDetail(BommenkaartMixin, rest.HALSerializer):
 
 class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    type = serializers.CharField(max_length=300, source='detail_type')
     geometrie = rest.GeometryField(source='geometrie_polygon')
 
     class Meta:
@@ -116,7 +126,7 @@ class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
             '_links',
             'id',
             'kenmerk',
-            'detail_type',
+            'type',
             'opdrachtnemer',
             'verdacht_gebied',
             'onderzoeksgebied',
@@ -128,6 +138,7 @@ class UitgevoerdOnderzoekDetail(BommenkaartMixin, rest.HALSerializer):
 
 class VerdachtGebiedDetail(BommenkaartMixin, rest.HALSerializer):
     _display = rest.DisplayField(source='kenmerk')
+    type = serializers.CharField(max_length=300, source='detail_type')
     geometrie = rest.GeometryField(source='geometrie_polygon')
 
     class Meta:
@@ -138,7 +149,7 @@ class VerdachtGebiedDetail(BommenkaartMixin, rest.HALSerializer):
             'id',
             'bron',
             'kenmerk',
-            'detail_type',
+            'type',
             'afbakening',
             'aantal',
             'cartografie',
