@@ -23,6 +23,8 @@ fi
 
 cd /app
 
+# Update DB if needed
+python manage.py migrate
 # collect static files
 python manage.py collectstatic --noinput
 
