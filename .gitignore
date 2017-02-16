@@ -5,6 +5,7 @@ reports
 *.iml
 *_dev_settings.py
 static
+out/
 .env
 .jenkins/backups
 
