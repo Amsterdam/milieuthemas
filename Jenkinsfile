@@ -18,76 +18,79 @@ def tryStep(String message, Closure block, Closure tearDown = null) {
 
 
 node {
-
     stage("Checkout") {
         checkout scm
     }
 
     stage('Test') {
         tryStep "test", {
-            sh "docker-compose -p milieuthemas -f .jenkins-test/docker-compose.yml build"
-            sh "docker-compose -p milieuthemas -f .jenkins-test/docker-compose.yml run --rm tests"
+            sh "docker-compose -p milieuthemas -f .jenkins-test/docker-compose.yml build && " +
+               "docker-compose -p milieuthemas -f .jenkins-test/docker-compose.yml run --rm tests"
         }, {
             sh "docker-compose -p milieuthemas -f .jenkins-test/docker-compose.yml down"
         }
     }
 
-    stage("Build acceptance image") {
+    stage("Build image") {
         tryStep "build", {
             def image = docker.build("build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${env.BUILD_NUMBER}", "web")
             image.push()
-            image.push("acceptance")
         }
     }
 }
 
-String BRANCH = "${env.BRANCH_NAME}".toString()
+String BRANCH = "${env.BRANCH_NAME}"
 
 if (BRANCH == "master") {
+
+    node {
+        stage('Push acceptance image') {
+            tryStep "image tagging", {
+                def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${env.BUILD_NUMBER}")
+                image.pull()
+                image.push("acceptance")
+            }
+        }
+    }
 
     node {
         stage("Deploy to ACC") {
             tryStep "deployment", {
                 build job: 'Subtask_Openstack_Playbook',
-                        parameters: [
-                                [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-milieuthemas.yml'],
-                                [$class: 'StringParameterValue', name: 'BRANCH', value: 'master'],
-                        ]
+                parameters: [
+                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-milieuthemas.yml'],
+                ]
             }
         }
     }
-} else {
-    print "Branch is: ${BRANCH}"
-}
 
-stage('Waiting for approval') {
-    slackSend channel: '#ci-channel', color: 'warning', message: 'Milieuthemas is waiting for Production Release - please confirm'
-    input "Deploy to Production?"
-}
 
-node {
-    stage('Push production image') {
-        tryStep "image tagging", {
-            def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${env.BUILD_NUMBER}")
-            image.pull()
+    stage('Waiting for approval') {
+        slackSend channel: '#ci-channel', color: 'warning', message: 'Milieuthemas is waiting for Production Release - please confirm'
+        input "Deploy to Production?"
+    }
 
-            image.push("production")
-            image.push("latest")
+    node {
+        stage('Push production image') {
+            tryStep "image tagging", {
+                def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${env.BUILD_NUMBER}")
+                image.pull()
+                image.push("production")
+                image.push("latest")
+            }
         }
     }
-}
 
-
-node {
-    stage("Deploy") {
-        tryStep "deployment", {
-            build job: 'Subtask_Openstack_Playbook',
-                    parameters: [
-                            [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
-                            [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-milieuthemas.yml'],
-                            [$class: 'StringParameterValue', name: 'BRANCH', value: 'master'],
-                    ]
+    node {
+        stage("Deploy") {
+            tryStep "deployment", {
+                build job: 'Subtask_Openstack_Playbook',
+                parameters: [
+                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-milieuthemas.yml'],
+                ]
+            }
         }
     }
 }
