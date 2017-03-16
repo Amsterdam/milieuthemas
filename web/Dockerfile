@@ -1,4 +1,4 @@
-FROM amsterdam/docker_python:testing
+FROM amsterdam/docker_python:latest
 MAINTAINER datapunt.ois@amsterdam.nl
 
 ENV PYTHONUNBUFFERED 1
