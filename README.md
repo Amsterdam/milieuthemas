@@ -2,12 +2,12 @@ Atlas Milieuthema's
 ====================
 
 
-##Requirements
+## Requirements
 
 * Docker-Compose (required)
 
 
-##Developing
+## Developing
 
 
 Use `docker-compose` to start a local database.
@@ -25,7 +25,7 @@ Import db data from prod
     docker-compose exec database update-db.sh milieuthemas
 
 
-The API should now be available on http://localhost:8000/
+The API should now be available on http://localhost:8101/
 
 
 Accessing the docker database container for view testing:
