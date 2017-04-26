@@ -2,26 +2,22 @@ Atlas Milieuthema's
 ====================
 
 
-##Requirements
+## Requirements
 
 * Docker-Compose (required)
 
 
-##Developing
+## Developing
 
 
 Use `docker-compose` to start a local database.
 
-	(sudo) docker-compose start
-
-or
-
-	docker-compose up
+	docker-compose up -d
 
 
 Run migrate to create the needed database tables
 
-    manage.py migrate
+    docker-compose exec web python manage.py migrate
 
 
 Import db data from prod
@@ -29,12 +25,12 @@ Import db data from prod
     docker-compose exec database update-db.sh milieuthemas
 
 
-The API should now be available on http://localhost:8000/
+The API should now be available on http://localhost:8101/
 
 
 Accessing the docker database container for view testing:
 
-	psql -h 192.168.99.100 -p 5402 -U postgres
+	psql -h localhost -p 5402 -U milieuthemas
 
 ## Understaing Geoviews
 
