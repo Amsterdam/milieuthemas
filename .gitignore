@@ -12,5 +12,6 @@ out/
 
 .project
 .pydevproject
+.settings
 
 data
