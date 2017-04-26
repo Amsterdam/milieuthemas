@@ -1,8 +1,6 @@
 import logging
 import os
 
-from django.conf import settings
-
 from datapunt_generic.batch import batch
 from datapunt_generic.generic import database
 

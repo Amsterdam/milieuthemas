@@ -14,7 +14,7 @@ OVERRIDE_HOST_ENV_VAR = 'DATABASE_HOST_OVERRIDE'
 OVERRIDE_PORT_ENV_VAR = 'DATABASE_PORT_OVERRIDE'
 
 DATAPUNT_API_URL = os.getenv(
-    'DATAPUNT_API_URL', 'https://api.datapunt.amsterdam.nl/')
+    'DATAPUNT_API_URL', 'https://api.data.amsterdam.nl/')
 
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
