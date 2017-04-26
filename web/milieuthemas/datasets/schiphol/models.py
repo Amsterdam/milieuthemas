@@ -5,6 +5,16 @@ from datapunt_generic.generic import mixins
 from datasets.themas.models import Thema
 
 
+class MaatgevendeToetshoogte(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
+    geometrie_polygon = geo.MultiPolygonField(null=False, dim=3, srid=28992)
+    hoogte_nap = models.FloatField(null=False)
+    hoogte_nap_klasse = models.IntegerField(null=False)
+
+    objects = geo.GeoManager()
+
+    geo_view_exclude = ['date_modified']
+
+
 class HoogtebeperkendeVlakken(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     type = models.CharField(max_length=100, null=True)

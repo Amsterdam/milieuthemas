@@ -1,3 +1,4 @@
+import csv
 import logging
 import os
 
@@ -12,6 +13,48 @@ from datasets.themas.models import Thema
 from . import models
 
 log = logging.getLogger(__name__)
+
+
+class ImportMaatgevendeToetshoogteTask(batch.BasicTask):
+    name = "Import dro_schiphol_maatgevende_toetshoogte"
+
+    def before(self):
+        database.clear_models(models.MaatgevendeToetshoogte)
+
+    def process(self):
+        source = os.path.join(self.path, "dro_schiphol_maatgevende_toetshoogte.csv")
+        # Note that I'm not using process_csv because my data uses COMMA as
+        # separator, not PIPE
+        with open(source, newline='') as csvfile:
+            data = csv.reader(csvfile)
+            models.MaatgevendeToetshoogte.objects.bulk_create(
+                self.model_generator(data), batch_size=database.BATCH_SIZE)
+
+    def model_generator(self, data):
+        """ Generator that yields an instance of models.MaatgevendeToetshoogte
+        for every row in the given data.
+
+        :param data: generator (must implement the iterator protocol). Expects:
+            data[n][0] => WKT
+            data[n][1] => VLAKNAAM (not used)
+            data[n][2] => HOOGTEKLAS
+            data[n][3] => H_M_NAP
+        """
+        _ = next(data)  # headers
+        idx_wkt, idx_hoogteklas, idx_h_m_nap = 0, 2, 3
+        for row in data:
+            try:
+                geometrie_polygon = GEOSGeometry(row[idx_wkt])
+            except GEOSException as e:
+                log.warn('Cannot parse geometry: {}'.format(e))
+                continue
+            hoogte_nap_klasse = row[idx_hoogteklas]
+            hoogte_nap = row[idx_h_m_nap]
+            yield models.MaatgevendeToetshoogte(
+                geometrie_polygon=geometrie_polygon,
+                hoogte_nap_klasse=hoogte_nap_klasse,
+                hoogte_nap=hoogte_nap
+            )
 
 
 class ImportHoogtebeperkendeVlakkenTask(batch.BasicTask):
@@ -169,6 +212,7 @@ class ImportSchipholJob(object):
 
     def tasks(self):
         return [
+            ImportMaatgevendeToetshoogteTask(),
             ImportHoogtebeperkendeVlakkenTask(),
             ImportGeluidzoneTask(),
             ImportVogelvrijwaringsgebiedTask()

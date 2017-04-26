@@ -6,6 +6,18 @@ from .. import batch, models
 from datasets.themas.tests.factories import ThemaFactory
 
 
+class ImportMaatgevendeToetshoogteTest(TaskTestCase):
+
+    def task(self):
+        return batch.ImportMaatgevendeToetshoogteTask()
+
+    def test_import(self):
+        self.run_task()
+
+        imported = models.MaatgevendeToetshoogte.objects.all()
+        self.assertEqual(len(imported), 20)
+
+
 class ImportHoogtebeperkendeVlakkenTest(TaskTestCase):
     def setUp(self):
         ThemaFactory.create(pk=6)
