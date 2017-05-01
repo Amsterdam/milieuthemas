@@ -17,6 +17,11 @@ class ImportMaatgevendeToetshoogteTest(TaskTestCase):
         imported = models.MaatgevendeToetshoogte.objects.all()
         self.assertEqual(len(imported), 20)
 
+        klasse_min_tien = models.MaatgevendeToetshoogte.objects.filter(
+            hoogte_nap_klasse=-10
+        )  # <- get all objects in class -10, should be 13 in the testset
+        self.assertEqual(klasse_min_tien.count(), 13)
+
 
 class ImportHoogtebeperkendeVlakkenTest(TaskTestCase):
     def setUp(self):
