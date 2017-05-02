@@ -28,9 +28,4 @@ class Migration(migrations.Migration):
             },
             bases=(datapunt_generic.generic.mixins.ModelViewFieldsMixin, models.Model),
         ),
-        migrations.AlterField(
-            model_name='maatgevendetoetshoogte',
-            name='hoogte_nap',
-            field=models.FloatField(),
-        ),
     ]

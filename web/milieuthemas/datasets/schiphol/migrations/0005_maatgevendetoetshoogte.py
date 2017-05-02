@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_modified', models.DateTimeField(auto_now=True)),
                 ('geometrie_polygon', django.contrib.gis.db.models.fields.MultiPolygonField(dim=3, srid=28992)),
-                ('hoogte_nap', models.IntegerField()),
+                ('hoogte_nap', models.FloatField()),
                 ('hoogte_nap_klasse', models.IntegerField()),
             ],
             options={
