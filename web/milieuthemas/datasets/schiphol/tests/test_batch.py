@@ -23,6 +23,23 @@ class ImportMaatgevendeToetshoogteTest(TaskTestCase):
         self.assertEqual(klasse_min_tien.count(), 13)
 
 
+class ImportHoogtebeperkingRadarTest(TaskTestCase):
+
+    def task(self):
+        return batch.ImportHoogtebeperkingRadarTask()
+
+    def test_import(self):
+        self.run_task()
+
+        imported = models.HoogtebeperkingRadar.objects.all()
+        self.assertEqual(len(imported), 20)
+
+        klasse_min_tien = models.HoogtebeperkingRadar.objects.filter(
+            hoogte_nap_klasse=20
+        )  # <- get all objects in class -10, should be 13 in the testset
+        self.assertEqual(klasse_min_tien.count(), 7)
+
+
 class ImportHoogtebeperkendeVlakkenTest(TaskTestCase):
     def setUp(self):
         ThemaFactory.create(pk=6)
