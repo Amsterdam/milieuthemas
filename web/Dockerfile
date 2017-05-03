@@ -1,5 +1,5 @@
-FROM build.datapunt.amsterdam.nl:5000/atlas/python:latest
-MAINTAINER datapunt.ois@amsterdam.nl
+FROM amsterdam/docker_python:latest
+MAINTAINER datapunt@amsterdam.nl
 
 ENV PYTHONUNBUFFERED 1
 ENV CONSUL_HOST=${CONSUL_HOST:-notset}
@@ -9,8 +9,7 @@ ENV DATAPUNT_API_URL=${DATAPUNT_API_URL:-https://api.data.amsterdam.nl/}
 
 EXPOSE 8000
 
-RUN apt-get update \
-	&& apt-get install -y \
+RUN apt-get install -y \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 	&& adduser --system datapunt \

@@ -29,4 +29,4 @@ python manage.py migrate
 python manage.py collectstatic --noinput
 
 # run uwsgi
-exec uwsgi --ini /app/uwsgi.ini
+exec uwsgi

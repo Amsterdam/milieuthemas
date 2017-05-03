@@ -7,9 +7,11 @@ reports
 static
 out/
 .env
+.venv
 .jenkins/backups
 
 .project
 .pydevproject
+.settings
 
 data
