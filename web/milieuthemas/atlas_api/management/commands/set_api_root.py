@@ -1,6 +1,5 @@
 from urllib.parse import urlparse
 
-from django.contrib.sites.models import Site
 from django.core.management import BaseCommand
 
 
@@ -21,13 +20,3 @@ class Command(BaseCommand):
         parsed = urlparse(base)
         domain = parsed.netloc
         assert domain
-
-        # ensure the API Domain site contains base
-        Site.objects.update_or_create(name='API Domain', defaults=dict(
-            domain=base
-        ))
-
-        # ensure the admin Domain contains domain
-        Site.objects.update_or_create(name='Admin domain', defaults=dict(
-            domain=domain
-        ))
