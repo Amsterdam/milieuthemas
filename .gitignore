@@ -14,4 +14,5 @@ out/
 .pydevproject
 .settings
 
-data
+
+/web/milieuthemas/data
