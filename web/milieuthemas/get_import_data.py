@@ -116,7 +116,7 @@ def get_all_files():
     """
 
     all_sources = [
-        (bag_connection, 'Bommenkaart'),
+        (bag_connection, 'bommenkaart'),
         (bag_connection, 'Milieuthemas')
     ]
 
