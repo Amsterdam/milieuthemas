@@ -292,11 +292,10 @@ class ImportUitgevoerdOnderzoekTask(ImportProces):
 class ImportBommenkaartJob(object):
     name = "Import bommenkaart informatie"
 
-    @staticmethod
-    def tasks():
+    def tasks(self):
         return [
-            ImportInslagenTask(path='bommenkaart/csv'),
-            ImportVerdachtGebiedTask(path='bommenkaart/csv'),
-            ImportUitgevoerdOnderzoekTask(path='bommenkaart/csv'),
-            ImportGevrijwaardTask(path='bommenkaart/csv'),
+            ImportInslagenTask(path='Bommenkaart/bommenkaart/csv'),
+            ImportVerdachtGebiedTask(path='Bommenkaart/bommenkaart/csv/'),
+            ImportUitgevoerdOnderzoekTask(path='Bommenkaart/bommenkaart/csv/'),
+            ImportGevrijwaardTask(path='Bommenkaart/bommenkaart/csv/'),
         ]
