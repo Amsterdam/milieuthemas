@@ -294,8 +294,8 @@ class ImportBommenkaartJob(object):
 
     def tasks(self):
         return [
-            ImportInslagenTask(path='Bommenkaart/bommenkaart/csv'),
-            ImportVerdachtGebiedTask(path='Bommenkaart/bommenkaart/csv/'),
-            ImportUitgevoerdOnderzoekTask(path='Bommenkaart/bommenkaart/csv/'),
-            ImportGevrijwaardTask(path='Bommenkaart/bommenkaart/csv/'),
+            ImportInslagenTask(path='bommenkaart/csv'),
+            ImportVerdachtGebiedTask(path='bommenkaart/csv'),
+            ImportUitgevoerdOnderzoekTask(path='bommenkaart/csv'),
+            ImportGevrijwaardTask(path='bommenkaart/csv'),
         ]
