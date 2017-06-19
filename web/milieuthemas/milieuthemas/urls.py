@@ -4,7 +4,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 
 urlpatterns = [
-                  url(r'^milieuthemas/', include('atlas_api.urls'),
+                  url(r'^milieuthemas/', include('datapunt_api.urls'),
                       name="milieuthemas"),
                   url(r'^status/',
                       include('datapunt_generic.health.urls',

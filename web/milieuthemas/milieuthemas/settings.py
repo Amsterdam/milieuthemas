@@ -47,7 +47,7 @@ def get_database_key():
 
 PROJECT_APPS = [
     'atlas',
-    'atlas_api',
+    'datapunt_api',
     'datapunt_generic.batch',
     'datapunt_generic.generic',
     'datapunt_generic.health',
@@ -62,13 +62,11 @@ PROJECT_APPS = [
 ]
 
 INSTALLED_APPS = [
-    'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_extensions',
+    'django_filters',
 
     'django.contrib.gis',
     'rest_framework',
@@ -77,11 +75,7 @@ INSTALLED_APPS = [
     ] + PROJECT_APPS
 
 MIDDLEWARE = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
@@ -214,6 +208,9 @@ REST_FRAMEWORK = dict(
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+    UNAUTHENTICATED_USER=None,
+    # UNAUTHENTICATED_TOKE=None,
+
     DEFAULT_PAGINATION_CLASS='drf_hal_json.pagination.HalPageNumberPagination',
     DEFAULT_PARSER_CLASSES=(
         'drf_hal_json.parsers.JsonHalParser',
@@ -225,12 +222,6 @@ REST_FRAMEWORK = dict(
     DEFAULT_FILTER_BACKENDS=(
         'django_filters.rest_framework.DjangoFilterBackend',
     )
-)
-
-CORS_ORIGIN_REGEX_WHITELIST = (
-    '^(https?://)?localhost(:\d+)?$',
-    '^(https?://)?.*\.datalabamsterdam\.nl$',
-    '^(https?://)?.*\.amsterdam\.nl$',
 )
 
 # Security
