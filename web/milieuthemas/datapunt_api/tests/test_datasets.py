@@ -30,6 +30,15 @@ class BrowseDatasetsTestCase(APITransactionTestCase):
         for url in self.datasets:
             self.assertIn(url, response.data)
 
+    def test_dataset_root(self):
+
+        for url in self.datasets:
+            response = self.client.get('/{}/{}/?format=api'.format(
+                self.root, url))
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(
+                response['Content-Type'], 'text/html; charset=utf-8')
+
     def test_lists(self):
         for url in self.datasets:
             response = self.client.get('/{}/{}/'.format(self.root, url))

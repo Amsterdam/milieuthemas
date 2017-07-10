@@ -2,27 +2,23 @@ from django.conf.urls import url, include
 from rest_framework import schemas, response, routers
 from rest_framework.decorators import renderer_classes, api_view
 from rest_framework.renderers import CoreJSONRenderer
-from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
+from rest_framework_swagger.renderers import SwaggerUIRenderer
+from rest_framework_swagger.renderers import OpenAPIRenderer
 
 from datasets.bommenkaart.urls import register_apis
 
 
-class MilieuThemaRouter(routers.DefaultRouter):
+class MilieuThemaView(routers.APIRootView):
     """
     Informatie over milieu gerelateerde zaken.
-    Momenteel via deze api enkel explosieven in de stad. Inslagen (met mogelijke
-    blindgangers), gevrijwaarde, verdachte en ondezochte gebieden.
+    Momenteel via deze api enkel explosieven in de stad.
+    Inslagen (met mogelijke blindgangers), gevrijwaarde,
+    verdachte en ondezochte gebieden.
     """
 
-    def get_api_root_view(self, **kwargs):
-        view = super().get_api_root_view(**kwargs)
-        cls = view.cls
 
-        class Milieuthemas(cls):
-            pass
-
-        Milieuthemas.__doc__ = self.__doc__
-        return Milieuthemas.as_view()
+class MilieuThemaRouter(routers.DefaultRouter):
+    APIRootView = MilieuThemaView
 
 
 milieuthemas = MilieuThemaRouter()
