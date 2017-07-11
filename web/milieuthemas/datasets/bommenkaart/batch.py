@@ -80,9 +80,9 @@ class ImportProces(batch.BasicTask):
         """
         The object store link:
 
-        https://atlas.amsterdam.nl/bommenkaart/RAP_000000_.pdf
+        https://data.amsterdam.nl/bommenkaart/RAP_000000_.pdf
         """
-        url = "https://atlas.amsterdam.nl/bommenkaart/{}"
+        url = "https://data.amsterdam.nl/bommenkaart/{}"
         return url.format(pdf_name)
 
 

@@ -50,7 +50,7 @@ class ImportBomInslagTest(APITestCase):
             'nauwkeurig': '5 meter',
             'datum': '1943-07-22',
             'datum_inslag': None,
-            'pdf': 'https://atlas.amsterdam.nl/bommenkaart/RAP_430717A.pdf',
+            'pdf': 'https://data.amsterdam.nl/bommenkaart/RAP_430717A.pdf',
             'intekening': 'Luchtfoto',
             'geometrie': {
                 'type': 'Point',
@@ -195,7 +195,7 @@ class ImportVerdachtGebiedTest(APITestCase):
             'subtype': 'Brisantbom(men)',
             'oorlogshandeling': 'RAP_400630B',
             'verschijning': 'Afgeworpen',
-            'pdf': 'https://atlas.amsterdam.nl/bommenkaart/RAP_400630B.pdf',
+            'pdf': 'https://data.amsterdam.nl/bommenkaart/RAP_400630B.pdf',
             'opmerkingen': 'afbakening conform Saricon 11S037-VO-01',
             'geometrie': {
                 'type': 'MultiPolygon',
