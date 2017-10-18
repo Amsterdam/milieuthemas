@@ -95,7 +95,6 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -208,8 +207,9 @@ REST_FRAMEWORK = dict(
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
-    UNAUTHENTICATED_USER=None,
-    # UNAUTHENTICATED_TOKE=None,
+
+    UNAUTHENTICATED_USER={},
+    UNAUTHENTICATED_TOKEN={},
 
     DEFAULT_PAGINATION_CLASS='drf_hal_json.pagination.HalPageNumberPagination',
     DEFAULT_PARSER_CLASSES=(
