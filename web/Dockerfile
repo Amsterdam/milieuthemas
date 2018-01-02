@@ -2,8 +2,6 @@ FROM amsterdam/docker_python:latest
 MAINTAINER datapunt@amsterdam.nl
 
 ENV PYTHONUNBUFFERED 1
-ENV CONSUL_HOST=${CONSUL_HOST:-notset}
-ENV CONSUL_PORT=${CONSUL_PORT:-8500}
 ENV DATAPUNT_API_URL=${DATAPUNT_API_URL:-https://api.data.amsterdam.nl/}
 
 
