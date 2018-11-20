@@ -58,7 +58,7 @@ class TaskExecution(models.Model):
     date_started = models.DateTimeField(null=True)
     date_finished = models.DateTimeField(null=True)
     status = models.IntegerField(default=STATUS_STARTED, choices=STATUS_CHOICES)
-    job = models.ForeignKey(JobExecution, related_name="task_executions")
+    job = models.ForeignKey(JobExecution, related_name="task_executions", on_delete=models.CASCADE)
 
     class Meta:
         ordering = ("date_started",)

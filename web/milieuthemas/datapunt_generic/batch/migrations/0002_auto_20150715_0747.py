@@ -34,6 +34,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='taskexecution',
             name='job',
-            field=models.ForeignKey(to='batch.JobExecution'),
+            field=models.ForeignKey(to='batch.JobExecution', on_delete=models.CASCADE),
         ),
     ]

@@ -2,10 +2,11 @@ import json
 from collections import OrderedDict
 
 from rest_framework import renderers, serializers, pagination, response, \
-    viewsets, filters, reverse
+    viewsets, reverse
 from rest_framework.reverse import reverse
 from rest_framework.utils.urls import replace_query_param
 from rest_framework_extensions.mixins import DetailSerializerMixin
+import django_filters.rest_framework
 
 DEFAULT_RENDERERS = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer)
 FORMATS = [dict(format=r.format, type=r.media_type) for r in DEFAULT_RENDERERS]
@@ -80,7 +81,8 @@ class HALPagination(pagination.PageNumberPagination):
 class AtlasViewSet(DetailSerializerMixin, viewsets.ReadOnlyModelViewSet):
     renderer_classes = DEFAULT_RENDERERS
     pagination_class = HALPagination
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+
 
 
 class RelatedSummaryField(serializers.Field):

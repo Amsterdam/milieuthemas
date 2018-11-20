@@ -16,7 +16,7 @@ class BrowseDatasetsTestCase(APITransactionTestCase):
     ]
 
     def setUp(self):
-        batch.ImportInslagenTask(path='bommenkaart/csv/').execute()
+        batch.ImportInslagenTask(path='').execute()
         batch.ImportGevrijwaardTask(path='bommenkaart/csv/').execute()
         batch.ImportVerdachtGebiedTask(path='bommenkaart/csv/').execute()
         batch.ImportUitgevoerdOnderzoekTask(path='bommenkaart/csv/').execute()

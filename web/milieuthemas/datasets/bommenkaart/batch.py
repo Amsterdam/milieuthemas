@@ -10,7 +10,7 @@ from django.contrib.gis.geos import MultiPolygon
 from django.contrib.gis.geos import Point
 
 from datapunt_generic.batch import batch
-from datapunt_generic.generic import database
+from datapunt_generic.generic import database, geo
 from . import models
 
 log = logging.getLogger('bommenkaart')
@@ -66,12 +66,17 @@ class ImportProces(batch.BasicTask):
 
     def process(self):
         """
-        Processing the CSV
+        Processing the CSV or SHP
         """
-        source = os.path.join(self.path, self.source)
-
-        objects = [_object for _object in process_qgis_csv(
-            source, self.process_row) if _object]
+        ext = os.path.splitext(self.source)[1]
+        if ext == '.csv':
+            source = os.path.join(self.path, self.source)
+            objects = [_object for _object in process_qgis_csv(
+                source, self.process_row) if _object]
+        elif ext == '.shp':
+            geo.process_shp(self.path, self.source, self.process_feature)
+        else:
+            objects = []
 
         self.model.objects.bulk_create(
             objects, batch_size=database.BATCH_SIZE)
@@ -89,7 +94,8 @@ class ImportProces(batch.BasicTask):
 class ImportInslagenTask(ImportProces):
     name = "import inslagen"
     model = models.BomInslag
-    source = "inslagen.csv"
+    source = "Inslagen_ea.shp"
+
 
     def before(self):
         """
@@ -97,46 +103,73 @@ class ImportInslagenTask(ImportProces):
         """
         database.clear_models(models.BomInslag)
 
-    def process_row(self, row):
-        """
-        bron header
-        wKT         geometrie
-        kenmerk     kenmerk
-        datum       datum van inslag
-        soort_hand  type
-        bron1       foto / document
-        datum1      datum brondocument
-        intekening  Bron informatie?
-        nauwkeurig  .
-        opmerkinge  .
-        oorlogsinc  oorlogsincident_id
-        hyperlink   pdf
-        """
-        if 'kenmerk' not in row:
-            print('No id, skipping')
-            return
-
-        geom = GEOSGeometry(row['wkt'])
-
+    def process_feature(self, feat):
+        geom = GEOSGeometry(feat.geom.wkt)
         if isinstance(geom, Point):
             point = geom
         else:
             raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
 
+        if 'kenmerk' not in feat:
+            print('No id, skipping')
+            return
+
         return models.BomInslag(
-            kenmerk=row['kenmerk'],
-            type='bommenkaart/bominslag',
-            detail_type=row['soort_hand'],
-            geometrie_point=point,
-            bron=row['bron1'],
-            intekening=row['intekening'],
-            nauwkeurig=row['nauwkeurig'],
-            opmerkingen=row['opmerkinge'],
-            oorlogsinc=row['oorlogsinc'],
-            pdf=self.pdf_link(row['hyperlink']),
-            datum_inslag=parse_date(row['datum']),
-            datum=parse_date(row['datum1'])
-        )
+             kenmerk=feat['kenmerk'],
+             type='bommenkaart/bominslag',
+             detail_type=feat['soort_hand'],
+             geometrie_point=point,
+             bron=feat['bron1'],
+             intekening=feat['intekening'],
+             nauwkeurig=feat['nauwkeurig'],
+             opmerkingen=feat['opmerkinge'],
+             oorlogsinc=feat['oorlogsinc'],
+             pdf=self.pdf_link(feat['hyperlink']),
+             datum_inslag=parse_date(feat['datum']),
+             datum=parse_date(feat['datum1'])
+         )
+
+
+    # def process_row(self, row):
+    #     """
+    #     bron header
+    #     wKT         geometrie
+    #     kenmerk     kenmerk
+    #     datum       datum van inslag
+    #     soort_hand  type
+    #     bron1       foto / document
+    #     datum1      datum brondocument
+    #     intekening  Bron informatie?
+    #     nauwkeurig  .
+    #     opmerkinge  .
+    #     oorlogsinc  oorlogsincident_id
+    #     hyperlink   pdf
+    #     """
+    #     if 'kenmerk' not in row:
+    #         print('No id, skipping')
+    #         return
+    #
+    #     geom = GEOSGeometry(row['wkt'])
+    #
+    #     if isinstance(geom, Point):
+    #         point = geom
+    #     else:
+    #         raise GEOSGeometry('Unworkable Geos type %s' % geom.geom_type)
+    #
+    #     return models.BomInslag(
+    #         kenmerk=row['kenmerk'],
+    #         type='bommenkaart/bominslag',
+    #         detail_type=row['soort_hand'],
+    #         geometrie_point=point,
+    #         bron=row['bron1'],
+    #         intekening=row['intekening'],
+    #         nauwkeurig=row['nauwkeurig'],
+    #         opmerkingen=row['opmerkinge'],
+    #         oorlogsinc=row['oorlogsinc'],
+    #         pdf=self.pdf_link(row['hyperlink']),
+    #         datum_inslag=parse_date(row['datum']),
+    #         datum=parse_date(row['datum1'])
+    #     )
 
 
 class ImportGevrijwaardTask(ImportProces):

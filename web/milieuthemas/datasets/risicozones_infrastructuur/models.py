@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.gis.db import models as geo
 # Product
 from datapunt_generic.generic import mixins
+from django.db.models import Manager as GeoManager
 
 
 class Aardgasleiding(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -47,7 +48,7 @@ class Infrastructuur(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     type = models.CharField(max_length=2, choices=INFRASTRUCTUUR_TYPE_CHOICES, null=True)
     geometrie = geo.MultiPolygonField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     def __repr__(self):
         """
