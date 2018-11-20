@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from datasets.bommenkaart import batch
+from datasets.bommenkaart.batch import TEST_UITGEVOERD_ONDERZOEK_PATH, TEST_VERDACHTE_GEBIEDEN_PATH, \
+    TEST_GEVRIJWAARD_GEBIED_PATH, TEST_INSLAGEN_PATH
 
 
 def test_response(testcase, response, expected_data):
@@ -14,7 +16,7 @@ def test_response(testcase, response, expected_data):
 
 class ImportBomInslagTest(APITestCase):
     def setUp(self):
-        batch.ImportInslagenTask(path='bommenkaart/csv/').execute()
+        batch.ImportInslagenTask(path=TEST_INSLAGEN_PATH).execute()
 
     def test_overview(self):
         response = self.client.get('/milieuthemas/explosieven/inslagen/')
@@ -65,7 +67,7 @@ class ImportBomInslagTest(APITestCase):
 
 class ImportGevrijwaardGebiedTest(APITestCase):
     def setUp(self):
-        batch.ImportGevrijwaardTask(path='bommenkaart/csv/').execute()
+        batch.ImportGevrijwaardTask(path=TEST_GEVRIJWAARD_GEBIED_PATH).execute()
 
     def test_overview(self):
         response = self.client.get('/milieuthemas'
@@ -159,7 +161,7 @@ class ImportGevrijwaardGebiedTest(APITestCase):
 
 class ImportVerdachtGebiedTest(APITestCase):
     def setUp(self):
-        batch.ImportVerdachtGebiedTask(path='bommenkaart/csv/').execute()
+        batch.ImportVerdachtGebiedTask(path=TEST_VERDACHTE_GEBIEDEN_PATH).execute()
 
     def test_overview(self):
         response = self.client.get('/milieuthemas'
@@ -249,7 +251,7 @@ class ImportVerdachtGebiedTest(APITestCase):
     class ImportUitgevoedOnderzoekTest(APITestCase):
         def setUp(self):
             batch.ImportUitgevoerdOnderzoekTask(
-                path='bommenkaart/csv/').execute()
+                path=TEST_UITGEVOERD_ONDERZOEK_PATH).execute()
 
         def test_overview(self):
             response = self.client.get('/milieuthemas'

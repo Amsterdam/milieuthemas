@@ -1,4 +1,6 @@
 from datapunt_generic.batch.test import TaskTestCase
+from datasets.bommenkaart.batch import TEST_INSLAGEN_PATH, TEST_GEVRIJWAARD_GEBIED_PATH, TEST_VERDACHTE_GEBIEDEN_PATH, \
+    TEST_UITGEVOERD_ONDERZOEK_PATH
 from .. import batch, models
 
 
@@ -8,7 +10,7 @@ class ImportBomInslagTest(TaskTestCase):
         pass
 
     def task(self):
-        return batch.ImportInslagenTask(path='bommenkaart/csv/')
+        return batch.ImportInslagenTask(path=TEST_INSLAGEN_PATH)
 
     def test_import(self):
         self.run_task()
@@ -26,7 +28,7 @@ class ImportGevrijwaardGebiedTest(TaskTestCase):
         pass
 
     def task(self):
-        return batch.ImportGevrijwaardTask(path='bommenkaart/csv/')
+        return batch.ImportGevrijwaardTask(path=TEST_GEVRIJWAARD_GEBIED_PATH)
 
     def test_import(self):
         self.run_task()
@@ -46,7 +48,7 @@ class ImportVerdachtGebiedTest(TaskTestCase):
         pass
 
     def task(self):
-        return batch.ImportVerdachtGebiedTask(path='bommenkaart/csv/')
+        return batch.ImportVerdachtGebiedTask(path=TEST_VERDACHTE_GEBIEDEN_PATH)
 
     def test_import(self):
         self.run_task()
@@ -66,7 +68,7 @@ class ImportOnderzochtGebiedTest(TaskTestCase):
         pass
 
     def task(self):
-        return batch.ImportUitgevoerdOnderzoekTask(path='bommenkaart/csv/')
+        return batch.ImportUitgevoerdOnderzoekTask(path=TEST_UITGEVOERD_ONDERZOEK_PATH)
 
     def test_import(self):
         self.run_task()
