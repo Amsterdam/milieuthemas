@@ -45,7 +45,7 @@ def health(request):
 def check_data(request):
     # check bag
     try:
-        assert model.objects.count() > 1000
+        assert model.objects.count() > 500
     except:
         log.exception("No MILIEUTHEMAS data found")
         return HttpResponse("No MILIEUTHEMAS data found",
