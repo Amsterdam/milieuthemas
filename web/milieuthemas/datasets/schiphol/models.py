@@ -3,6 +3,7 @@ from django.contrib.gis.db import models as geo
 
 from datapunt_generic.generic import mixins
 from datasets.themas.models import Thema
+from django.db.models import Manager as GeoManager
 
 
 class MaatgevendeToetshoogte(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -10,7 +11,7 @@ class MaatgevendeToetshoogte(mixins.ModelViewFieldsMixin, mixins.ImportStatusMix
     hoogte_nap = models.FloatField(null=False)
     hoogte_nap_klasse = models.IntegerField(null=False)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     geo_view_exclude = ['date_modified']
 
@@ -20,7 +21,7 @@ class HoogtebeperkingRadar(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin
     hoogte_nap = models.FloatField(null=False)
     hoogte_nap_klasse = models.IntegerField(null=False)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     geo_view_exclude = ['date_modified']
 
@@ -28,10 +29,10 @@ class HoogtebeperkingRadar(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin
 class Geluidzone(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     type = models.CharField(max_length=100, null=True)
-    thema = models.ForeignKey(Thema, null=True)
+    thema = models.ForeignKey(Thema, null=True, on_delete=models.CASCADE)
     geometrie = geo.MultiPolygonField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     geo_view_exclude = ['date_modified', 'thema']
     geo_view_include = ['thema_id']
@@ -40,10 +41,10 @@ class Geluidzone(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
 class Vogelvrijwaringsgebied(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
     type = models.CharField(max_length=100, null=True)
-    thema = models.ForeignKey(Thema, null=True)
+    thema = models.ForeignKey(Thema, null=True, on_delete=models.CASCADE)
     geometrie = geo.MultiPolygonField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     geo_view_exclude = ['date_modified', 'thema']
     geo_view_include = ['thema_id']

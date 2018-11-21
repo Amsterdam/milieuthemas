@@ -232,4 +232,4 @@ SECURE_BROWSER_XSS_FILTER = True
 CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = 'DENY'
 
-HEALTH_MODEL = 'schiphol.MaatgevendeToetshoogte'
+HEALTH_MODEL = 'bommenkaart.BomInslag'
