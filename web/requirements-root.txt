@@ -54,6 +54,7 @@ pytz
 PyYAML
 requests
 rfc3986
+sentry-sdk
 simplejson
 six
 sphinx-me
