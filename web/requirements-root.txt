@@ -43,7 +43,6 @@ pbr
 pip-review
 pip-tools
 positional
-psycopg2
 psycopg2-binary
 pyparsing
 pyslack-real
