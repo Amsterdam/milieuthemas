@@ -21,8 +21,8 @@ class ExpansionMetadata(metadata.SimpleMetadata):
 
 
 class InslagFilter(FilterSet):
-    type = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    kenmerk = filters.CharFilter(lookup_expr=['exact', 'iexact'])
+    type = filters.CharFilter(lookup_expr='iexact')
+    kenmerk = filters.CharFilter(lookup_expr='iexact')
     datum = filters.DateFilter()
 
     class Meta:
@@ -48,8 +48,8 @@ class InslagViewset(rest.AtlasViewSet):
 
 
 class GevrijwaardGebiedFilter(FilterSet):
-    type = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    kenmerk = filters.CharFilter(lookup_expr=['exact', 'iexact'])
+    type = filters.CharFilter(lookup_expr='iexact')
+    kenmerk = filters.CharFilter(lookup_expr='iexact')
     datum = filters.DateFilter()
     datum_inslag = filters.DateFilter()
 
@@ -77,10 +77,9 @@ class GevrijwaardGebiedViewSet(rest.AtlasViewSet):
 
 
 class UitgevoerdOnderzoekFilter(FilterSet):
-    type = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    kenmerk = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    opdrachtgever = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    opdrachtnemer = filters.CharFilter(lookup_expr=['exact', 'iexact'])
+    type = filters.CharFilter(lookup_expr='iexact')
+    opdrachtgever = filters.CharFilter(lookup_expr='iexact')
+    opdrachtnemer = filters.CharFilter(lookup_expr='iexact')
     datum = filters.DateFilter()
 
     class Meta:
@@ -108,14 +107,14 @@ class UitgevoerdOnderzoekViewSet(rest.AtlasViewSet):
 
 
 class VerdachtGebiedFilter(FilterSet):
-    kenmerk = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    type = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    kaliber = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    oorlogshandeling = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    aantal = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    subtype = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    verschijning = filters.CharFilter(lookup_expr=['exact', 'iexact'])
-    afbakening = filters.CharFilter(lookup_expr=['exact', 'iexact'])
+    kenmerk = filters.CharFilter(lookup_expr='iexact')
+    type = filters.CharFilter(lookup_expr='iexact')
+    kaliber = filters.CharFilter(lookup_expr='iexact')
+    oorlogshandeling = filters.CharFilter(lookup_expr='iexact')
+    aantal = filters.CharFilter(lookup_expr='iexact')
+    subtype = filters.CharFilter(lookup_expr='iexact')
+    verschijning = filters.CharFilter(lookup_expr='iexact')
+    afbakening = filters.CharFilter(lookup_expr='iexact')
 
     class Meta:
         model = models.VerdachtGebied

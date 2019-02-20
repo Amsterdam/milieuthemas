@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.gis.db import models as geo
 
 from datapunt_generic.generic import mixins
+from django.db.models import Manager as GeoManager
 
 
 class Grondmonster(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -38,7 +39,7 @@ class Grondmonster(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     minerale_olie = models.IntegerField(null=True)
     geometrie = geo.PointField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
 
 class Grondwatermonster(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -95,7 +96,7 @@ class Grondwatermonster(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     ycoordinaat = models.IntegerField(null=True)
     geometrie = geo.PointField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
 
 class Asbest(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -114,4 +115,4 @@ class Asbest(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     stof = models.CharField(max_length=40)
     geometrie = geo.PointField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()

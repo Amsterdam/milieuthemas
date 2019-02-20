@@ -90,7 +90,9 @@ def get_data(connection, folder):
         if meta_file['content_type'] == 'application/directory':
             continue
 
-        if not meta_file['content_type'].endswith('csv'):
+        if (not (folder == 'Bommenkaart' and os.path.split(full_name)[0] == '' and
+                os.path.splitext(full_name)[1] in {'.shp', '.dbf', '.prj', '.shx'}) and
+                not meta_file['content_type'].endswith('csv')):
             continue
 
         log.warning('Downloading: %s', full_name)

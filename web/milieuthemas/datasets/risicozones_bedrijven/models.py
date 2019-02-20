@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.gis.db import models as geo
 # Product
 from datapunt_generic.generic import mixins
+from django.db.models import Manager as GeoManager
 
 
 class LPGStation(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
@@ -25,44 +26,44 @@ class LPGStation(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
     geometrie_point = geo.PointField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
 
 class LPGVulpunt(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geo_id = models.IntegerField(null=False)
-    station = models.ForeignKey(LPGStation, null=True)
+    station = models.ForeignKey(LPGStation, null=True, on_delete=models.CASCADE)
     type = models.CharField(max_length=40, null=True)
     afstandseis = models.CharField(max_length=10, null=True)
     voldoet = models.CharField(max_length=3, null=True)
     geometrie_point = geo.PointField(null=True, srid=28992)
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     geo_view_exclude = ['date_modified', 'station']
     geo_view_include = ['station_id']
 
 
 class LPGAfleverzuil(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
-    station = models.ForeignKey(LPGStation, null=True)
+    station = models.ForeignKey(LPGStation, null=True, on_delete=models.CASCADE)
     geometrie_point = geo.PointField(null=True, srid=28992)
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     geo_view_exclude = ['date_modified', 'station']
     geo_view_include = ['station_id']
 
 
 class LPGTank(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
-    station = models.ForeignKey(LPGStation, null=True)
+    station = models.ForeignKey(LPGStation, null=True, on_delete=models.CASCADE)
     kleur = models.IntegerField(null=True)
     type = models.CharField(max_length=40, null=True)
     voldoet = models.CharField(max_length=3, null=True)
     afstandseis = models.CharField(max_length=10, null=True)
     geometrie = geo.MultiPolygonField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     geo_view_exclude = ['date_modified', 'station']
     geo_view_include = ['station_id']
@@ -75,7 +76,7 @@ class Bron(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     type_stof = models.CharField(max_length=64, null=True)
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     def __repr__(self):
         return '<Bron %d: %s>' % (self.id, self.bedrijfsnaam)
@@ -93,7 +94,7 @@ class Bedrijf(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     geometrie_polygon = geo.MultiPolygonField(null=True, srid=28992)
     geometrie_point = geo.PointField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     def __repr__(self):
         return '<Bedrijf %d: %s>' % (self.id, self.bedrijfsnaam)
@@ -107,7 +108,7 @@ class Contour(mixins.ModelViewFieldsMixin, mixins.ImportStatusMixin):
     voldoet = models.CharField(max_length=3, null=True)
     geometrie = geo.MultiPolygonField(null=True, srid=28992)
 
-    objects = geo.GeoManager()
+    objects = GeoManager()
 
     def __repr__(self):
         return '<Contour %d: %s>' % (self.id, self.bedrijfsnaam)

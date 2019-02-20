@@ -1,6 +1,8 @@
 from rest_framework.test import APITestCase, APITransactionTestCase
 
 from datasets.bommenkaart import batch
+from datasets.bommenkaart.batch import TEST_INSLAGEN_PATH, TEST_GEVRIJWAARD_GEBIED_PATH, TEST_VERDACHTE_GEBIEDEN_PATH, \
+    TEST_UITGEVOERD_ONDERZOEK_PATH
 
 
 class BrowseDatasetsTestCase(APITransactionTestCase):
@@ -16,10 +18,10 @@ class BrowseDatasetsTestCase(APITransactionTestCase):
     ]
 
     def setUp(self):
-        batch.ImportInslagenTask(path='bommenkaart/csv/').execute()
-        batch.ImportGevrijwaardTask(path='bommenkaart/csv/').execute()
-        batch.ImportVerdachtGebiedTask(path='bommenkaart/csv/').execute()
-        batch.ImportUitgevoerdOnderzoekTask(path='bommenkaart/csv/').execute()
+        batch.ImportInslagenTask(path=TEST_INSLAGEN_PATH).execute()
+        batch.ImportGevrijwaardTask(path=TEST_GEVRIJWAARD_GEBIED_PATH).execute()
+        batch.ImportVerdachtGebiedTask(path=TEST_VERDACHTE_GEBIEDEN_PATH).execute()
+        batch.ImportUitgevoerdOnderzoekTask(path=TEST_UITGEVOERD_ONDERZOEK_PATH).execute()
         # pass
 
     def test_root(self):
