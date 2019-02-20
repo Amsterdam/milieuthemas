@@ -1,13 +1,13 @@
 version: '3.0'
 services:
   database:
-    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    image: amsterdam/postgres11
     environment:
       POSTGRES_PASSWORD: insecure
       POSTGRES_USER: milieuthemas
 
   importer:
-    image: build.datapunt.amsterdam.nl:5000/datapunt/milieuthemas:${ENVIRONMENT}
+    image: repo.data.amsterdam.nl/datapunt/milieuthemas:${ENVIRONMENT}
     links:
       - database
     environment:
@@ -26,7 +26,7 @@ services:
               && python manage.py run_import "
 
   db-backup:
-    image: build.datapunt.amsterdam.nl:5000/atlas/postgres
+    image: amsterdam/postgres11
     links:
       - database
     volumes:
