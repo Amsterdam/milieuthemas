@@ -5,6 +5,7 @@ import os
 from contextlib import contextmanager
 
 from dateutil.parser import parse
+from django.conf import settings
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import GEOSGeometry, Polygon
 from django.contrib.gis.geos import MultiPolygon
@@ -26,12 +27,6 @@ INSLAGEN_PATH = 'Inslagen_ea.shp'
 VERDACHTE_GEBIEDEN_PATH = 'Verdachte_gebieden.shp'
 UITGEVOERD_ONDERZOEK_PATH = 'Reeds_uitgevoerde_CE_onderzoeken.shp'
 GEVRIJWAARD_GEBIED_PATH = 'Gevrijwaard_gebied.shp'
-
-#  TODO : Use new data from shapefiles also for tests
-TEST_INSLAGEN_PATH = 'bommenkaart/csv/inslagen.csv'
-TEST_VERDACHTE_GEBIEDEN_PATH = 'bommenkaart/csv/verdachte_gebieden.csv'
-TEST_UITGEVOERD_ONDERZOEK_PATH = 'bommenkaart/csv/reeds_uitgevoerd_ce_onderzoek.csv'
-TEST_GEVRIJWAARD_GEBIED_PATH = 'bommenkaart/csv/gevrijwaard_gebied.csv'
 
 
 @contextmanager
@@ -112,10 +107,9 @@ class ImportProces(batch.BasicTask):
         """
         The object store link:
 
-        https://data.amsterdam.nl/bommenkaart/RAP_000000_.pdf
+        https://files.data.amsterdam.nl/bommenkaart/RAP_000000_.pdf
         """
-        url = "https://data.amsterdam.nl/bommenkaart/{}"
-        return url.format(pdf_name)
+        return f"{settings.FILE_URL_DOMAIN}{settings.FILE_URL_PATH}/{pdf_name}"
 
 
 class ImportInslagenTask(ImportProces):

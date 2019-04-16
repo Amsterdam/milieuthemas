@@ -19,6 +19,9 @@ OVERRIDE_PORT_ENV_VAR = 'DATABASE_PORT_OVERRIDE'
 DATAPUNT_API_URL = os.getenv(
     'DATAPUNT_API_URL', 'https://api.data.amsterdam.nl/')
 
+FILE_URL_DOMAIN = os.getenv('FILE_URL_DOMAIN', "https://files.data.amsterdam.nl")
+FILE_URL_PATH = os.getenv('FILE_URL_PATH', "/bommenkaart")
+
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
 if TESTING:
