@@ -28,6 +28,12 @@ VERDACHTE_GEBIEDEN_PATH = 'Verdachte_gebieden.shp'
 UITGEVOERD_ONDERZOEK_PATH = 'Reeds_uitgevoerde_CE_onderzoeken.shp'
 GEVRIJWAARD_GEBIED_PATH = 'Gevrijwaard_gebied.shp'
 
+#  TODO : Use new data from shapefiles also for tests
+TEST_INSLAGEN_PATH = 'bommenkaart/csv/inslagen.csv'
+TEST_VERDACHTE_GEBIEDEN_PATH = 'bommenkaart/csv/verdachte_gebieden.csv'
+TEST_UITGEVOERD_ONDERZOEK_PATH = 'bommenkaart/csv/reeds_uitgevoerd_ce_onderzoek.csv'
+TEST_GEVRIJWAARD_GEBIED_PATH = 'bommenkaart/csv/gevrijwaard_gebied.csv'
+
 
 @contextmanager
 def _context_reader(source):
