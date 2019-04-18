@@ -96,7 +96,7 @@ class ImportBronTest(TaskTestCase):
         self.run_task()
 
         imported = models.Bron.objects.count()
-        self.assertEqual(imported, 13)
+        self.assertEqual(imported, 12)
 
         bron = models.Bron.objects.get(bron_id=24)
         self.assertEqual(bron.bedrijfsnaam, 'NUSTAR TERMINAL BV')
@@ -128,7 +128,7 @@ class ImportContourTest(TaskTestCase):
         self.run_task()
 
         imported = models.Contour.objects.count()
-        self.assertEqual(imported, 66)
+        self.assertEqual(imported, 65)
 
         contour = models.Contour.objects.get(bron_id=10)
         self.assertEqual(contour.bedrijfsnaam, 'ACT')
