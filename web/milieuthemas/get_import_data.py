@@ -35,7 +35,7 @@ print(MILIEUTHEMA)
 
 m_store = MILIEUTHEMA
 
-bag_connection = Connection(
+milieuthema_connection = Connection(
     authurl=m_store['AUTHURL'],
     user=m_store['USER'],
     key=m_store['PASSWORD'],
@@ -52,8 +52,6 @@ def get_store_object(connection, folder, object_meta_data):
 def get_full_container_list(conn, container, **kwargs):
     limit = 10000
     kwargs['limit'] = limit
-    page = []
-
     seed = []
 
     _, page = conn.get_container(container, **kwargs)
@@ -118,8 +116,8 @@ def get_all_files():
     """
 
     all_sources = [
-        (bag_connection, 'Bommenkaart'),
-        (bag_connection, 'Milieuthemas')
+        (milieuthema_connection, 'Bommenkaart'),
+        (milieuthema_connection, 'Milieuthemas')
     ]
 
     for connection, folder in all_sources:
