@@ -5,8 +5,11 @@ services:
     ports:
       - "5402:5432"
     environment:
-      POSTGRES_PASSWORD: insecure
+      POSTGRES_DB: milieuthemas
       POSTGRES_USER: milieuthemas
+      POSTGRES_PASSWORD: insecure
+    volumes:
+      - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
 
   web:
     build: ./web
@@ -15,15 +18,15 @@ services:
     links:
       - database
     volumes:
-      - $PWD/reports:/app/reports
+      - "$PWD/reports:/app/reports"
     environment:
-      - DATAPUNT_API_URL=${DATAPUNT_API_URL:-https://api.data.amsterdam.nl/}
-      - SECRET_KEY=insecure
-      - DATABASE_NAME=milieuthemas
-      - DATABASE_PASSWORD=insecure
-      - UWSGI_HTTP=":8000"
-      - UWSGI_MODULE="milieuthemas.wsgi:application"
-      - UWSGI_MASTER=1
-      - UWSGI_STATIC_MAP="/static=/static"
-      - UWSGI_PROCESSES=4
+      DATAPUNT_API_URL: "${DATAPUNT_API_URL:-https://api.data.amsterdam.nl/}"
+      SECRET_KEY: "insecure"
+      DATABASE_NAME: "milieuthemas"
+      DATABASE_PASSWORD: "insecure"
+      UWSGI_HTTP: ":8000"
+      UWSGI_MODULE: "milieuthemas.wsgi:application"
+      UWSGI_MASTER: "1"
+      UWSGI_STATIC_MAP: "/static=/static"
+      UWSGI_PROCESSES: "4"
 
