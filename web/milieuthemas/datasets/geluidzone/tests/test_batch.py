@@ -23,15 +23,15 @@ class ImportGeluidzoneTest(TaskTestCase):
         self.assertNotEqual(model.geometrie, None)
 
         metro = models.Metro.objects.all()
-        self.assertEqual(len(metro), 1)
+        self.assertEqual(len(metro), 6)
 
         model = models.Metro.objects.get(geo_id=11)
         self.assertEqual(model.type, 'Geluidszone metro')
         self.assertNotEqual(model.geometrie, None)
 
         industrie = models.Industrie.objects.all()
-        self.assertEqual(len(industrie), 1)
+        self.assertEqual(len(industrie), 27)
 
-        model = models.Industrie.objects.get(geo_id=25)
+        model = models.Industrie.objects.get(geo_id=22)
         self.assertEqual(model.naam, 'AMC Zuidoost')
         self.assertNotEqual(model.geometrie, None)
