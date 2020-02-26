@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: milieuthemas
 
   importer:
-    image: repo.data.amsterdam.nl/datapunt/milieuthemas:${ENVIRONMENT}
+    image: ${DOCKER_REGISTRY_HOST}/datapunt/milieuthemas:${ENVIRONMENT}
     links:
       - database
     environment:
