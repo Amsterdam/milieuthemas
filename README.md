@@ -25,7 +25,7 @@ Import db data from prod
     docker-compose exec database update-db.sh milieuthemas
 
 
-The API should now be available on http://localhost:8101/
+The API should now be available on http://localhost:8101/milieuthemas/
 
 
 Accessing the docker database container for view testing:
