@@ -7,7 +7,7 @@ ENV DATAPUNT_API_URL=${DATAPUNT_API_URL:-https://api.data.amsterdam.nl/}
 
 EXPOSE 8000
 
-RUN apt-get install -y \
+RUN apt-get install -y liberasurecode-dev\
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 	&& adduser --system datapunt \
